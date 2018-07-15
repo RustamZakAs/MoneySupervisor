@@ -6,7 +6,7 @@ using System.Text;
 namespace MoneySupervisor
 {
     public enum MSLang { RU = 0, AZ, EN, KO }
-    class MSLanguage
+    public class MSLanguage
     {
         public string RUS { get; set; }
         public string AZE { get; set; }
@@ -42,7 +42,7 @@ namespace MoneySupervisor
             else return KOR;
         }
 
-        public void CreateDictionary(ref Dictionary<string, MSLanguage> dictionary)
+        public static void CreateDictionary(ref Dictionary<string, MSLanguage> dictionary)
         {
             MSLanguage phrase1 = new MSLanguage
             {
