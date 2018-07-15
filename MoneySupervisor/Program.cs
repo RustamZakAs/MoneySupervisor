@@ -26,6 +26,7 @@ namespace MoneySupervisor
             MSLanguage.CreateDictionary(ref dictionary);
 
             MSIntro.Show();
+            Console.Clear();
             MSMainMenyu();
         }
 
@@ -35,38 +36,45 @@ namespace MoneySupervisor
             Console.SetBufferSize(80, 25);
             
             bool xreplace = true;
+            int i = 0;
             do
             {
-                Console.Clear();
-                Console.SetCursorPosition(0, 0);
-
+                if (i >= 63)
+                {
+                    Console.Clear();
+                    i = 0;
+                } 
+                
                 string str = "Добро пожаловать!";
 
-                for (int i = 0; i < 65; i++)
-                {
-                    Console.Write(str);
-                    Thread.Sleep(100);
-                    Console.SetCursorPosition(i-1 < 0 ? 0 : i-1, 0);
-                    Console.Write("                 ");
-                    Console.SetCursorPosition(i, 0);
-                }
-
-
+                Console.SetCursorPosition(i - 1 < 0 ? i >= 63 ? 0 : 0 : i - 1, 0);
+                Console.Write("                  ");
+                Console.SetCursorPosition(i++ < 63 ? i : 0, 0);
+                Console.Write(str);
+                Thread.Sleep(300);
+                
                 if (Console.KeyAvailable)
                 {
                     cki = Console.ReadKey();
                 }
+                Console.SetCursorPosition(0, 3);
+                Console.WriteLine(cki.KeyChar);
 
+                Console.SetCursorPosition(0, 1);
                 Console.WriteLine($"1. {dictionary["newcategory"].RetLang(staticLanguage)} ");
+                Console.SetCursorPosition(0, 2);
                 Console.WriteLine($"2. {dictionary["newaccount"].RetLang(staticLanguage)} ");
 
                 switch (cki.KeyChar)
                 {
                     case '1':
+
                         break;
                     default:
                         break;
                 }
+
+                
                 //Console.WriteLine($"3. {dictionary[" "].RetLang(staticLanguage)} ");
                 //Console.WriteLine($"4. {dictionary[" "].RetLang(staticLanguage)} ");
                 //Console.WriteLine($"5. {dictionary[" "].RetLang(staticLanguage)} ");
