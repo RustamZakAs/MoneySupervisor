@@ -43,6 +43,7 @@
     <Compile Include="MSAccount.cs" />
     <Compile Include="MSCategory.cs" />
     <Compile Include="MSLanguage.cs" />
+    <Compile Include="MSStatistics.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
