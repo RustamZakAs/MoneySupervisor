@@ -8,5 +8,9 @@ namespace MoneySupervisor
     class MSAccount
     {
 
+        public void Add()
+        {
+
+        }
     }
 }

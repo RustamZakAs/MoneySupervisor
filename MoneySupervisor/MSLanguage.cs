@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MoneySupervisor
 {
-    public enum Lang { RU = 0, AZ, EN, KO }
+    public enum MSLang { RU = 0, AZ, EN, KO }
     class MSLanguage
     {
         public string RUS { get; set; }
@@ -46,12 +46,39 @@ namespace MoneySupervisor
         {
             MSLanguage phrase1 = new MSLanguage
             {
-                RUS = "Новая категория ",
-                AZE = "Yeni şəxs     ",
-                ENG = "New person    ",
-                KOR = "새로운 사람"
+                RUS = "Новая категория",
+                AZE = "Yeni kateqoriya",
+                ENG = "New category",
+                KOR = "새 카테고리"
             };
-            dictionary.Add("newper", phrase1);
+            dictionary.Add("newcategory", phrase1);
+
+            MSLanguage phrase2 = new MSLanguage
+            {
+                RUS = "Новый счёт",
+                AZE = "Yeni hesab",
+                ENG = "New account",
+                KOR = "새 계정"
+            };
+            dictionary.Add("newaccount", phrase2);
+
+            MSLanguage phrase3 = new MSLanguage
+            {
+                RUS = "",
+                AZE = "",
+                ENG = "",
+                KOR = ""
+            };
+            dictionary.Add("", phrase3);
+
+            MSLanguage phrase4 = new MSLanguage
+            {
+                RUS = "",
+                AZE = "",
+                ENG = "",
+                KOR = ""
+            };
+            dictionary.Add(" ", phrase4);
         }
     }
 }
