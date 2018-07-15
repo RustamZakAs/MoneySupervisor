@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MoneySupervisor
 {
-    class MSIntro
+    public static class MSIntro
     {
         public static void Show()
         {
@@ -26,5 +26,4 @@ namespace MoneySupervisor
             System.Threading.Thread.Sleep(2000);
         }
     }
-}
 }
