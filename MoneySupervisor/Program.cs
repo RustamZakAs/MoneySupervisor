@@ -12,14 +12,18 @@ namespace MoneySupervisor
 
         public static Dictionary<string, MSLanguage> dictionary = new Dictionary<string, MSLanguage>();
 
+        public static MSCategory category = new MSCategory();
         public static List<MSCategory> categories = new List<MSCategory>();
+        public static MSAccount account = new MSAccount();
         public static List<MSAccount> accounts = new List<MSAccount>();
 
         public static ConsoleKeyInfo cki;
 
+        public static int menyuId = 0, maxMenyuId = 5;
+
         static void Main(string[] args)
         {
-            Console.Title = "Управление деньгами";
+            Console.Title = "Money Supervisor - Управление деньгами - Pullara nəzarət";
             Console.OutputEncoding = Encoding.Unicode;
             Console.InputEncoding = Encoding.Unicode;
 
@@ -32,24 +36,28 @@ namespace MoneySupervisor
 
         static void MSMainMenyu()
         {
-            Console.SetWindowSize(80, 25);
-            Console.SetBufferSize(80, 25);
+            int maxWidth = 40, maxheight = 25;
+            Console.SetWindowSize(maxWidth, maxheight);
+            Console.SetBufferSize(maxWidth, maxheight);
             
             bool xreplace = true;
             int i = 0;
             do
             {
-                if (i >= 63)
+                string str = "Добро пожаловать!";
+                if (i >= maxWidth - str.Length)
                 {
-                    Console.Clear();
+                    Console.SetCursorPosition(maxWidth - str.Length,0);
+                    for (int j = 0; j < str.Length; j++)
+                    {
+                        Console.Write(" ");
+                    }
                     i = 0;
                 } 
                 
-                string str = "Добро пожаловать!";
-
-                Console.SetCursorPosition(i - 1 < 0 ? i >= 63 ? 0 : 0 : i - 1, 0);
+                Console.SetCursorPosition(i - 1 < 0 ? i >= maxWidth-str.Length ? 0 : 0 : i - 1, 0);
                 Console.Write("                  ");
-                Console.SetCursorPosition(i++ < 63 ? i : 0, 0);
+                Console.SetCursorPosition(i++ < maxWidth - str.Length ? i : 0, 0);
                 Console.Write(str);
                 Thread.Sleep(300);
                 
@@ -74,6 +82,56 @@ namespace MoneySupervisor
                         break;
                 }
 
+                switch (cki.Key)
+                {
+                    case ConsoleKey.Tab:
+                        if (++menyuId > maxMenyuId-1) menyuId = 0;
+                        break;
+                    case ConsoleKey.RightArrow:
+                        if (++menyuId > maxMenyuId-1) menyuId = maxMenyuId-1;
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        if (--menyuId < 0) menyuId = 0;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        if (++menyuId > maxMenyuId-1) menyuId = maxMenyuId-1;
+                        break;
+                    case ConsoleKey.UpArrow:
+                        if (--menyuId < 0) menyuId = 0;
+                        break;
+                    case ConsoleKey.Enter:
+                        switch (menyuId)
+                        {
+                            case 0: //+
+                                if (categories.Count == 0)
+                                {
+                                    Console.Clear();
+                                    category.Add(categories.Count+1);
+                                    categories.Add(category);
+                                }
+                                break;
+                            case 1: //-
+                                break;
+                            case 2: //=
+                                break;
+                            case 3: //param
+                                break;
+                            case 4: //help
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                cki = default(ConsoleKeyInfo);
+
+                MSIntro.Plus(menyuId, 5, 5, ConsoleColor.Green, ConsoleColor.Black);
+                MSIntro.Minus(menyuId, 15, 5, ConsoleColor.Red, ConsoleColor.Black);
+                MSIntro.Transfer(menyuId, 25, 5, ConsoleColor.Blue, ConsoleColor.Black);
+                MSIntro.NotFound(menyuId, maxWidth - 14, maxheight - 5, ConsoleColor.Magenta, ConsoleColor.Black);
+                MSIntro.Param(menyuId, 1, maxheight - 5, ConsoleColor.Yellow, ConsoleColor.Black);
                 
                 //Console.WriteLine($"3. {dictionary[" "].RetLang(staticLanguage)} ");
                 //Console.WriteLine($"4. {dictionary[" "].RetLang(staticLanguage)} ");

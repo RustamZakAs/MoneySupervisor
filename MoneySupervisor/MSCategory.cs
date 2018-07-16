@@ -43,9 +43,24 @@ namespace MoneySupervisor
             MSImage      = MScategory.MSImage;
         }
 
-        public void Add ()
+        public void Add (int categoryId)
         {
-
+            int left = Console.CursorLeft;
+            int top = Console.CursorTop;
+            MSCategoryId = categoryId;
+            bool xreplace = true;
+            do
+            {
+                Console.SetCursorPosition(left, top);
+                Console.WriteLine("Введите тип категории (+,-)");
+                string temp = Console.ReadLine();
+                if (temp[0] == '+' | temp[0] == '-')
+                {
+                    MSIO = temp[0];
+                    xreplace = false;
+                }
+            } while (xreplace);
+            
         }
     }
 }
