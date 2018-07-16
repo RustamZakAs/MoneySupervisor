@@ -11,7 +11,7 @@ namespace MoneySupervisor
         public static void Show()
         {
             int DA = 244;
-            int V = 212;
+            int V  = 212;
             int ID = 255;
             for (int i = 0; i < 1; i++)
             {
@@ -21,7 +21,7 @@ namespace MoneySupervisor
                 Colorful.Console.WriteAscii("   PRESENT ", Color.FromArgb(DA, V, ID));
 
                 DA -= 18;
-                V -= 36;
+                V  -= 36;
             }
             System.Threading.Thread.Sleep(2000);
         }

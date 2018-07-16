@@ -18,12 +18,12 @@ namespace MoneySupervisor
         {
         }
 
-        public MSCategory(int mSCategoryId, 
-                          char mSIO, 
-                          string mSName, 
-                          int mSAccountId, 
+        public MSCategory(int          mSCategoryId, 
+                          char         mSIO, 
+                          string       mSName, 
+                          int          mSAccountId, 
                           ConsoleColor mSColor, 
-                          string mSImage)
+                          string       mSImage)
         {
             MSCategoryId = mSCategoryId;
             MSIO         = mSIO;
@@ -52,7 +52,7 @@ namespace MoneySupervisor
             do
             {
                 Console.SetCursorPosition(left, top);
-                Console.WriteLine("Введите тип категории (+,-)");
+                Console.WriteLine("Введите тип категории (+,-): ");
                 string temp = Console.ReadLine();
                 if (temp[0] == '+' | temp[0] == '-')
                 {
@@ -60,7 +60,8 @@ namespace MoneySupervisor
                     xreplace = false;
                 }
             } while (xreplace);
-            
+            MSName = Console.ReadLine();
+            MSAccountId = 0;
         }
     }
 }
