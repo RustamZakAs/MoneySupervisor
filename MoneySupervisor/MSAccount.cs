@@ -40,21 +40,40 @@ namespace MoneySupervisor
             MSImage     = account.MSImage;
         }
 
-        public void Add()
+        public void ConsoleAdd()
         {
 
         }
 
-        public int ChooseAccount(ref List<MSAccount> accountList)
+        public static int ChooseAccount(ref List<MSAccount> accountList)
         {
             int left = Console.CursorLeft;
             int top  = Console.CursorTop;
-            int maxLen = accountList.Max(s => s.MSName).Length;
+            int maxLen = 0;
+            if (accountList.Count > 0)
+                maxLen = accountList.Max(s => s.MSName).Length;
+            int accountId = 0;
             do
             {
                 Console.SetCursorPosition(left, top);
-
-                return 0;
+                if (Console.KeyAvailable)
+                {
+                    Program.cki = Console.ReadKey();
+                }
+                switch (Program.cki.Key)
+                {
+                    case ConsoleKey.DownArrow:
+                        if (++accountId >= accountList.Count) accountId = accountList.Count-1;
+                        break;
+                    case ConsoleKey.UpArrow:
+                        if (--accountId < 0) accountId = 0;
+                        break;
+                    case ConsoleKey.Enter:
+                        return accountId;
+                    default:
+                        break;
+                }
+                Console.WriteLine($"/{accountList[accountId].MSImage}/ {accountList[accountId].MSName}");
             } while (true);
         }
     }

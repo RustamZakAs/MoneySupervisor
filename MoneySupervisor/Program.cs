@@ -18,6 +18,7 @@ namespace MoneySupervisor
         public static List<MSAccount> accounts = new List<MSAccount>();
 
         public static ConsoleKeyInfo cki;
+        public static Random random = new Random();
 
         public static int menyuId = 0, maxMenyuId = 5;
 
@@ -76,7 +77,9 @@ namespace MoneySupervisor
                 switch (cki.KeyChar)
                 {
                     case '1':
-
+                        Console.Clear();
+                        category.Add(categories.Count + 1);
+                        categories.Add(category);
                         break;
                     default:
                         break;

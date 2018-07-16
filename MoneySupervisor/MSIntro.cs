@@ -149,8 +149,41 @@ namespace MoneySupervisor
             }
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Gray;
-            
-                
+        }
+
+        public static ConsoleColor ChooseColor()
+        {
+            int left = Console.CursorLeft;
+            int top = Console.CursorTop;
+
+            ConsoleColor cc = new ConsoleColor();
+            do
+            {
+                Console.SetCursorPosition(left, top);
+                if (Console.KeyAvailable)
+                {
+                    Program.cki = Console.ReadKey();
+                }
+                switch (Program.cki.Key)
+                {
+                    case ConsoleKey.DownArrow:
+                        cc = (ConsoleColor)Program.random.Next(0, 16);
+                        break;
+                    case ConsoleKey.UpArrow:
+                        cc  = (ConsoleColor)Program.random.Next(0, 16);
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        cc = (ConsoleColor)Program.random.Next(0, 16);
+                        break;
+                    case ConsoleKey.RightArrow:
+                        cc = (ConsoleColor)Program.random.Next(0, 16);
+                        break;
+                    case ConsoleKey.Enter:
+                        return cc;
+                    default:
+                        break;
+                }
+            } while (true);
         }
     }
 }

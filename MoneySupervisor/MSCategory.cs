@@ -43,7 +43,7 @@ namespace MoneySupervisor
             MSImage      = MScategory.MSImage;
         }
 
-        public void Add (int categoryId)
+        public void ConsoleAdd(int categoryId)
         {
             int left = Console.CursorLeft;
             int top = Console.CursorTop;
@@ -60,8 +60,20 @@ namespace MoneySupervisor
                     xreplace = false;
                 }
             } while (xreplace);
+            Console.WriteLine("Введите наименование категории: ");
             MSName = Console.ReadLine();
-            MSAccountId = 0;
+            Console.WriteLine("Выберите аккаунт: ");
+            if (Program.accounts.Count > 0)
+                MSAccountId = MSAccount.ChooseAccount(ref Program.accounts);
+            else
+            {
+                Program.account.Add();
+                Program.accounts.Add(Program.account);
+            }
+            Console.WriteLine("Введите символ: ");
+            MSColor = MSIntro.ChooseColor();
+            Console.WriteLine("Введите символ: ");
+            MSImage = Console.ReadLine();
         }
     }
 }
