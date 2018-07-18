@@ -1,7 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace MoneySupervisor
 {
@@ -9,9 +12,13 @@ namespace MoneySupervisor
     [DataContract]
     public class MSLanguage
     {
+        [DataMember]
         public string RUS { get; set; }
+        [DataMember]
         public string AZE { get; set; }
+        [DataMember]
         public string ENG { get; set; }
+        [DataMember]
         public string KOR { get; set; }
 
         public MSLanguage()

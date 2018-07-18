@@ -1,17 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace MoneySupervisor
 {
     [DataContract]
     class MSAccount
     {
+        [DataMember]
         public int          MSAccountId { get; set; }
+        [DataMember]
         public char         MSIO { get; set; }
+        [DataMember]
         public string       MSName { get; set; }
+        [DataMember]
         public ConsoleColor MSColor { get; set; }
+        [DataMember]
         public string       MSImage { get; set; }
 
         public MSAccount()
