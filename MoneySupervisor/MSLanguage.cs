@@ -6,6 +6,7 @@ using System.Text;
 namespace MoneySupervisor
 {
     public enum MSLang { RU = 0, AZ, EN, KO }
+    [DataContract]
     public class MSLanguage
     {
         public string RUS { get; set; }

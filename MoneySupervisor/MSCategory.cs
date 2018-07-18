@@ -2,16 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 
 namespace MoneySupervisor
 {
+    [DataContract]
     class MSCategory
     {
+        [DataMember]
         public int          MSCategoryId { get; set; }
+        [DataMember]
         public char         MSIO { get; set; }
+        [DataMember]
         public string       MSName { get; set; }
+        [DataMember]
         public int          MSAccountId { get; set; }
+        [DataMember]
         public ConsoleColor MSColor { get; set; }
+        [DataMember]
         public string       MSImage { get; set; }
 
         public MSCategory()
