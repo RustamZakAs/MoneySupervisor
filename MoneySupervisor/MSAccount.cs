@@ -21,6 +21,8 @@ namespace MoneySupervisor
         public ConsoleColor MSColor { get; set; }
         //[DataMember]
         public string       MSImage { get; set; }
+        //[DataMember]
+        public string       MSValute { get; set; }
 
         public MSAccount()
         {

@@ -50,24 +50,24 @@ namespace MoneySupervisor
             conn1.Open();
 
             string sql_command1 = "DROP TABLE IF EXISTS MSCategory;"
-                  + "CREATE TABLE IF NOT EXISTS MSCategory ("
-                  + "MSCategoryId INTEGER PRIMARY KEY AUTOINCREMENT, "
-                  + "MSIO         TEXT, "
-                  + "MSName       TEXT, "
-                  + "MSAccountId  INTEGER, "
-                  + "MSColor      INTEGER,"
-                  + "MSImage      TEXT);";
-
+                                + "CREATE TABLE IF NOT EXISTS MSCategory ("
+                                + "MSCategoryId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
+                                + "MSIO         TEXT    NOT NULL, "  //+ -
+                                + "MSName       TEXT    NOT NULL, "  //Name
+                                + "MSAccountId  INTEGER NOT NULL, "  //id
+                                + "MSColor      INTEGER NOT NULL, "  //Color int
+                                + "MSImage      TEXT    NOT NULL);"; //Symbols
             System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
             command.ExecuteNonQuery();
 
             sql_command1 = "DROP TABLE IF EXISTS MSAccount;"
-            + "CREATE TABLE IF NOT EXISTS MSAccount ( "
-            + "MSAccountId	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
-            + "MSIO	TEXT NOT NULL, "
-            + "MSName	TEXT NOT NULL, "
-            + "MSColor	INTEGER NOT NULL, "
-            + "MSImage	TEXT NOT NULL);";
+                         + "CREATE TABLE IF NOT EXISTS MSAccount ( "
+                         + "MSAccountId	 INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
+                         + "MSIO	     TEXT    NOT NULL, "  //+ -
+                         + "MSName	     TEXT    NOT NULL, "  //Name
+                         + "MSColor	     INTEGER NOT NULL, "  //Color int
+                         + "MSImage	     TEXT    NOT NULL, "  //Symbols
+                         + "MSValute     TEXT    NOT NULL);"; //AZN RUB USD CNY 
             command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
             command.ExecuteNonQuery();
 
@@ -102,11 +102,11 @@ namespace MoneySupervisor
             conn1.Open();
             
             string sql_command1 = "INSERT INTO MSCategory (MSIO,     MSName, MSAccountId, MSColor, MSImage) "
-                                                   + "VALUES ('+', 'Зарплата',            1,      1,    ';)');";
+                                                + "VALUES ( '+', 'Зарплата',            1,      1,    ';)');";
             System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
 
-            sql_command1 = "INSERT INTO MSAccount (MSIO,     MSName, MSColor, MSImage) "
-                                         + "VALUES ('+', 'Наличные',        1,   ';)');";
+            sql_command1 = "INSERT INTO MSAccount (MSIO,     MSName, MSColor, MSImage, MSValute) "
+                                        + "VALUES ( '+', 'Наличные',        1,   ';)',    'AZN');";
 
             command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
             command.ExecuteNonQuery();

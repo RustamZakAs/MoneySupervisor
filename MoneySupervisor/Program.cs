@@ -25,11 +25,10 @@ namespace MoneySupervisor
         public static Random random = new Random();
 
         public static int menyuId = 0, maxMenyuId = 5;
+        public static char transactionSymbol = '+'; //+  -  =
 
         static void Main(string[] args)
         {
-            
-
             MSSaveLoad.CreateDatabase();
             MSSaveLoad.InsertStandartValue();
 
