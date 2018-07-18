@@ -89,6 +89,11 @@ namespace MoneySupervisor
                         category.ConsoleAdd(categories.Count + 1);
                         categories.Add(category);
                         break;
+                    case '2':
+                        Console.Clear();
+                        account.ConsoleAdd(accounts.Count + 1);
+                        accounts.Add(account);
+                        break;
                     default:
                         break;
                 }

@@ -77,12 +77,12 @@ namespace MoneySupervisor
                 MSAccountId = MSAccount.ChooseAccount(ref Program.accounts);
             else
             {
-                Program.account.ConsoleAdd();
+                Program.account.ConsoleAdd(Program.accounts.Count + 1);
                 Program.accounts.Add(Program.account);
             }
-            Console.WriteLine("Введите символ: ");
+            Console.WriteLine("Выбермте цвет категории: ");
             MSColor = MSIntro.ChooseColor();
-            Console.WriteLine("Введите символ: ");
+            Console.WriteLine("Введите символ категории: ");
             MSImage = Console.ReadLine();
         }
     }

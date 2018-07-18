@@ -12,17 +12,19 @@ namespace MoneySupervisor
     class MSAccount
     {
         //[DataMember]
-        public int          MSAccountId { get; set; }
+        public int          MSAccountId     { get; set; }
+        //[DataMember]                      
+        public char         MSIO            { get; set; }
+        //[DataMember]                      
+        public string       MSName          { get; set; }
+        //[DataMember]                      
+        public ConsoleColor MSColor         { get; set; }
+        //[DataMember]                      
+        public string       MSImage         { get; set; }
+        //[DataMember]                      
+        public string       MSValute        { get; set; }
         //[DataMember]
-        public char         MSIO { get; set; }
-        //[DataMember]
-        public string       MSName { get; set; }
-        //[DataMember]
-        public ConsoleColor MSColor { get; set; }
-        //[DataMember]
-        public string       MSImage { get; set; }
-        //[DataMember]
-        public string       MSValute { get; set; }
+        public bool         MSMulticurrency { get; set; }
 
         public MSAccount()
         {
@@ -51,9 +53,36 @@ namespace MoneySupervisor
             MSImage     = account.MSImage;
         }
 
-        public void ConsoleAdd()
+        public void ConsoleAdd(int accountId)
         {
-
+            int left = Console.CursorLeft;
+            int top = Console.CursorTop;
+            MSAccountId = accountId;
+            bool xreplace = true;
+            do
+            {
+                Console.SetCursorPosition(left, top);
+                Console.WriteLine("Введите тип аккаунта (+,-): ");
+                string temp = Console.ReadLine();
+                if (temp[0] == '+' | temp[0] == '-')
+                {
+                    MSIO = temp[0];
+                    xreplace = false;
+                }
+            } while (xreplace);
+            Console.WriteLine("Введите наименование аккаунта: ");
+            MSName = Console.ReadLine();
+            Console.WriteLine("Выбермте цвет аккаунта: ");
+            MSColor = MSIntro.ChooseColor();
+            Console.WriteLine("Введите символ аккаунта: ");
+            MSImage = Console.ReadLine();
+            Console.WriteLine("Введите тип валюты аккаунта: ");
+            MSValute = Console.ReadLine();
+            if (MSValute == "ALL")
+            {
+                MSMulticurrency = true;
+            }
+            else MSMulticurrency = false;
         }
 
         public static int ChooseAccount(ref List<MSAccount> accountList)

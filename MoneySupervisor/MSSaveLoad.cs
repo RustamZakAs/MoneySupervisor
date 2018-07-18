@@ -39,40 +39,66 @@ namespace MoneySupervisor
             if (!File.Exists(curFile)) Console.WriteLine("Файл удалён.");
             else Console.WriteLine("Файл не удалён.");
 
-
-            if (!File.Exists(curFile))
+            try
             {
-                Console.WriteLine("Создание файла с базой данных.");
-                System.Data.SQLite.SQLiteConnection.CreateFile("MSBase.sqlite");
+                Console.WriteLine("Попытка создания файла.");
+                if (!File.Exists(curFile))
+                {
+                    Console.WriteLine("Создание файла с базой данных.");
+                    System.Data.SQLite.SQLiteConnection.CreateFile("MSBase.sqlite");
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Произошла ошибка с файлом.");
+                Console.WriteLine(e);
+            }
+            if (File.Exists(curFile)) Console.WriteLine("Файл создан.");
+            else Console.WriteLine("Файл не создан.");
 
             System.Data.SQLite.SQLiteConnection conn1 = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
             conn1.Open();
 
-            string sql_command1 = "DROP TABLE IF EXISTS MSCategory;"
-                                + "CREATE TABLE IF NOT EXISTS MSCategory ("
+            string sql_command1 = "DROP TABLE IF EXISTS MSCategories;"
+                                + "CREATE TABLE IF NOT EXISTS MSCategories ( "
                                 + "MSCategoryId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
-                                + "MSIO         TEXT    NOT NULL, "  //+ -
+                                + "MSIO         TEXT    NOT NULL CHECK (MSIO='+' OR MSIO='-'), "  //+ -
                                 + "MSName       TEXT    NOT NULL, "  //Name
-                                + "MSAccountId  INTEGER NOT NULL, "  //id
-                                + "MSColor      INTEGER NOT NULL, "  //Color int
-                                + "MSImage      TEXT    NOT NULL);"; //Symbols
+                                + "MSAccountId  INTEGER NOT NULL CHECK (MSAccountId >= 0), "  //id
+                                + "MSColor      INTEGER NOT NULL CHECK (MSColor >= 0), "  //Color int
+                                + "MSImage      TEXT    NOT NULL );"; //Symbols
             System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
             command.ExecuteNonQuery();
 
-            sql_command1 = "DROP TABLE IF EXISTS MSAccount;"
-                         + "CREATE TABLE IF NOT EXISTS MSAccount ( "
-                         + "MSAccountId	 INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
-                         + "MSIO	     TEXT    NOT NULL, "  //+ -
-                         + "MSName	     TEXT    NOT NULL, "  //Name
-                         + "MSColor	     INTEGER NOT NULL, "  //Color int
-                         + "MSImage	     TEXT    NOT NULL, "  //Symbols
-                         + "MSValute     TEXT    NOT NULL);"; //AZN RUB USD CNY 
+            sql_command1 = "DROP TABLE IF EXISTS MSAccounts;"
+                         + "CREATE TABLE IF NOT EXISTS MSAccounts ( "
+                         + "MSAccountId	    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
+                         + "MSIO	        TEXT    NOT NULL CHECK (MSIO='+' OR MSIO='-'), " //+ -
+                         + "MSName	        TEXT    NOT NULL, "  //Name
+                         + "MSColor	        INTEGER NOT NULL CHECK (MSColor >= 0), " //Color int
+                         + "MSImage	        TEXT    NOT NULL, "  //Symbols
+                         + "MSValute        TEXT    NOT NULL CHECK (LEN(MSValute) = 3), "  //AZN RUB USD CNY 
+                         + "MSMulticurrency INTEGER NOT NULL CHECK (MSMulticurrency = 0 OR MSMulticurrency = 1), "
+                         + "); ";
+            command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
+            command.ExecuteNonQuery();
+
+            sql_command1 = "DROP TABLE IF EXISTS MSTransactions;"
+                         + "CREATE TABLE IF NOT EXISTS MSTransactions ( "
+                         + "MSTransactionId	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE                  , "
+                         + "MSIO	        TEXT    NOT NULL CHECK (MSIO='+' OR MSIO='-')                      , "
+                         + "MSValue	        NUMERIC NOT NULL CHECK (MSValue >= 0.000001)                       , "
+                         + "MSValute	    TEXT    NOT NULL CHECK (LEN(MSValute) = 3)                         , "
+                         + "MSAccountId	    INTEGER NOT NULL CHECK (MSAccountId >= 0)                          , "
+                         + "MSCategoryId	INTEGER NOT NULL CHECK (MSCategoryId >= 0)                         , "
+                         + "MSNote	        TEXT                                                               , "
+                         + "MSDateTime	    INTEGER NOT NULL CHECK (MSDateTime >= 0)                           , "
+                         + "MSMulticurrency INTEGER NOT NULL CHECK (MSMulticurrency = 0 OR MSMulticurrency = 1), "
+                         + "); ";
             command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
             command.ExecuteNonQuery();
 
             conn1.Close();
-
             //using (SQLiteConnection conn2 = new SQLiteConnection("Data Source=MSBase.db; Version=3;"))
             //{
             //    SQLiteCommand cmd = conn2.CreateCommand();
@@ -101,16 +127,20 @@ namespace MoneySupervisor
             System.Data.SQLite.SQLiteConnection conn1 = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
             conn1.Open();
             
-            string sql_command1 = "INSERT INTO MSCategory (MSIO,     MSName, MSAccountId, MSColor, MSImage) "
+            string sql_command1 = "INSERT INTO MSCategories (MSIO,     MSName, MSAccountId, MSColor, MSImage) "
                                                 + "VALUES ( '+', 'Зарплата',            1,      1,    ';)');";
             System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
+            command.ExecuteNonQuery();
 
-            sql_command1 = "INSERT INTO MSAccount (MSIO,     MSName, MSColor, MSImage, MSValute) "
-                                        + "VALUES ( '+', 'Наличные',        1,   ';)',    'AZN');";
-
+            sql_command1 = "INSERT INTO MSAccounts (MSIO,     MSName, MSColor, MSImage, MSValute, MSMulticurrency) "
+                                         + "VALUES ( '+', 'Наличные',        1,   ';)',    'AZN',               0);";
             command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
             command.ExecuteNonQuery();
 
+            sql_command1 = "INSERT INTO MSTransactions (MSIO, MSValue, MSValute, MSAccountId, MSCategoryId, MSNote, MSDateTime, MSMulticurrency) "
+                                             + "VALUES ( '+',    0.01,    'AZN',           1,            1, 'Test',   25532640,               0);";
+            command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
+            command.ExecuteNonQuery();
 
             conn1.Close();
             //using (SQLiteConnection conn = new SQLiteConnection("Data Source=MSBase.db; Version=3;"))
