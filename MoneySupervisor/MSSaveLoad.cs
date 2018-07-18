@@ -56,49 +56,50 @@ namespace MoneySupervisor
             if (File.Exists(curFile)) Console.WriteLine("Файл создан.");
             else Console.WriteLine("Файл не создан.");
 
-            System.Data.SQLite.SQLiteConnection conn1 = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
-            conn1.Open();
+            System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
+            conn.Open();
 
-            string sql_command1 = "DROP TABLE IF EXISTS MSCategories;"
-                                + "CREATE TABLE IF NOT EXISTS MSCategories ( "
-                                + "MSCategoryId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
-                                + "MSIO         TEXT    NOT NULL CHECK (MSIO='+' OR MSIO='-'), "  //+ -
-                                + "MSName       TEXT    NOT NULL, "  //Name
-                                + "MSAccountId  INTEGER NOT NULL CHECK (MSAccountId >= 0), "  //id
-                                + "MSColor      INTEGER NOT NULL CHECK (MSColor >= 0), "  //Color int
-                                + "MSImage      TEXT    NOT NULL );"; //Symbols
-            System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
+            string sql_command = "DROP TABLE IF EXISTS MSAccounts;"
+                               + "CREATE TABLE IF NOT EXISTS MSAccounts ( "
+                               + "MSAccountId	  INTEGER NOT NULL CHECK (MSAccountId >= 0)                         , "
+                               + "MSIO	          TEXT    NOT NULL CHECK (MSIO='+' OR MSIO='-')                     , " //+ -
+                               + "MSName	      TEXT    NOT NULL                                                  , " //Name
+                               + "MSColor	      INTEGER NOT NULL CHECK (MSColor >= 0)                             , " //Color int
+                               + "MSImage	      TEXT    NOT NULL                                                  , " //Symbols
+                               + "MSValute        TEXT    NOT NULL CHECK (LENGTH(MSValute) = 3)                     , " //AZN RUB USD CNY 
+                               + "MSMulticurrency INTEGER NOT NULL CHECK (MSMulticurrency = 0 OR MSMulticurrency = 1) "
+                               + "); ";
+            System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
 
-            sql_command1 = "DROP TABLE IF EXISTS MSAccounts;"
-                         + "CREATE TABLE IF NOT EXISTS MSAccounts ( "
-                         + "MSAccountId	    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
-                         + "MSIO	        TEXT    NOT NULL CHECK (MSIO='+' OR MSIO='-'), " //+ -
-                         + "MSName	        TEXT    NOT NULL, "  //Name
-                         + "MSColor	        INTEGER NOT NULL CHECK (MSColor >= 0), " //Color int
-                         + "MSImage	        TEXT    NOT NULL, "  //Symbols
-                         + "MSValute        TEXT    NOT NULL CHECK (LEN(MSValute) = 3), "  //AZN RUB USD CNY 
-                         + "MSMulticurrency INTEGER NOT NULL CHECK (MSMulticurrency = 0 OR MSMulticurrency = 1), "
+            sql_command = "DROP TABLE IF EXISTS MSCategories;"
+                         + "CREATE TABLE IF NOT EXISTS MSCategories ( "
+                         + "MSCategoryId INTEGER NOT NULL CHECK (MSCategoryId >= 0)   , "
+                         + "MSIO         TEXT    NOT NULL CHECK (MSIO='+' OR MSIO='-'), " //+ -
+                         + "MSName       TEXT    NOT NULL                             , " //Name
+                         + "MSAccountId  INTEGER NOT NULL CHECK (MSAccountId >= 0)    , " //id
+                         + "MSColor      INTEGER NOT NULL CHECK (MSColor >= 0)        , " //Color int
+                         + "MSImage      TEXT    NOT NULL                               " //Symbols
                          + "); ";
-            command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
+            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
 
-            sql_command1 = "DROP TABLE IF EXISTS MSTransactions;"
-                         + "CREATE TABLE IF NOT EXISTS MSTransactions ( "
-                         + "MSTransactionId	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE                  , "
-                         + "MSIO	        TEXT    NOT NULL CHECK (MSIO='+' OR MSIO='-')                      , "
-                         + "MSValue	        NUMERIC NOT NULL CHECK (MSValue >= 0.000001)                       , "
-                         + "MSValute	    TEXT    NOT NULL CHECK (LEN(MSValute) = 3)                         , "
-                         + "MSAccountId	    INTEGER NOT NULL CHECK (MSAccountId >= 0)                          , "
-                         + "MSCategoryId	INTEGER NOT NULL CHECK (MSCategoryId >= 0)                         , "
-                         + "MSNote	        TEXT                                                               , "
-                         + "MSDateTime	    INTEGER NOT NULL CHECK (MSDateTime >= 0)                           , "
-                         + "MSMulticurrency INTEGER NOT NULL CHECK (MSMulticurrency = 0 OR MSMulticurrency = 1), "
-                         + "); ";
-            command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
+            sql_command = "DROP TABLE IF EXISTS MSTransactions;"
+                        + "CREATE TABLE IF NOT EXISTS MSTransactions ( "
+                        + "MSTransactionId INTEGER NOT NULL CHECK (MSTransactionId >= 0)                     , "
+                        + "MSIO	           TEXT    NOT NULL CHECK (MSIO='+' OR MSIO='-')                     , "
+                        + "MSValue	       NUMERIC NOT NULL CHECK (MSValue >= 0.000001)                      , "
+                        + "MSValute	       TEXT    NOT NULL CHECK (LENGTH(MSValute) = 3)                     , "
+                        + "MSAccountId	   INTEGER NOT NULL CHECK (MSAccountId >= 0)                         , "
+                        + "MSCategoryId	   INTEGER NOT NULL CHECK (MSCategoryId >= 0)                        , "
+                        + "MSNote	       TEXT                                                              , "
+                        + "MSDateTime	   INTEGER NOT NULL CHECK (MSDateTime >= 0)                          , "
+                        + "MSMulticurrency INTEGER NOT NULL CHECK (MSMulticurrency = 0 OR MSMulticurrency = 1) "
+                        + "); ";
+            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
 
-            conn1.Close();
+            conn.Close();
             //using (SQLiteConnection conn2 = new SQLiteConnection("Data Source=MSBase.db; Version=3;"))
             //{
             //    SQLiteCommand cmd = conn2.CreateCommand();
@@ -126,20 +127,20 @@ namespace MoneySupervisor
         {
             System.Data.SQLite.SQLiteConnection conn1 = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
             conn1.Open();
-            
-            string sql_command1 = "INSERT INTO MSCategories (MSIO,     MSName, MSAccountId, MSColor, MSImage) "
-                                                + "VALUES ( '+', 'Зарплата',            1,      1,    ';)');";
-            System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
+
+            string sql_command = "INSERT INTO MSAccounts (MSAccountId, MSIO,     MSName, MSColor, MSImage, MSValute, MSMulticurrency) "
+                                               + "VALUES (          0,  '+', 'Наличные',        1,   ';)',    'AZN',               0);";
+            System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
             command.ExecuteNonQuery();
 
-            sql_command1 = "INSERT INTO MSAccounts (MSIO,     MSName, MSColor, MSImage, MSValute, MSMulticurrency) "
-                                         + "VALUES ( '+', 'Наличные',        1,   ';)',    'AZN',               0);";
-            command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
+            sql_command = "INSERT INTO MSCategories (MSCategoryId, MSIO,     MSName, MSAccountId, MSColor, MSImage) "
+                                                 + "VALUES (           0,  '+', 'Зарплата',            1,      1,    ';)');";
+            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
             command.ExecuteNonQuery();
 
-            sql_command1 = "INSERT INTO MSTransactions (MSIO, MSValue, MSValute, MSAccountId, MSCategoryId, MSNote, MSDateTime, MSMulticurrency) "
-                                             + "VALUES ( '+',    0.01,    'AZN',           1,            1, 'Test',   25532640,               0);";
-            command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
+            sql_command = "INSERT INTO MSTransactions (MSTransactionId, MSIO, MSValue, MSValute, MSAccountId, MSCategoryId, MSNote, MSDateTime, MSMulticurrency) "
+                                            + "VALUES (              0,  '+',    0.01,    'AZN',           1,            1, 'Test',   25532640,               0);";
+            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
             command.ExecuteNonQuery();
 
             conn1.Close();
@@ -166,21 +167,31 @@ namespace MoneySupervisor
 
             //return ;
         //}
-        /*
-        static public void SaveAll(object obj, string fileName)
+        
+        static public void SQLiteSaveAll()
         {
-            if (File.Exists($"{fileName}.json"))
-            {
-                File.Delete($"{fileName}.json");
-            }
-            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(obj.GetType());
+            CreateDatabase();
 
-            using (FileStream fs = new FileStream($"{fileName}.json", FileMode.OpenOrCreate))
+            System.Data.SQLite.SQLiteConnection conn1 = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
+            conn1.Open();
+
+            for (int i = 0; i < Program.accounts.Count; i++)
             {
-                jsonFormatter.WriteObject(fs, obj);
+                int MSMulticurrency = Program.accounts[0].MSMulticurrency == true ? 1 : 0;
+                string sql_command = $"INSERT INTO MSAccounts (MSAccountId, MSIO,     MSName, MSColor, MSImage, MSValute, MSMulticurrency) "
+                                                    + $"VALUES (" +
+                                                      $"  {Program.accounts[0].MSAccountId},  " +
+                                                      $" '{Program.accounts[0].MSIO}'   ," +
+                                                      $" '{Program.accounts[0].MSName}' ," +
+                                                      $"  {Program.accounts[0].MSColor} ," +
+                                                      $"  {Program.accounts[0].MSImage} ," +
+                                                      $" '{Program.accounts[0].MSValute}'," +
+                                                      $"  {MSMulticurrency});";
+                System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
+                command.ExecuteNonQuery();
             }
         }
-
+        /*
         static public object ReadAll(object objectType, string fileName)
         {
             DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(objectType.GetType());

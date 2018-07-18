@@ -78,6 +78,7 @@ namespace MoneySupervisor
             MSImage = Console.ReadLine();
             Console.WriteLine("Введите тип валюты аккаунта: ");
             MSValute = Console.ReadLine();
+            //MSValute = MSValute.ChooseValute(ref List<MSValute> valuteList);
             if (MSValute == "ALL")
             {
                 MSMulticurrency = true;

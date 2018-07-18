@@ -16,10 +16,14 @@ namespace MoneySupervisor
 
         public static Dictionary<string, MSLanguage> dictionary = new Dictionary<string, MSLanguage>();
 
-        public static MSCategory category = new MSCategory();
-        public static List<MSCategory> categories = new List<MSCategory>();
-        public static MSAccount account = new MSAccount();
-        public static List<MSAccount> accounts = new List<MSAccount>();
+        public static MSValute valute                  = new MSValute();
+        public static List<MSValute> valutes           = new List<MSValute>();
+        public static MSAccount account                = new MSAccount();
+        public static List<MSAccount> accounts         = new List<MSAccount>();
+        public static MSCategory category              = new MSCategory();
+        public static List<MSCategory> categories      = new List<MSCategory>();
+        public static MSTransaction transaction        = new MSTransaction();
+        public static List<MSTransaction> transactions = new List<MSTransaction>();
 
         public static ConsoleKeyInfo cki;
         public static Random random = new Random();
@@ -119,16 +123,52 @@ namespace MoneySupervisor
                         switch (menyuId)
                         {
                             case 0: //+
+                                transactionSymbol = '+';
+                                if (accounts.Count == 0)
+                                {
+                                    Console.Clear();
+                                    account.ConsoleAdd(accounts.Count+1);
+                                    accounts.Add(account);
+                                }
                                 if (categories.Count == 0)
                                 {
                                     Console.Clear();
-                                    category.ConsoleAdd(categories.Count+1);
+                                    category.ConsoleAdd(categories.Count + 1);
+                                    categories.Add(category);
+                                }
+                                
+                                break;
+                            case 1: //-
+                                transactionSymbol = '-';
+                                if (accounts.Count == 0)
+                                {
+                                    Console.Clear();
+                                    account.ConsoleAdd(accounts.Count + 1);
+                                    accounts.Add(account);
+                                }
+                                if (categories.Count == 0)
+                                {
+                                    Console.Clear();
+                                    category.ConsoleAdd(categories.Count + 1);
                                     categories.Add(category);
                                 }
                                 break;
-                            case 1: //-
-                                break;
                             case 2: //=
+                                if (accounts.Count == 0)
+                                {
+                                    Console.Clear();
+                                    account.ConsoleAdd(accounts.Count + 1);
+                                    accounts.Add(account);
+                                }
+                                if (categories.Count == 0)
+                                {
+                                    Console.Clear();
+                                    category.ConsoleAdd(categories.Count + 1);
+                                    categories.Add(category);
+                                }
+
+                                transactionSymbol = '+';
+                                transactionSymbol = '-';
                                 break;
                             case 3: //param
                                 break;

@@ -12,45 +12,45 @@ namespace MoneySupervisor
     class MSCategory
     {
         //[DataMember]
-        public int          MSCategoryId { get; set; }
+        public int MSCategoryId { get; set; }
         //[DataMember]
-        public char         MSIO { get; set; }
+        public char MSIO { get; set; }
         //[DataMember]
-        public string       MSName { get; set; }
+        public string MSName { get; set; }
         //[DataMember]
-        public int          MSAccountId { get; set; }
+        public int MSAccountId { get; set; }
         //[DataMember]
         public ConsoleColor MSColor { get; set; }
         //[DataMember]
-        public string       MSImage { get; set; }
+        public string MSImage { get; set; }
 
         public MSCategory()
         {
         }
 
-        public MSCategory(int          mSCategoryId, 
-                          char         mSIO, 
-                          string       mSName, 
-                          int          mSAccountId, 
-                          ConsoleColor mSColor, 
-                          string       mSImage)
+        public MSCategory(int msCategoryId,
+                          char msIO,
+                          string msName,
+                          int msAccountId,
+                          ConsoleColor msColor,
+                          string msImage)
         {
-            MSCategoryId = mSCategoryId;
-            MSIO         = mSIO;
-            MSName       = mSName;
-            MSAccountId  = mSAccountId;
-            MSColor      = mSColor;
-            MSImage      = mSImage;
+            MSCategoryId = msCategoryId;
+            MSIO = msIO;
+            MSName = msName;
+            MSAccountId = msAccountId;
+            MSColor = msColor;
+            MSImage = msImage;
         }
 
         public MSCategory(MSCategory MScategory)
         {
             MSCategoryId = MScategory.MSCategoryId;
-            MSIO         = MScategory.MSIO;
-            MSName       = MScategory.MSName;
-            MSAccountId  = MScategory.MSAccountId;
-            MSColor      = MScategory.MSColor;
-            MSImage      = MScategory.MSImage;
+            MSIO = MScategory.MSIO;
+            MSName = MScategory.MSName;
+            MSAccountId = MScategory.MSAccountId;
+            MSColor = MScategory.MSColor;
+            MSImage = MScategory.MSImage;
         }
 
         public void ConsoleAdd(int categoryId)
@@ -80,10 +80,16 @@ namespace MoneySupervisor
                 Program.account.ConsoleAdd(Program.accounts.Count + 1);
                 Program.accounts.Add(Program.account);
             }
-            Console.WriteLine("Выбермте цвет категории: ");
+            Console.WriteLine("Выберите цвет категории: ");
             MSColor = MSIntro.ChooseColor();
             Console.WriteLine("Введите символ категории: ");
             MSImage = Console.ReadLine();
         }
+
+        public static int ChooseCategory(ref List<MSCategory> categories) {
+
+            return 0;
+        }
+
     }
 }
