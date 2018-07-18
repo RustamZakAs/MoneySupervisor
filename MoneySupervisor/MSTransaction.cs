@@ -5,6 +5,7 @@ using System.Text;
 
 namespace MoneySupervisor
 {
+    //[DataContract]
     class MSTransaction
     {
         //[DataMember]
