@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Data.SQLite;
+//using SQLite;
 
 namespace MoneySupervisor
 {
@@ -26,6 +28,11 @@ namespace MoneySupervisor
 
         static void Main(string[] args)
         {
+            
+
+            MSSaveLoad.CreateDatabase();
+            MSSaveLoad.InsertStandartValue();
+
             Console.Title = "Money Supervisor - Управление деньгами - Pullara nəzarət";
             Console.OutputEncoding = Encoding.Unicode;
             Console.InputEncoding = Encoding.Unicode;
@@ -80,7 +87,7 @@ namespace MoneySupervisor
                 {
                     case '1':
                         Console.Clear();
-                        category.Add(categories.Count + 1);
+                        category.ConsoleAdd(categories.Count + 1);
                         categories.Add(category);
                         break;
                     default:
@@ -111,7 +118,7 @@ namespace MoneySupervisor
                                 if (categories.Count == 0)
                                 {
                                     Console.Clear();
-                                    category.Add(categories.Count+1);
+                                    category.ConsoleAdd(categories.Count+1);
                                     categories.Add(category);
                                 }
                                 break;

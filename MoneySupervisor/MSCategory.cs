@@ -8,20 +8,20 @@ using System.Runtime.Serialization;
 
 namespace MoneySupervisor
 {
-    [DataContract]
+    //[DataContract]
     class MSCategory
     {
-        [DataMember]
+        //[DataMember]
         public int          MSCategoryId { get; set; }
-        [DataMember]
+        //[DataMember]
         public char         MSIO { get; set; }
-        [DataMember]
+        //[DataMember]
         public string       MSName { get; set; }
-        [DataMember]
+        //[DataMember]
         public int          MSAccountId { get; set; }
-        [DataMember]
+        //[DataMember]
         public ConsoleColor MSColor { get; set; }
-        [DataMember]
+        //[DataMember]
         public string       MSImage { get; set; }
 
         public MSCategory()
@@ -77,7 +77,7 @@ namespace MoneySupervisor
                 MSAccountId = MSAccount.ChooseAccount(ref Program.accounts);
             else
             {
-                Program.account.Add();
+                Program.account.ConsoleAdd();
                 Program.accounts.Add(Program.account);
             }
             Console.WriteLine("Введите символ: ");

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using System.Threading;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -129,10 +130,10 @@ namespace MoneySupervisor
         {
             Console.BackgroundColor = backColor;
             Console.ForegroundColor = fontColor;
-            string[] str = {" _         _ ",
-                            "  \\_('_')_/  ",
-                            "     | |     ",
-                            "     | \\     " };
+            string[] str = {@" _         _ ",
+                            @"  \_('_')_/  ",
+                            @"     | |     ",
+                            @"     | \     " };
             string str0 = " Help";
             for (int j = 0; j < str.Length; j++)
             {

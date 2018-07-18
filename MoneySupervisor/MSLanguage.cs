@@ -9,16 +9,16 @@ using System.Runtime.Serialization;
 namespace MoneySupervisor
 {
     public enum MSLang { RU = 0, AZ, EN, KO }
-    [DataContract]
+    //[DataContract]
     public class MSLanguage
     {
-        [DataMember]
+        //[DataMember]
         public string RUS { get; set; }
-        [DataMember]
+        //[DataMember]
         public string AZE { get; set; }
-        [DataMember]
+        //[DataMember]
         public string ENG { get; set; }
-        [DataMember]
+        //[DataMember]
         public string KOR { get; set; }
 
         public MSLanguage()

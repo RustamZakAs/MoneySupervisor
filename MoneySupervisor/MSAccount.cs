@@ -8,18 +8,18 @@ using System.Runtime.Serialization;
 
 namespace MoneySupervisor
 {
-    [DataContract]
+    //[DataContract]
     class MSAccount
     {
-        [DataMember]
+        //[DataMember]
         public int          MSAccountId { get; set; }
-        [DataMember]
+        //[DataMember]
         public char         MSIO { get; set; }
-        [DataMember]
+        //[DataMember]
         public string       MSName { get; set; }
-        [DataMember]
+        //[DataMember]
         public ConsoleColor MSColor { get; set; }
-        [DataMember]
+        //[DataMember]
         public string       MSImage { get; set; }
 
         public MSAccount()
