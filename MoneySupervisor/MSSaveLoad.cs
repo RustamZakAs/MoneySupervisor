@@ -67,7 +67,7 @@ namespace MoneySupervisor
             + "MSIO	TEXT NOT NULL, "
             + "MSName	TEXT NOT NULL, "
             + "MSColor	INTEGER NOT NULL, "
-            + "MSImage	TEXT NOT NULL );";
+            + "MSImage	TEXT NOT NULL);";
             command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
             command.ExecuteNonQuery();
 
@@ -104,6 +104,9 @@ namespace MoneySupervisor
             string sql_command1 = "INSERT INTO MSCategory (MSIO,     MSName, MSAccountId, MSColor, MSImage) "
                                                    + "VALUES ('+', 'Зарплата',            1,      1,    ';)');";
             System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
+
+            sql_command1 = "INSERT INTO MSAccount (MSIO,     MSName, MSColor, MSImage) "
+                                         + "VALUES ('+', 'Наличные',        1,   ';)');";
 
             command = new System.Data.SQLite.SQLiteCommand(sql_command1, conn1);
             command.ExecuteNonQuery();

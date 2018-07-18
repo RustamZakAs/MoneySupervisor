@@ -88,6 +88,7 @@
     <Compile Include="MSIntro.cs" />
     <Compile Include="MSLanguage.cs" />
     <Compile Include="MSStatistics.cs" />
+    <Compile Include="MSTransactions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MSSaveLoad.cs" />
