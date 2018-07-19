@@ -66,7 +66,7 @@ namespace MoneySupervisor
                                + "MSName	      TEXT    NOT NULL                                                  , " //Name
                                + "MSColor	      INTEGER NOT NULL CHECK (MSColor >= 0)                             , " //Color int
                                + "MSImage	      TEXT    NOT NULL                                                  , " //Symbols
-                               + "MSValute        TEXT    NOT NULL CHECK (LENGTH(MSValute) = 3)                     , " //AZN RUB USD CNY 
+                               + "MSСurrencyCode  TEXT    NOT NULL CHECK (LENGTH(MSСurrencyCode) = 3)                     , " //AZN RUB USD CNY 
                                + "MSMulticurrency INTEGER NOT NULL CHECK (MSMulticurrency = 0 OR MSMulticurrency = 1) "
                                + "); ";
             System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
@@ -89,12 +89,24 @@ namespace MoneySupervisor
                         + "MSTransactionId INTEGER NOT NULL CHECK (MSTransactionId >= 0)                     , "
                         + "MSIO	           TEXT    NOT NULL CHECK (MSIO='+' OR MSIO='-')                     , "
                         + "MSValue	       NUMERIC NOT NULL CHECK (MSValue >= 0.000001)                      , "
-                        + "MSValute	       TEXT    NOT NULL CHECK (LENGTH(MSValute) = 3)                     , "
+                        + "MSСurrencyCode  TEXT    NOT NULL CHECK (LENGTH(MSСurrencyCode) = 3)                   , "
                         + "MSAccountId	   INTEGER NOT NULL CHECK (MSAccountId >= 0)                         , "
                         + "MSCategoryId	   INTEGER NOT NULL CHECK (MSCategoryId >= 0)                        , "
                         + "MSNote	       TEXT                                                              , "
                         + "MSDateTime	   INTEGER NOT NULL CHECK (MSDateTime >= 0)                          , "
                         + "MSMulticurrency INTEGER NOT NULL CHECK (MSMulticurrency = 0 OR MSMulticurrency = 1) "
+                        + "); ";
+            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
+            command.ExecuteNonQuery();
+
+            sql_command = "DROP TABLE IF EXISTS MSСurrencies;"
+                        + "CREATE TABLE IF NOT EXISTS MSСurrencies ( "
+                        + "MSСurrencyId      INTEGER NOT NULL CHECK (MSСurrencyId >= 0)                     , "
+                        + "MSСurrencyType    TEXT    NOT NULL                                               , "
+                        + "MSСurrencyCode    TEXT    NOT NULL CHECK (ENGTH(MSСurrencyCode) = 3)             , "
+                        + "MSСurrencyNominal NUMERIC NOT NULL CHECK (MSСurrencyNominal >= 0.000001)         , "
+                        + "MSСurrencyName	 TEXT    NOT NULL                                               , "
+                        + "MSСurrencyValue	 NUMERIC NOT NULL CHECK (MSСurrencyValue >= 0)                  , "
                         + "); ";
             command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
@@ -128,18 +140,18 @@ namespace MoneySupervisor
             System.Data.SQLite.SQLiteConnection conn1 = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
             conn1.Open();
 
-            string sql_command = "INSERT INTO MSAccounts (MSAccountId, MSIO,     MSName, MSColor, MSImage, MSValute, MSMulticurrency) "
-                                               + "VALUES (          0,  '+', 'Наличные',        1,   ';)',    'AZN',               0);";
+            string sql_command = "INSERT INTO MSAccounts (MSAccountId, MSIO,     MSName, MSColor, MSImage, MSСurrencyCode, MSMulticurrency) "
+                                               + "VALUES (          0,  '+', 'Наличные',        1,   ';)',          'AZN',               0);";
             System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
             command.ExecuteNonQuery();
 
             sql_command = "INSERT INTO MSCategories (MSCategoryId, MSIO,     MSName, MSAccountId, MSColor, MSImage) "
-                                                 + "VALUES (           0,  '+', 'Зарплата',            1,      1,    ';)');";
+                                          + "VALUES (           0,  '+', 'Зарплата',           1,       1,    ';)');";
             command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
             command.ExecuteNonQuery();
 
-            sql_command = "INSERT INTO MSTransactions (MSTransactionId, MSIO, MSValue, MSValute, MSAccountId, MSCategoryId, MSNote, MSDateTime, MSMulticurrency) "
-                                            + "VALUES (              0,  '+',    0.01,    'AZN',           1,            1, 'Test',   25532640,               0);";
+            sql_command = "INSERT INTO MSTransactions (MSTransactionId, MSIO, MSValue, MSСurrencyCode, MSAccountId, MSCategoryId, MSNote, MSDateTime, MSMulticurrency) "
+                                            + "VALUES (              0,  '+',    0.01,          'AZN',           1,            1, 'Test',   25532640,               0);";
             command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
             command.ExecuteNonQuery();
 
@@ -178,14 +190,14 @@ namespace MoneySupervisor
             for (int i = 0; i < Program.accounts.Count; i++)
             {
                 int MSMulticurrency = Program.accounts[0].MSMulticurrency == true ? 1 : 0;
-                string sql_command = $"INSERT INTO MSAccounts (MSAccountId, MSIO,     MSName, MSColor, MSImage, MSValute, MSMulticurrency) "
+                string sql_command = $"INSERT INTO MSAccounts (MSAccountId, MSIO,     MSName, MSColor, MSImage, MSСurrency, MSMulticurrency) "
                                                     + $"VALUES (" +
                                                       $"  {Program.accounts[0].MSAccountId},  " +
                                                       $" '{Program.accounts[0].MSIO}'   ," +
                                                       $" '{Program.accounts[0].MSName}' ," +
                                                       $"  {Program.accounts[0].MSColor} ," +
                                                       $"  {Program.accounts[0].MSImage} ," +
-                                                      $" '{Program.accounts[0].MSValute}'," +
+                                                      $" '{Program.accounts[0].MSСurrency}'," +
                                                       $"  {MSMulticurrency});";
                 System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
                 command.ExecuteNonQuery();

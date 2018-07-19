@@ -92,7 +92,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MSSaveLoad.cs" />
-    <Compile Include="MSValute.cs" />
+    <Compile Include="MSСurrency.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
   </ItemGroup>

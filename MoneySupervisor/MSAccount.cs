@@ -22,7 +22,7 @@ namespace MoneySupervisor
         //[DataMember]                      
         public string       MSImage         { get; set; }
         //[DataMember]                      
-        public string       MSValute        { get; set; }
+        public string       MSСurrency        { get; set; }
         //[DataMember]
         public bool         MSMulticurrency { get; set; }
 
@@ -31,26 +31,32 @@ namespace MoneySupervisor
 
         }
 
-        public MSAccount(int          mSAccountId, 
-                         char         mSIO, 
-                         string       mSName, 
-                         ConsoleColor mSColor, 
-                         string       mSImage)
+        public MSAccount(int          msAccountId, 
+                         char         msIO, 
+                         string       msName, 
+                         ConsoleColor msColor, 
+                         string       msImage,
+                         string       msСurrency,
+                         bool         msMulticurrency)
         {
-            MSAccountId = mSAccountId;
-            MSIO        = mSIO;
-            MSName      = mSName;
-            MSColor     = mSColor;
-            MSImage     = mSImage;
+            MSAccountId     = msAccountId;
+            MSIO            = msIO;
+            MSName          = msName;
+            MSColor         = msColor;
+            MSImage         = msImage;
+            MSСurrency      = msСurrency;
+            MSMulticurrency = msMulticurrency;
         }
 
         public MSAccount(MSAccount account)
         {
-            MSAccountId = account.MSAccountId;
-            MSIO        = account.MSIO;
-            MSName      = account.MSName;
-            MSColor     = account.MSColor;
-            MSImage     = account.MSImage;
+            MSAccountId     = account.MSAccountId;
+            MSIO            = account.MSIO;
+            MSName          = account.MSName;
+            MSColor         = account.MSColor;
+            MSImage         = account.MSImage;
+            MSСurrency      = account.MSСurrency;
+            MSMulticurrency = account.MSMulticurrency;
         }
 
         public void ConsoleAdd(int accountId)
@@ -77,9 +83,9 @@ namespace MoneySupervisor
             Console.WriteLine("Введите символ аккаунта: ");
             MSImage = Console.ReadLine();
             Console.WriteLine("Введите тип валюты аккаунта: ");
-            MSValute = Console.ReadLine();
-            //MSValute = MSValute.ChooseValute(ref List<MSValute> valuteList);
-            if (MSValute == "ALL")
+            MSСurrency = Console.ReadLine();
+            //MSСurrency = MSСurrency.ChooseСurrency(ref List<MSСurrency> valuteList);
+            if (MSСurrency == "ALL")
             {
                 MSMulticurrency = true;
             }

@@ -15,7 +15,7 @@ namespace MoneySupervisor
         //[DataMember]
         public float    MSValue         { get; set; }
         //[DataMember]                      
-        public string   MSValute        { get; set; }
+        public string   MSСurrencyCode  { get; set; }
         //[DataMember]
         public int      MSAccountId     { get; set; }
         //[DataMember]
@@ -27,7 +27,7 @@ namespace MoneySupervisor
         //[DataMember]
         public bool     MSMulticurrency { get; set; }
         
-        public void ConsoleAdd (int msTransactionId)
+        public void ConsoleAdd(int msTransactionId)
         {
             int left = Console.CursorLeft;
             int top = Console.CursorTop;
@@ -47,7 +47,8 @@ namespace MoneySupervisor
             Console.WriteLine("Введите значение (сумма): ");
             MSValue = float.Parse(Console.ReadLine());
             Console.WriteLine("Выберите тип валюты: ");
-            MSValute = Console.ReadLine();
+            //MSСurrency = Console.ReadLine();
+            MSСurrencyCode = MSСurrency.ChooseСurrency(ref Program.currencies);
             Console.WriteLine("Выберите аккаунт: ");
             if (Program.accounts.Count > 0)
                 MSAccountId = MSAccount.ChooseAccount(ref Program.accounts);
@@ -58,7 +59,7 @@ namespace MoneySupervisor
             MSNote = Console.ReadLine();
             Console.WriteLine("Введите дату и время (DD.MM.YYYY hh.mm.ss): ");
             MSDateTime = DateTime.Parse(Console.ReadLine());
-            if (MSValute == "ALL")
+            if (MSСurrencyCode == "ALL")
             {
                 MSMulticurrency = true;
             }

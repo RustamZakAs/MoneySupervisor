@@ -16,8 +16,8 @@ namespace MoneySupervisor
 
         public static Dictionary<string, MSLanguage> dictionary = new Dictionary<string, MSLanguage>();
 
-        public static MSValute valute                  = new MSValute();
-        public static List<MSValute> valutes           = new List<MSValute>();
+        public static MSСurrency currency = new MSСurrency();
+        public static List<MSСurrency> currencies = new List<MSСurrency>();
         public static MSAccount account                = new MSAccount();
         public static List<MSAccount> accounts         = new List<MSAccount>();
         public static MSCategory category              = new MSCategory();
@@ -33,6 +33,8 @@ namespace MoneySupervisor
 
         static void Main(string[] args)
         {
+            currencies = currency.MSLoadСurrencies();
+
             MSSaveLoad.CreateDatabase();
             MSSaveLoad.InsertStandartValue();
 
