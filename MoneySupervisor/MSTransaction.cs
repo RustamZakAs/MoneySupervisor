@@ -27,23 +27,24 @@ namespace MoneySupervisor
         //[DataMember]
         public bool     MSMulticurrency { get; set; }
         
-        public void ConsoleAdd(int msTransactionId)
+        public void ConsoleAdd(int msTransactionId, char msIO)
         {
             int left = Console.CursorLeft;
             int top = Console.CursorTop;
             MSTransactionId = msTransactionId;
-            bool xreplace = true;
-            do
-            {
-                Console.SetCursorPosition(left, top);
-                Console.WriteLine("Введите тип транзакции (+,-): ");
-                string temp = Console.ReadLine();
-                if (temp[0] == '+' | temp[0] == '-')
-                {
-                    MSIO = temp[0];
-                    xreplace = false;
-                }
-            } while (xreplace);
+            //bool xreplace = true;
+            //do
+            //{
+            //    Console.SetCursorPosition(left, top);
+            //    Console.WriteLine("Введите тип транзакции (+,-): ");
+            //    string temp = Console.ReadLine();
+            //    if (temp[0] == '+' | temp[0] == '-')
+            //    {
+            //        MSIO = temp[0];
+                    MSIO = msIO;
+            //        xreplace = false;
+            //    }
+            //} while (xreplace);
             Console.WriteLine("Введите значение (сумма): ");
             MSValue = float.Parse(Console.ReadLine());
             Console.WriteLine("Выберите тип валюты: ");

@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 namespace MoneySupervisor
 {
-    public static class MSSaveLoad
+    public class MSSaveLoad
     {
         //SQLite min date 1970-01-01 00:00:00 UTC
         // strftime('%s', value)        write
@@ -89,11 +89,11 @@ namespace MoneySupervisor
                         + "MSTransactionId INTEGER NOT NULL CHECK (MSTransactionId >= 0)                     , "
                         + "MSIO	           TEXT    NOT NULL CHECK (MSIO='+' OR MSIO='-')                     , "
                         + "MSValue	       NUMERIC NOT NULL CHECK (MSValue >= 0.000001)                      , "
-                        + "MSСurrencyCode  TEXT    NOT NULL CHECK (LENGTH(MSСurrencyCode) = 3)                   , "
+                        + "MSСurrencyCode  TEXT    NOT NULL CHECK (LENGTH(MSСurrencyCode) = 3)               , "
                         + "MSAccountId	   INTEGER NOT NULL CHECK (MSAccountId >= 0)                         , "
                         + "MSCategoryId	   INTEGER NOT NULL CHECK (MSCategoryId >= 0)                        , "
                         + "MSNote	       TEXT                                                              , "
-                        + "MSDateTime	   INTEGER NOT NULL CHECK (MSDateTime >= 0)                          , "
+                        + "MSDateTime	   TEXT    NOT NULL CHECK (MSDateTime >= 0)                          , "
                         + "MSMulticurrency INTEGER NOT NULL CHECK (MSMulticurrency = 0 OR MSMulticurrency = 1) "
                         + "); ";
             command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
@@ -101,12 +101,13 @@ namespace MoneySupervisor
 
             sql_command = "DROP TABLE IF EXISTS MSСurrencies;"
                         + "CREATE TABLE IF NOT EXISTS MSСurrencies ( "
-                        + "MSСurrencyId      INTEGER NOT NULL CHECK (MSСurrencyId >= 0)                     , "
-                        + "MSСurrencyType    TEXT    NOT NULL                                               , "
-                        + "MSСurrencyCode    TEXT    NOT NULL CHECK (ENGTH(MSСurrencyCode) = 3)             , "
-                        + "MSСurrencyNominal NUMERIC NOT NULL CHECK (MSСurrencyNominal >= 0.000001)         , "
-                        + "MSСurrencyName	 TEXT    NOT NULL                                               , "
-                        + "MSСurrencyValue	 NUMERIC NOT NULL CHECK (MSСurrencyValue >= 0)                  , "
+                        + "MSСurrencyId      INTEGER NOT NULL CHECK (MSСurrencyId >= 0)             , "
+                        + "MSСurrencyDate    TEXT NOT NULL CHECK (MSСurrencyDate >= 0)              , "
+                        + "MSСurrencyType    TEXT                                                   , "
+                        + "MSСurrencyCode    TEXT    NOT NULL CHECK (LENGTH(MSСurrencyCode) = 3)    , "
+                        + "MSСurrencyNominal NUMERIC NOT NULL CHECK (MSСurrencyNominal >= 0.000001) , "
+                        + "MSСurrencyName	 TEXT                                                   , "
+                        + "MSСurrencyValue	 NUMERIC NOT NULL CHECK (MSСurrencyValue >= 0)            "
                         + "); ";
             command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
@@ -150,8 +151,13 @@ namespace MoneySupervisor
             command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
             command.ExecuteNonQuery();
 
-            sql_command = "INSERT INTO MSTransactions (MSTransactionId, MSIO, MSValue, MSСurrencyCode, MSAccountId, MSCategoryId, MSNote, MSDateTime, MSMulticurrency) "
-                                            + "VALUES (              0,  '+',    0.01,          'AZN',           1,            1, 'Test',   25532640,               0);";
+            sql_command = "INSERT INTO MSTransactions (MSTransactionId, MSIO, MSValue, MSСurrencyCode, MSAccountId, MSCategoryId, MSNote,            MSDateTime, MSMulticurrency) "
+                                            + "VALUES (              0,  '+',    0.01,          'AZN',           1,            1, 'Test', '20.07.2018 00:40:00',               0);";
+            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
+            command.ExecuteNonQuery();
+
+            sql_command = "INSERT INTO MSСurrencies (MSСurrencyId,        MSСurrencyDate, MSСurrencyType, MSСurrencyCode, MSСurrencyNominal, MSСurrencyName, MSСurrencyValue) "
+                                          + "VALUES (           0, '20.07.2018 00:40:00',             '',          'AZN',                 1,             '',               1);";
             command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
             command.ExecuteNonQuery();
 
@@ -177,10 +183,10 @@ namespace MoneySupervisor
         //{
 
 
-            //return ;
+        //return ;
         //}
-        
-        static public void SQLiteSaveAll()
+
+        static public void SQLiteSaveAccountsList()
         {
             CreateDatabase();
 
@@ -190,40 +196,126 @@ namespace MoneySupervisor
             for (int i = 0; i < Program.accounts.Count; i++)
             {
                 int MSMulticurrency = Program.accounts[0].MSMulticurrency == true ? 1 : 0;
-                string sql_command = $"INSERT INTO MSAccounts (MSAccountId, MSIO,     MSName, MSColor, MSImage, MSСurrency, MSMulticurrency) "
+                string sql_command = $"INSERT INTO MSAccounts (MSAccountId, MSIO,     MSName, MSColor, MSImage, MSСurrencyCode, MSMulticurrency) "
                                                     + $"VALUES (" +
                                                       $"  {Program.accounts[0].MSAccountId},  " +
                                                       $" '{Program.accounts[0].MSIO}'   ," +
                                                       $" '{Program.accounts[0].MSName}' ," +
                                                       $"  {Program.accounts[0].MSColor} ," +
                                                       $"  {Program.accounts[0].MSImage} ," +
-                                                      $" '{Program.accounts[0].MSСurrency}'," +
+                                                      $" '{Program.accounts[0].MSСurrencyCode}'," +
                                                       $"  {MSMulticurrency});";
                 System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
                 command.ExecuteNonQuery();
             }
         }
-        /*
-        static public object ReadAll(object objectType, string fileName)
+
+        private int DateTimeToInt(DateTime dateTime)
         {
-            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(objectType.GetType());
-            object newpeople;
+            System.TimeSpan ts = dateTime.Subtract(DateTime.Parse("01.01.1970"));
+            return (((((ts.Days * 24) + ts.Hours) * 60) + ts.Minutes) * 60) + ts.Seconds;
+        }
+
+        static public void SQLiteLoadCurrenciesFromDatabase()
+        {
+            System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
+            conn.Open();
+
+            //sql_command = "INSERT INTO MSСurrencies (MSСurrencyId, MSСurrencyDate, MSСurrencyType, MSСurrencyCode, MSСurrencyNominal, MSСurrencyName, MSСurrencyValue) "
+            //                              + "VALUES (           0,     1532044620,             '',          'AZN',                 1,             '',               1);";
+
+            SQLiteCommand cmd = new SQLiteCommand("", conn);
+            cmd.CommandText = "SELECT MSСurrencyId, MSСurrencyDate, MSСurrencyType, MSСurrencyCode, MSСurrencyNominal, MSСurrencyName, MSСurrencyValue"
+              + " FROM MSСurrencies";
             try
             {
-                using (FileStream fs = new FileStream($"{fileName}.json", FileMode.OpenOrCreate))
+                SQLiteDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
                 {
-                    if (fs.Length > 0)
-                        newpeople = jsonFormatter.ReadObject(fs);
-                    else return new List<Owner>(); //--error if "new object()"
+                    Program.currency.MSСurrencyId = int.Parse(dr["MSСurrencyId"].ToString());
+                    Program.currency.MSСurrencyDate = DateTime.Parse((string)dr["MSСurrencyDate"]);
+                    Program.currency.MSСurrencyType = (string)dr["MSСurrencyType"];
+                    Program.currency.MSСurrencyCode = (string)dr["MSСurrencyCode"];
+                    Program.currency.MSСurrencyNominal = int.Parse(dr["MSСurrencyNominal"].ToString());
+                    Program.currency.MSСurrencyName = (string)dr["MSСurrencyName"];
+                    Program.currency.MSСurrencyValue = float.Parse(dr["MSСurrencyValue"].ToString());
+                    Program.currencies.Add(new MSСurrency(Program.currency));
                 }
-                return newpeople;
+                dr.Close();
             }
-            catch (Exception ew)
+            catch (SQLiteException ex)
             {
-                Console.WriteLine(ew);
-                throw;
+                Console.WriteLine(ex.Message);
+            }
+
+            conn.Close();
+        }
+
+        static public void SQLiteLoadAccountsFromDatabase()
+        {
+            System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
+            conn.Open();
+
+            //string sql_command = "INSERT INTO MSAccounts (MSAccountId, MSIO,     MSName, MSColor, MSImage, MSСurrencyCode, MSMulticurrency) "
+            //                                + "VALUES (          0,  '+', 'Наличные',        1,   ';)',          'AZN',               0);";
+
+            SQLiteCommand cmd = new SQLiteCommand("", conn);
+            cmd.CommandText = "SELECT MSAccountId, MSIO, MSName, MSColor, MSImage, MSСurrencyCode, MSMulticurrency FROM MSAccounts";
+            try
+            {
+                SQLiteDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    Program.account.MSAccountId = int.Parse(dr["MSAccountId"].ToString());
+                    Program.account.MSIO = ((string)dr["MSIO"])[0];
+                    Program.account.MSName = (string)dr["MSСurrencyDate"];
+                    Program.account.MSColor = (ConsoleColor)(int.Parse(dr["MSColor"].ToString()));
+                    Program.account.MSImage = (string)dr["MSСurrencyName"];
+                    Program.account.MSСurrencyCode = (string)dr["MSСurrencyCode"];
+                    if (int.Parse(dr["MSMulticurrency"].ToString()) == 1) Program.account.MSMulticurrency = true; else Program.account.MSMulticurrency = false;
+                    Program.accounts.Add(new MSAccount(Program.account));
+                }
+                dr.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            conn.Close();
+        }
+
+        static public void SQLiteLoadCategoriesFromDatabase()
+        {
+            System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
+            conn.Open();
+
+            //sql_command = "INSERT INTO MSCategories (MSCategoryId, MSIO,     MSName, MSAccountId, MSColor, MSImage) "
+            //                              + "VALUES (           0,  '+', 'Зарплата',           1,       1,    ';)');";
+
+            SQLiteCommand cmd = new SQLiteCommand("", conn);
+            cmd.CommandText = "SELECT MSCategoryId, MSIO, MSName, MSAccountId, MSColor, MSImage FROM MSCategories";
+            try
+            {
+                SQLiteDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    Program.category.MSCategoryId = int.Parse(dr["MSCategoryId"].ToString());
+                    Program.category.MSIO = ((string)dr["MSIO"])[0];
+                    Program.category.MSName = (string)dr["MSСurrencyDate"];
+                    Program.category.MSAccountId = int.Parse(dr["MSAccountId"].ToString());
+                    Program.category.MSColor = (ConsoleColor)(int.Parse(dr["MSColor"].ToString()));
+                    Program.category.MSImage = (string)dr["MSСurrencyName"];
+                    Program.categories.Add(new MSCategory(Program.category));
+                }
+                dr.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
-        */
+
+        
     }
 }

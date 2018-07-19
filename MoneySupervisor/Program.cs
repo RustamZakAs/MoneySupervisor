@@ -37,6 +37,11 @@ namespace MoneySupervisor
 
             MSSaveLoad.CreateDatabase();
             MSSaveLoad.InsertStandartValue();
+            if (currencies.Count != 1) 
+            MSSaveLoad.SQLiteLoadCurrenciesFromDatabase();
+            MSSaveLoad.SQLiteLoadAccountsFromDatabase();
+            MSSaveLoad.SQLiteLoadCategoriesFromDatabase();
+
 
             Console.Title = "Money Supervisor - Управление деньгами - Pullara nəzarət";
             Console.OutputEncoding = Encoding.Unicode;
@@ -92,12 +97,12 @@ namespace MoneySupervisor
                 {
                     case '1':
                         Console.Clear();
-                        category.ConsoleAdd(categories.Count + 1);
+                        category.ConsoleAdd(categories.Count + 1, ' ');
                         categories.Add(category);
                         break;
                     case '2':
                         Console.Clear();
-                        account.ConsoleAdd(accounts.Count + 1);
+                        account.ConsoleAdd(accounts.Count + 1, ' ');
                         accounts.Add(account);
                         break;
                     default:
@@ -128,14 +133,18 @@ namespace MoneySupervisor
                                 transactionSymbol = '+';
                                 if (accounts.Count == 0)
                                 {
+                                    Console.WriteLine("В базе нен найдены счёта.");
+                                    Console.WriteLine("Создате новый счёт.");
                                     Console.Clear();
-                                    account.ConsoleAdd(accounts.Count+1);
+                                    account.ConsoleAdd(accounts.Count+1, transactionSymbol);
                                     accounts.Add(account);
                                 }
                                 if (categories.Count == 0)
                                 {
+                                    Console.WriteLine("В базе нен найдены котегории.");
+                                    Console.WriteLine("Создате новую котегорию.");
                                     Console.Clear();
-                                    category.ConsoleAdd(categories.Count + 1);
+                                    category.ConsoleAdd(categories.Count + 1, transactionSymbol);
                                     categories.Add(category);
                                 }
                                 
@@ -145,27 +154,28 @@ namespace MoneySupervisor
                                 if (accounts.Count == 0)
                                 {
                                     Console.Clear();
-                                    account.ConsoleAdd(accounts.Count + 1);
+                                    account.ConsoleAdd(accounts.Count + 1, transactionSymbol);
                                     accounts.Add(account);
                                 }
                                 if (categories.Count == 0)
                                 {
                                     Console.Clear();
-                                    category.ConsoleAdd(categories.Count + 1);
+                                    category.ConsoleAdd(categories.Count + 1, transactionSymbol);
                                     categories.Add(category);
                                 }
                                 break;
                             case 2: //=
+                                transactionSymbol = ' ';
                                 if (accounts.Count == 0)
                                 {
                                     Console.Clear();
-                                    account.ConsoleAdd(accounts.Count + 1);
+                                    account.ConsoleAdd(accounts.Count + 1, transactionSymbol);
                                     accounts.Add(account);
                                 }
                                 if (categories.Count == 0)
                                 {
                                     Console.Clear();
-                                    category.ConsoleAdd(categories.Count + 1);
+                                    category.ConsoleAdd(categories.Count + 1, transactionSymbol);
                                     categories.Add(category);
                                 }
 

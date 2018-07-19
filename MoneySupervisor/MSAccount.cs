@@ -22,7 +22,7 @@ namespace MoneySupervisor
         //[DataMember]                      
         public string       MSImage         { get; set; }
         //[DataMember]                      
-        public string       MSСurrency        { get; set; }
+        public string       MSСurrencyCode  { get; set; }
         //[DataMember]
         public bool         MSMulticurrency { get; set; }
 
@@ -44,7 +44,7 @@ namespace MoneySupervisor
             MSName          = msName;
             MSColor         = msColor;
             MSImage         = msImage;
-            MSСurrency      = msСurrency;
+            MSСurrencyCode  = msСurrency;
             MSMulticurrency = msMulticurrency;
         }
 
@@ -55,27 +55,31 @@ namespace MoneySupervisor
             MSName          = account.MSName;
             MSColor         = account.MSColor;
             MSImage         = account.MSImage;
-            MSСurrency      = account.MSСurrency;
+            MSСurrencyCode  = account.MSСurrencyCode;
             MSMulticurrency = account.MSMulticurrency;
         }
 
-        public void ConsoleAdd(int accountId)
+        public void ConsoleAdd(int accountId, char msIO)
         {
             int left = Console.CursorLeft;
             int top = Console.CursorTop;
             MSAccountId = accountId;
-            bool xreplace = true;
-            do
+            if (msIO == '+' | msIO == '-') MSIO = msIO;
+            else
             {
-                Console.SetCursorPosition(left, top);
-                Console.WriteLine("Введите тип аккаунта (+,-): ");
-                string temp = Console.ReadLine();
-                if (temp[0] == '+' | temp[0] == '-')
+                bool xreplace = true;
+                do
                 {
-                    MSIO = temp[0];
-                    xreplace = false;
-                }
-            } while (xreplace);
+                    Console.SetCursorPosition(left, top);
+                    Console.WriteLine("Введите тип аккаунта (+,-): ");
+                    string temp = Console.ReadLine();
+                    if (temp[0] == '+' | temp[0] == '-')
+                    {
+                        MSIO = temp[0];
+                        xreplace = false;
+                    }
+                } while (xreplace);
+            }
             Console.WriteLine("Введите наименование аккаунта: ");
             MSName = Console.ReadLine();
             Console.WriteLine("Выбермте цвет аккаунта: ");
@@ -83,9 +87,9 @@ namespace MoneySupervisor
             Console.WriteLine("Введите символ аккаунта: ");
             MSImage = Console.ReadLine();
             Console.WriteLine("Введите тип валюты аккаунта: ");
-            MSСurrency = Console.ReadLine();
-            //MSСurrency = MSСurrency.ChooseСurrency(ref List<MSСurrency> valuteList);
-            if (MSСurrency == "ALL")
+            //MSСurrencyCode = Console.ReadLine();
+            MSСurrencyCode = MSСurrency.ChooseСurrency(ref Program.currencies);
+            if (MSСurrencyCode == "ALL")
             {
                 MSMulticurrency = true;
             }
