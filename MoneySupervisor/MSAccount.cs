@@ -96,35 +96,48 @@ namespace MoneySupervisor
             else MSMulticurrency = false;
         }
 
-        public static int ChooseAccount(ref List<MSAccount> accountList)
+        public static int ChooseAccount(ref List<MSAccount> msAccountList)
         {
             int left = Console.CursorLeft;
             int top  = Console.CursorTop;
             int maxLen = 0;
-            if (accountList.Count > 0)
-                maxLen = accountList.Max(s => s.MSName).Length;
+            if (msAccountList.Count > 0)
+                maxLen = msAccountList.Max(s => s.MSName).Length;
             int accountId = 0;
+            string xSynbol = "↓ "; // ↓   ↑   ↓↑
+            if (msAccountList.Count == 1) xSynbol = "  ";
+            Console.WriteLine($"{msAccountList[accountId].MSImage} {msAccountList[accountId].MSName} {xSynbol}");
             do
             {
-                Console.SetCursorPosition(left, top);
-                if (Console.KeyAvailable)
-                {
+                //if (Console.KeyAvailable)
+                //{
                     Program.cki = Console.ReadKey();
-                }
+                //}
                 switch (Program.cki.Key)
                 {
                     case ConsoleKey.DownArrow:
-                        if (++accountId >= accountList.Count) accountId = accountList.Count-1;
+                        if (++accountId >= msAccountList.Count) accountId = msAccountList.Count-1;
+                        for (int i = 0; i < maxLen + 3; i++)
+                        {
+                            Console.Write(" ");
+                        }
                         break;
                     case ConsoleKey.UpArrow:
                         if (--accountId < 0) accountId = 0;
+                        for (int i = 0; i < maxLen + 3; i++)
+                        {
+                            Console.Write(" ");
+                        }
                         break;
                     case ConsoleKey.Enter:
+                        Program.cki = default(ConsoleKeyInfo);
+                        Console.SetCursorPosition(0, top + 1);
                         return accountId;
                     default:
                         break;
                 }
-                Console.WriteLine($"/{accountList[accountId].MSImage}/ {accountList[accountId].MSName}");
+                Console.SetCursorPosition(left, top);
+                Console.WriteLine($"{msAccountList[accountId].MSImage} {msAccountList[accountId].MSName} {xSynbol}");
             } while (true);
         }
     }

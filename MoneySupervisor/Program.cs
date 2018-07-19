@@ -89,21 +89,21 @@ namespace MoneySupervisor
                 Console.WriteLine(cki.KeyChar);
 
                 Console.SetCursorPosition(0, 1);
-                Console.WriteLine($"1. {dictionary["newcategory"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"1. {dictionary["newaccount"].RetLang(staticLanguage)} ");
                 Console.SetCursorPosition(0, 2);
-                Console.WriteLine($"2. {dictionary["newaccount"].RetLang(staticLanguage)} ");
+                Console.WriteLine($"2. {dictionary["newcategory"].RetLang(staticLanguage)} ");
 
                 switch (cki.KeyChar)
                 {
                     case '1':
                         Console.Clear();
-                        category.ConsoleAdd(categories.Count + 1, ' ');
-                        categories.Add(category);
+                        account.ConsoleAdd(accounts.Count + 1, ' ');
+                        accounts.Add(account);
                         break;
                     case '2':
                         Console.Clear();
-                        account.ConsoleAdd(accounts.Count + 1, ' ');
-                        accounts.Add(account);
+                        category.ConsoleAdd(categories.Count + 1, ' ');
+                        categories.Add(category);
                         break;
                     default:
                         break;
@@ -127,6 +127,7 @@ namespace MoneySupervisor
                         if (--menyuId < 0) menyuId = 0;
                         break;
                     case ConsoleKey.Enter:
+                        Program.cki = default(ConsoleKeyInfo);
                         switch (menyuId)
                         {
                             case 0: //+
@@ -147,7 +148,9 @@ namespace MoneySupervisor
                                     category.ConsoleAdd(categories.Count + 1, transactionSymbol);
                                     categories.Add(category);
                                 }
-                                
+                                Console.Clear();
+                                transaction.ConsoleAdd(transactions.Count + 1, transactionSymbol);
+                                transactions.Add(transaction);
                                 break;
                             case 1: //-
                                 transactionSymbol = '-';
@@ -163,9 +166,12 @@ namespace MoneySupervisor
                                     category.ConsoleAdd(categories.Count + 1, transactionSymbol);
                                     categories.Add(category);
                                 }
+                                Console.Clear();
+                                transaction.ConsoleAdd(transactions.Count + 1, transactionSymbol);
+                                transactions.Add(transaction);
                                 break;
                             case 2: //=
-                                transactionSymbol = ' ';
+                                transactionSymbol = '=';
                                 if (accounts.Count == 0)
                                 {
                                     Console.Clear();
@@ -178,9 +184,8 @@ namespace MoneySupervisor
                                     category.ConsoleAdd(categories.Count + 1, transactionSymbol);
                                     categories.Add(category);
                                 }
-
-                                transactionSymbol = '+';
-                                transactionSymbol = '-';
+                                Console.Clear();
+                                MSTransaction.ConsoleTransfer(ref transactions, categories.Count + 1);
                                 break;
                             case 3: //param
                                 break;
@@ -207,6 +212,16 @@ namespace MoneySupervisor
                 //Console.WriteLine($"6. {dictionary[" "].RetLang(staticLanguage)} ");
                 //Console.ReadKey();
             } while (xreplace);
+        }
+
+        public static DateTime msCompDateTime()
+        {
+            return new DateTime(int.Parse(DateTime.Now.ToString("yyyy")),
+            int.Parse(DateTime.Now.ToString("MM")),
+            int.Parse(DateTime.Now.ToString("dd")),
+            int.Parse(DateTime.Now.ToString("HH")),
+            int.Parse(DateTime.Now.ToString("mm")),
+            int.Parse(DateTime.Now.ToString("ss")));
         }
     }
 }

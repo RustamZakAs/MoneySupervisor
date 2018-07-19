@@ -92,9 +92,49 @@ namespace MoneySupervisor
             MSImage = Console.ReadLine();
         }
 
-        public static int ChooseCategory(ref List<MSCategory> categories) {
-
-            return 0;
+        public static int ChooseCategory(ref List<MSCategory> msCategoryList)
+        {
+            int left = Console.CursorLeft;
+            int top = Console.CursorTop;
+            int maxLen = 0;
+            if (msCategoryList.Count > 0)
+                maxLen = msCategoryList.Max(s => s.MSName).Length;
+            int accountId = 0;
+            string xSynbol = "↓ "; // ↓   ↑   ↓↑
+            if (msCategoryList.Count == 1) xSynbol = "  ";
+            Console.WriteLine($"{msCategoryList[accountId].MSImage} {msCategoryList[accountId].MSName} {xSynbol}");
+            do
+            {
+                //if (Console.KeyAvailable)
+                //{
+                Program.cki = Console.ReadKey();
+                //}
+                switch (Program.cki.Key)
+                {
+                    case ConsoleKey.DownArrow:
+                        if (++accountId >= msCategoryList.Count) accountId = msCategoryList.Count - 1;
+                        for (int i = 0; i < maxLen + 3; i++)
+                        {
+                            Console.Write(" ");
+                        }
+                        break;
+                    case ConsoleKey.UpArrow:
+                        if (--accountId < 0) accountId = 0;
+                        for (int i = 0; i < maxLen + 3; i++)
+                        {
+                            Console.Write(" ");
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        Program.cki = default(ConsoleKeyInfo);
+                        Console.SetCursorPosition(0, top + 1);
+                        return accountId;
+                    default:
+                        break;
+                }
+                Console.SetCursorPosition(left, top);
+                Console.WriteLine($"{msCategoryList[accountId].MSImage} {msCategoryList[accountId].MSName} {xSynbol}");
+            } while (true);
         }
 
     }

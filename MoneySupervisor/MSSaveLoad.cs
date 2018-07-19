@@ -188,10 +188,8 @@ namespace MoneySupervisor
 
         static public void SQLiteSaveAccountsList()
         {
-            CreateDatabase();
-
-            System.Data.SQLite.SQLiteConnection conn1 = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
-            conn1.Open();
+            System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
+            conn.Open();
 
             for (int i = 0; i < Program.accounts.Count; i++)
             {
@@ -205,9 +203,10 @@ namespace MoneySupervisor
                                                       $"  {Program.accounts[0].MSImage} ," +
                                                       $" '{Program.accounts[0].MSСurrencyCode}'," +
                                                       $"  {MSMulticurrency});";
-                System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
+                System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
                 command.ExecuteNonQuery();
             }
+            conn.Close();
         }
 
         private int DateTimeToInt(DateTime dateTime)
@@ -268,9 +267,9 @@ namespace MoneySupervisor
                 {
                     Program.account.MSAccountId = int.Parse(dr["MSAccountId"].ToString());
                     Program.account.MSIO = ((string)dr["MSIO"])[0];
-                    Program.account.MSName = (string)dr["MSСurrencyDate"];
+                    Program.account.MSName = (string)dr["MSName"];
                     Program.account.MSColor = (ConsoleColor)(int.Parse(dr["MSColor"].ToString()));
-                    Program.account.MSImage = (string)dr["MSСurrencyName"];
+                    Program.account.MSImage = (string)dr["MSImage"];
                     Program.account.MSСurrencyCode = (string)dr["MSСurrencyCode"];
                     if (int.Parse(dr["MSMulticurrency"].ToString()) == 1) Program.account.MSMulticurrency = true; else Program.account.MSMulticurrency = false;
                     Program.accounts.Add(new MSAccount(Program.account));
@@ -302,10 +301,10 @@ namespace MoneySupervisor
                 {
                     Program.category.MSCategoryId = int.Parse(dr["MSCategoryId"].ToString());
                     Program.category.MSIO = ((string)dr["MSIO"])[0];
-                    Program.category.MSName = (string)dr["MSСurrencyDate"];
+                    Program.category.MSName = (string)dr["MSName"];
                     Program.category.MSAccountId = int.Parse(dr["MSAccountId"].ToString());
                     Program.category.MSColor = (ConsoleColor)(int.Parse(dr["MSColor"].ToString()));
-                    Program.category.MSImage = (string)dr["MSСurrencyName"];
+                    Program.category.MSImage = (string)dr["MSImage"];
                     Program.categories.Add(new MSCategory(Program.category));
                 }
                 dr.Close();

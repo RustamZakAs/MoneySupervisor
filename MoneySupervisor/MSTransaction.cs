@@ -26,7 +26,24 @@ namespace MoneySupervisor
         public DateTime MSDateTime      { get; set; }
         //[DataMember]
         public bool     MSMulticurrency { get; set; }
-        
+
+        public MSTransaction()
+        {
+        }
+
+        public MSTransaction(MSTransaction msTransaction)
+        {
+            MSTransactionId = msTransaction.MSTransactionId;
+            MSIO            = msTransaction.MSIO;
+            MSValue         = msTransaction.MSValue;
+            MSСurrencyCode  = msTransaction.MSСurrencyCode;
+            MSAccountId     = msTransaction.MSAccountId;
+            MSCategoryId    = msTransaction.MSCategoryId;
+            MSNote          = msTransaction.MSNote;
+            MSDateTime      = msTransaction.MSDateTime;
+            MSMulticurrency = msTransaction.MSMulticurrency;
+        }
+
         public void ConsoleAdd(int msTransactionId, char msIO)
         {
             int left = Console.CursorLeft;
@@ -47,6 +64,7 @@ namespace MoneySupervisor
             //} while (xreplace);
             Console.WriteLine("Введите значение (сумма): ");
             MSValue = float.Parse(Console.ReadLine());
+            Program.cki = default(ConsoleKeyInfo);
             Console.WriteLine("Выберите тип валюты: ");
             //MSСurrency = Console.ReadLine();
             MSСurrencyCode = MSСurrency.ChooseСurrency(ref Program.currencies);
@@ -58,13 +76,79 @@ namespace MoneySupervisor
                 MSCategoryId = MSCategory.ChooseCategory(ref Program.categories);
             Console.WriteLine("Введите заметку: ");
             MSNote = Console.ReadLine();
-            Console.WriteLine("Введите дату и время (DD.MM.YYYY hh.mm.ss): ");
-            MSDateTime = DateTime.Parse(Console.ReadLine());
+            Console.WriteLine("Введите дату и время\n(DD.MM.YYYY hh.mm.ss): "); Console.Write($" {Program.msCompDateTime()}");
+            int xtop = Console.CursorTop;
+            Console.SetCursorPosition(0, xtop + 1);
+            string tDateTime = Console.ReadLine();
+            if (tDateTime.Length == 0 | tDateTime == " ") MSDateTime = Program.msCompDateTime();
+            else MSDateTime = DateTime.Parse(tDateTime);
             if (MSСurrencyCode == "ALL")
             {
                 MSMulticurrency = true;
             }
             else MSMulticurrency = false;
+            Program.cki = default(ConsoleKeyInfo);
+        }
+
+        public static void ConsoleTransfer(ref List<MSTransaction> transactions, int msTransactionId)
+        {
+            MSTransaction tMSTransaction = new MSTransaction();
+            int left = Console.CursorLeft;
+            int top = Console.CursorTop;
+            tMSTransaction.MSTransactionId = msTransactionId;
+            //bool xreplace = true;
+            //do
+            //{
+            //    Console.SetCursorPosition(left, top);
+            //    Console.WriteLine("Введите тип транзакции (+,-): ");
+            //    string temp = Console.ReadLine();
+            //    if (temp[0] == '+' | temp[0] == '-')
+            //    {
+            //        MSIO = temp[0];
+            //        xreplace = false;
+            //    }
+            //} while (xreplace);
+            tMSTransaction.MSIO = '+';
+            Console.WriteLine("Введите значение (сумма): ");
+            tMSTransaction.MSValue = float.Parse(Console.ReadLine());
+            //MSСurrency = Console.ReadLine();
+            left = Console.CursorLeft;
+            top = Console.CursorTop;
+            bool xreplace = true;
+            do
+            {
+                Console.SetCursorPosition(left, top);
+                Console.WriteLine("Выберите тип валюты: ");
+                string tMSСurrencyCode = MSСurrency.ChooseСurrency(ref Program.currencies);
+
+                if (tMSСurrencyCode != "ALL")
+                {
+                    tMSTransaction.MSСurrencyCode = tMSСurrencyCode;
+                    xreplace = false;
+                }
+            } while (xreplace);
+            
+            Console.WriteLine("Выберите аккаунт вывода суммы: ");
+            if (Program.accounts.Count > 0)
+                tMSTransaction.MSAccountId = MSAccount.ChooseAccount(ref Program.accounts);
+            //Console.WriteLine("Выберите категорию: ");
+            //if (Program.categories.Count > 0)
+            //    tMSTransaction.MSCategoryId = MSCategory.ChooseCategory(ref Program.categories);
+            Console.WriteLine("Введите заметку: ");
+            tMSTransaction.MSNote = Console.ReadLine();
+            Console.WriteLine("Введите дату и время\n(DD.MM.YYYY hh.mm.ss): "); Console.Write($" {Program.msCompDateTime()}");
+            int xtop = Console.CursorTop;
+            Console.SetCursorPosition(0, xtop + 1);
+            string tDateTime = Console.ReadLine();
+            if (tDateTime.Length == 0 | tDateTime == " ") tMSTransaction.MSDateTime = Program.msCompDateTime();
+            else tMSTransaction.MSDateTime = DateTime.Parse(tDateTime);
+            //if (tMSTransaction.MSСurrencyCode == "ALL")
+            //{
+            //    tMSTransaction.MSMulticurrency = true;
+            //}
+            //else tMSTransaction.MSMulticurrency = false;
+            transactions.Add(new MSTransaction(tMSTransaction));
+            Program.cki = default(ConsoleKeyInfo);
         }
     }
 }
