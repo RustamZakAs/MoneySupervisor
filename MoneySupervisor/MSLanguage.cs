@@ -50,6 +50,40 @@ namespace MoneySupervisor
             else return KOR;
         }
 
+        public static int ChooseLanguage()
+        {
+            List<string> msCurrenciesCodeList = new List<string>() { "RU", "AZ", "EN", "KO" };
+            int left = Console.CursorLeft;
+            int top  = Console.CursorTop;
+            int xIndex = 0;
+            string xSynbol = "↓ "; // ↓   ↑   ↓↑
+            Console.WriteLine($"{msCurrenciesCodeList[xIndex]} {xSynbol}");
+            do
+            {
+                Program.cki = Console.ReadKey();
+                switch (Program.cki.Key)
+                {
+                    case ConsoleKey.DownArrow:
+                        if (++xIndex >= msCurrenciesCodeList.Count) xIndex = msCurrenciesCodeList.Count - 1;
+                        break;
+                    case ConsoleKey.UpArrow:
+                        if (--xIndex < 0) xIndex = 0;
+                        break;
+                    case ConsoleKey.Enter:
+                        Program.cki = default(ConsoleKeyInfo);
+                        Console.SetCursorPosition(0, top + 1);
+                        return xIndex;
+                    default:
+                        break;
+                }
+                if (xIndex == 0) xSynbol = "↓ ";
+                else if (xIndex >= msCurrenciesCodeList.Count - 1) xSynbol = "↑ ";
+                else xSynbol = "↓↑";
+                Console.SetCursorPosition(left, top);
+                Console.WriteLine($"{msCurrenciesCodeList[xIndex]} {xSynbol}");
+            } while (true);
+        }
+
         public static void CreateDictionary(ref Dictionary<string, MSLanguage> dictionary)
         {
             MSLanguage phrase1 = new MSLanguage

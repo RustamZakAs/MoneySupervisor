@@ -88,6 +88,7 @@ namespace MoneySupervisor
             }
             else MSMulticurrency = false;
             Program.cki = default(ConsoleKeyInfo);
+            Console.Clear();
         }
 
         public static void ConsoleTransfer(ref List<MSTransaction> transactions, int msTransactionId)
@@ -149,6 +150,7 @@ namespace MoneySupervisor
             //else tMSTransaction.MSMulticurrency = false;
             transactions.Add(new MSTransaction(tMSTransaction));
             Program.cki = default(ConsoleKeyInfo);
+            Console.Clear();
         }
     }
 }
