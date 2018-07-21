@@ -33,6 +33,20 @@ namespace MoneySupervisor
 
         static void Main(string[] args)
         {
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
             currencies = currency.MSLoadСurrencies();
 
             MSSaveLoad.CreateDatabase();
