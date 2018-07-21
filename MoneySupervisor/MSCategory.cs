@@ -92,17 +92,36 @@ namespace MoneySupervisor
             MSImage = Console.ReadLine();
         }
 
-        public static int ChooseCategory(ref List<MSCategory> msCategoryList)
+        public static int ChooseCategory(ref List<MSCategory> msCategoryList, int msAccountId)
         {
+            List<MSCategory> TmsCategoryList = new List<MSCategory>();
+            for (int i = 0; i < msCategoryList.Count; i++)
+            {
+                if (msCategoryList[i].MSAccountId == msAccountId)
+                {
+                    TmsCategoryList.Add(new MSCategory(msCategoryList[i]));
+                }
+            }
             int left = Console.CursorLeft;
             int top = Console.CursorTop;
             int maxLen = 0;
-            if (msCategoryList.Count > 0)
-                maxLen = msCategoryList.Max(s => s.MSName).Length;
+            if (TmsCategoryList.Count > 0)
+                maxLen = TmsCategoryList.Max(s => s.MSName).Length;
             int accountId = 0;
             string xSynbol = "↓ "; // ↓   ↑   ↓↑
-            if (msCategoryList.Count == 1) xSynbol = "  ";
-            Console.WriteLine($"{msCategoryList[accountId].MSImage} {msCategoryList[accountId].MSName} {xSynbol}");
+            if (TmsCategoryList.Count == 1) xSynbol = "  ";
+            if (TmsCategoryList.Exists(x => x.MSAccountId == accountId))
+                Console.WriteLine($"{TmsCategoryList[accountId].MSImage} {TmsCategoryList[accountId].MSName} {xSynbol}");
+            else
+            {
+                int tCatCount = Program.categories.Count;
+                do
+                {
+                    tCatCount++;
+                    if (!TmsCategoryList.Exists(x => x.MSCategoryId == tCatCount))
+                        Program.category.ConsoleAdd(tCatCount, Program.transactionSymbol);
+                } while (true);
+            }
             do
             {
                 //if (Console.KeyAvailable)
@@ -112,7 +131,7 @@ namespace MoneySupervisor
                 switch (Program.cki.Key)
                 {
                     case ConsoleKey.DownArrow:
-                        if (++accountId >= msCategoryList.Count) accountId = msCategoryList.Count - 1;
+                        if (++accountId >= TmsCategoryList.Count) accountId = TmsCategoryList.Count - 1;
                         for (int i = 0; i < maxLen + 3; i++)
                         {
                             Console.Write(" ");
@@ -128,12 +147,12 @@ namespace MoneySupervisor
                     case ConsoleKey.Enter:
                         Program.cki = default(ConsoleKeyInfo);
                         Console.SetCursorPosition(0, top + 1);
-                        return accountId;
+                        return TmsCategoryList[accountId].MSCategoryId;
                     default:
                         break;
                 }
                 Console.SetCursorPosition(left, top);
-                Console.WriteLine($"{msCategoryList[accountId].MSImage} {msCategoryList[accountId].MSName} {xSynbol}");
+                Console.WriteLine($"{TmsCategoryList[accountId].MSImage} {TmsCategoryList[accountId].MSName} {xSynbol}");
             } while (true);
         }
 

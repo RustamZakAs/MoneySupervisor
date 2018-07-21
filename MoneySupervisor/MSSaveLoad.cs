@@ -88,7 +88,7 @@ namespace MoneySupervisor
                         + "CREATE TABLE IF NOT EXISTS MSTransactions ( "
                         + "MSTransactionId INTEGER NOT NULL CHECK (MSTransactionId >= 0)                     , "
                         + "MSIO	           TEXT    NOT NULL CHECK (MSIO='+' OR MSIO='-')                     , "
-                        + "MSValue	       NUMERIC NOT NULL CHECK (MSValue >= 0.000001)                      , "
+                        + "MSValue	       NUMERIC NOT NULL CHECK (MSValue <> 0)                             , "
                         + "MSСurrencyCode  TEXT    NOT NULL CHECK (LENGTH(MSСurrencyCode) = 3)               , "
                         + "MSAccountId	   INTEGER NOT NULL CHECK (MSAccountId >= 0)                         , "
                         + "MSCategoryId	   INTEGER NOT NULL CHECK (MSCategoryId >= 0)                        , "

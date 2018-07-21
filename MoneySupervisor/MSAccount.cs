@@ -59,12 +59,12 @@ namespace MoneySupervisor
             MSMulticurrency = account.MSMulticurrency;
         }
 
-        public void ConsoleAdd(int accountId, char msIO)
+        public void ConsoleAdd(int accountId, char msIO = '=')
         {
             int left = Console.CursorLeft;
             int top = Console.CursorTop;
             MSAccountId = accountId;
-            if (msIO == '+' | msIO == '-') MSIO = msIO;
+            if (msIO == '+' || msIO == '-') MSIO = msIO;
             else
             {
                 bool xreplace = true;
@@ -73,10 +73,13 @@ namespace MoneySupervisor
                     Console.SetCursorPosition(left, top);
                     Console.WriteLine("Введите тип аккаунта (+,-): ");
                     string temp = Console.ReadLine();
-                    if (temp[0] == '+' | temp[0] == '-')
+                    if (temp.Length > 0)
                     {
-                        MSIO = temp[0];
-                        xreplace = false;
+                        if (temp[0] == '+' | temp[0] == '-')
+                        {
+                            MSIO = temp[0];
+                            xreplace = false;
+                        }
                     }
                 } while (xreplace);
             }
@@ -116,7 +119,7 @@ namespace MoneySupervisor
                 switch (Program.cki.Key)
                 {
                     case ConsoleKey.DownArrow:
-                        if (++accountId >= msAccountList.Count) accountId = msAccountList.Count-1;
+                        if (++accountId >= msAccountList.Count) accountId = msAccountList.Count - 1;
                         for (int i = 0; i < maxLen + 3; i++)
                         {
                             Console.Write(" ");
@@ -132,7 +135,7 @@ namespace MoneySupervisor
                     case ConsoleKey.Enter:
                         Program.cki = default(ConsoleKeyInfo);
                         Console.SetCursorPosition(0, top + 1);
-                        return accountId;
+                        return msAccountList[accountId].MSAccountId;
                     default:
                         break;
                 }

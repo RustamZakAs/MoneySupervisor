@@ -29,6 +29,7 @@ namespace MoneySupervisor
         public static Random random = new Random();
 
         public static int menyuId = 0, maxMenyuId = 5;
+        public static int maxWidth = 40, maxheight = 25;
         public static char transactionSymbol = '+'; //+  -  =
 
         static void Main(string[] args)
@@ -75,7 +76,7 @@ namespace MoneySupervisor
 
         static void MSMainMenyu()
         {
-            int maxWidth = 40, maxheight = 25;
+            maxWidth = 40; maxheight = 25;
             Console.SetWindowSize(maxWidth, maxheight);
             Console.SetBufferSize(maxWidth, maxheight);
             
@@ -162,10 +163,14 @@ namespace MoneySupervisor
                                 transactionSymbol = '+';
                                 if (accounts.Count == 0)
                                 {
+                                    Console.WriteLine("В базе не найдены счёта.");
+                                    Console.WriteLine("Создайте новый счёт.");
                                     Program.AddAccount();
                                 }
                                 if (categories.Count == 0)
                                 {
+                                    Console.WriteLine("В базе не найдены котегории.");
+                                    Console.WriteLine("Создайте новую котегорию.");
                                     Program.AddCategory();
                                 }
                                 transaction.ConsoleAdd(transactions.Count + 1, transactionSymbol);
@@ -176,10 +181,14 @@ namespace MoneySupervisor
                                 transactionSymbol = '-';
                                 if (accounts.Count == 0)
                                 {
+                                    Console.WriteLine("В базе не найдены счёта.");
+                                    Console.WriteLine("Создайте новый счёт.");
                                     Program.AddAccount();
                                 }
                                 if (categories.Count == 0)
                                 {
+                                    Console.WriteLine("В базе не найдены котегории.");
+                                    Console.WriteLine("Создайте новую котегорию.");
                                     Program.AddCategory();
                                 }
                                 transaction.ConsoleAdd(transactions.Count + 1, transactionSymbol);
@@ -188,30 +197,75 @@ namespace MoneySupervisor
                                 //break;
                             case 2: //=
                                 transactionSymbol = '=';
-                                if (accounts.Count == 0)
+                                if (accounts.Count < 2)
                                 {
+                                    Console.WriteLine("В базе не достаточно счётов.");
+                                    Console.WriteLine("Создайте новый счёт.");
                                     Program.AddAccount();
                                 }
                                 if (categories.Count == 0)
                                 {
+                                    Console.WriteLine("В базе не найдены котегории.");
+                                    Console.WriteLine("Создайте новую котегорию.");
                                     Program.AddCategory();
                                 }
                                 MSTransaction.ConsoleTransfer(ref transactions, categories.Count + 1);
                                 goto case 99;
                                 //break;
                             case 3: //param
-                                Console.Write("Выберите язык программы: ");
-                                staticLanguage = MSLanguage.ChooseLanguage();
-                                Console.WriteLine("Язык изменён.");
-                                Program.cki = Console.ReadKey();
-                                Program.cki = default(ConsoleKeyInfo);
+                                transactionSymbol = '=';
+                                bool xReplace = true;
+                                do
+                                {
+                                    Console.SetCursorPosition(0, 1);
+                                    Console.WriteLine($"1. {dictionary["newaccount"].RetLang(staticLanguage)} ");
+                                    Console.SetCursorPosition(0, 2);
+                                    Console.WriteLine($"2. {dictionary["newcategory"].RetLang(staticLanguage)} ");
+                                    Console.SetCursorPosition(0, 3);
+                                    Console.Write($"3. Выберите язык программы: ");
+                                    Console.SetCursorPosition(0, 4);
+                                    Console.Write($"4. Назад: ");
+
+                                    cki = Console.ReadKey();
+                                    //Console.WriteLine($"2. {dictionary["newcategory"].RetLang(staticLanguage)} ");
+                                    switch (cki.KeyChar)
+                                    {
+                                        case '1':
+                                            Console.Clear();
+                                            Console.WriteLine($"1. {dictionary["newaccount"].RetLang(staticLanguage)} ");
+                                            Program.AddAccount();
+                                            break;
+                                        case '2':
+                                            Console.Clear();
+                                            Console.WriteLine($"2. {dictionary["newcategory"].RetLang(staticLanguage)} ");
+                                            Program.AddCategory();
+                                            break;
+                                        case '3':
+                                            Console.Write($"3. Выберите язык программы: ");
+                                            staticLanguage = MSLanguage.ChooseLanguage();
+                                            Console.WriteLine("Язык изменён.");
+                                            Program.cki = Console.ReadKey();
+                                            break;
+                                        case '4':
+                                            xReplace = false;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    cki = default(ConsoleKeyInfo);
+                                } while (xReplace);
                                 Console.Clear();
                                 break;
                             case 4: //help
+                                maxWidth = 80; maxheight = 25;
                                 Console.SetWindowSize(maxWidth, maxheight);
                                 Console.SetBufferSize(maxWidth, maxheight);
                                 Console.WriteLine(">> Money Supervisor << предназначена для ведения записей о Ваших доходах и расходах");
                                 MSIntro.Show();
+                                Console.Clear();
+                                maxWidth = 40; maxheight = 25;
+                                Console.SetWindowSize(maxWidth, maxheight);
+                                Console.SetBufferSize(maxWidth, maxheight);
                                 break;
                             case 99:
                                 Console.WriteLine("Информация добавлена.");
@@ -222,7 +276,6 @@ namespace MoneySupervisor
                             default:
                                 break;
                         }
-                        
                         break;
                     default:
                         break;
@@ -247,30 +300,18 @@ namespace MoneySupervisor
 
         private static void AddAccount()
         {
-            Console.WriteLine("В базе не найдены счёта.");
-            Console.WriteLine("Создайте новый счёт.");
-            Program.cki = Console.ReadKey();
-            Program.cki = default(ConsoleKeyInfo);
             account.ConsoleAdd(accounts.Count + 1, transactionSymbol);
             accounts.Add(new MSAccount(account));
             Console.WriteLine("Аккаунт добавлен.");
             Program.cki = Console.ReadKey();
-            Program.cki = default(ConsoleKeyInfo);
-            Console.Clear();
         }
 
         private static void AddCategory()
         {
-            Console.WriteLine("В базе не найдены котегории.");
-            Console.WriteLine("Создайте новую котегорию.");
-            Program.cki = Console.ReadKey();
-            Program.cki = default(ConsoleKeyInfo);
             category.ConsoleAdd(categories.Count + 1, transactionSymbol);
             categories.Add(new MSCategory(category));
             Console.WriteLine("Категория добавлена.");
             Program.cki = Console.ReadKey();
-            Program.cki = default(ConsoleKeyInfo);
-            Console.Clear();
         }
 
         public static DateTime msCompDateTime()

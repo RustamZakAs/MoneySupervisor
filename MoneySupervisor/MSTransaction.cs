@@ -85,6 +85,14 @@ namespace MoneySupervisor
                 //    MSValue = tMSValue;
                 MSValue = Program.MSReadDouble();
             } while (!(MSValue > 0));
+            if (MSIO == '+') 
+            {
+                if (MSValue < 0) { MSValue *= -1; }
+            }
+            else if (MSIO == '-')
+            {
+                if (MSValue > 0) { MSValue *= -1; }
+            }
             Console.SetCursorPosition(insertSumm.Length + 1, top - 1);
             Console.WriteLine($"{MSValue:f2}");
             Program.cki = default(ConsoleKeyInfo);
@@ -99,7 +107,7 @@ namespace MoneySupervisor
 
             Console.WriteLine("Выберите категорию: ");
             if (Program.categories.Count > 0)
-                MSCategoryId = MSCategory.ChooseCategory(ref Program.categories);
+                MSCategoryId = MSCategory.ChooseCategory(ref Program.categories, MSAccountId);
 
             Console.WriteLine("Введите заметку: ");
             MSNote = Console.ReadLine();
@@ -164,6 +172,10 @@ namespace MoneySupervisor
                 //    MSValue = tMSValue;
                 tMSTransaction.MSValue = Program.MSReadDouble();
             } while (!(tMSTransaction.MSValue > 0));
+            if (tMSTransaction.MSIO == '+')
+                if (tMSTransaction.MSValue < 0) tMSTransaction.MSValue *= -1;
+            else if (tMSTransaction.MSIO == '-')
+                    if (tMSTransaction.MSValue > 0) tMSTransaction.MSValue *= -1;
             Console.SetCursorPosition(insertSumm.Length + 1, top - 1);
             Console.WriteLine($"{tMSTransaction.MSValue:f2}");
             Program.cki = default(ConsoleKeyInfo);

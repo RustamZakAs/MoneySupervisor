@@ -163,29 +163,40 @@ namespace MoneySupervisor
             do
             {
                 Console.SetCursorPosition(left, top);
-                if (Console.KeyAvailable)
-                {
-                    Program.cki = Console.ReadKey();
-                }
+                Program.cki = Console.ReadKey();
                 switch (Program.cki.Key)
                 {
                     case ConsoleKey.DownArrow:
                         cc = (ConsoleColor)Program.random.Next(0, 16);
+                        Console.BackgroundColor = cc;
+                        Console.WriteLine("   ");
+                        Console.BackgroundColor = ConsoleColor.Black;
                         break;
                     case ConsoleKey.UpArrow:
                         cc  = (ConsoleColor)Program.random.Next(0, 16);
+                        Console.BackgroundColor = cc;
+                        Console.WriteLine("   ");
+                        Console.BackgroundColor = ConsoleColor.Black;
                         break;
                     case ConsoleKey.LeftArrow:
                         cc = (ConsoleColor)Program.random.Next(0, 16);
+                        Console.BackgroundColor = cc;
+                        Console.WriteLine("   ");
+                        Console.BackgroundColor = ConsoleColor.Black;
                         break;
                     case ConsoleKey.RightArrow:
                         cc = (ConsoleColor)Program.random.Next(0, 16);
+                        Console.BackgroundColor = cc;
+                        Console.WriteLine("   ");
+                        Console.BackgroundColor = ConsoleColor.Black;
                         break;
                     case ConsoleKey.Enter:
+                        Console.SetCursorPosition(left, top + 1);
                         return cc;
                     default:
                         break;
                 }
+                Program.cki = default(ConsoleKeyInfo);
             } while (true);
         }
     }
