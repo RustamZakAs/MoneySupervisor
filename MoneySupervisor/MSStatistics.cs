@@ -42,25 +42,36 @@ namespace MoneySupervisor
             int left = Console.CursorLeft;
             int top = Console.CursorTop;
 
-            var grouped = transactions.GroupBy(x => x.MSAccountId)
+            Dictionary<string, float> sumAccount = new Dictionary<string, float>();
+            var transactions_grouped = transactions.GroupBy(x => x.MSAccountId)
                      .Select(g => new
                      {
                          Id = g.Key,
                          Sum = g.Sum(x => x.MSValue)
                      });
-            foreach (var item in grouped)
+            foreach (var item in transactions_grouped)
             {
-                Console.WriteLine($"{MSAccount.GetName(item.Id)} {item.Sum}");
+                //sumAccount.Add(MSAccount.GetName(item.Id), item.Sum);
+                Console.Write($"{MSAccount.GetName(item.Id)} {item.Sum}");
             }
+            //foreach (var item_ac in accounts)
+            //{
+            //    Console.Write($"{item_ac.MSName} {sumAccount[item_ac.MSName]}");
+            //}
 
-            foreach (var item_ac in accounts)
-            {
-                Console.Write($"{item_ac.MSName} {grouped}");
-                foreach (var item_ca in categories)
-                {
-
-                }
-            }
+            //Dictionary<string, Dictionary<string, float>> sumCategory = new Dictionary<string, Dictionary<string, float>>();
+            //var category_grouped = transactions.GroupBy(x => new { x.MSAccountId, x.MSCategoryId }, (key, group) => new
+            //{
+            //    Key1 = key.MSAccountId,
+            //    Key2 = key.MSCategoryId,
+            //    Sum = group.Sum(x => x.MSValue)
+            //});
+            //foreach (var item in category_grouped)
+            //{
+            //    if (item == )
+            //    Dictionary<string, float> tete = new Dictionary<string, float>();
+            //    sumCategory.Add(MSCategory.GetName(item.Key1), );
+            //}
         }
     }
 }
