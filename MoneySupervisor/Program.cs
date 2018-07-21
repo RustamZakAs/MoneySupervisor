@@ -31,6 +31,8 @@ namespace MoneySupervisor
         public static int menyuId = 0, maxMenyuId = 5;
         public static char transactionSymbol = '+'; //+  -  =
 
+        delegate void Deleg();
+
         static void Main(string[] args)
         {
             currencies = currency.MSLoadСurrencies();
@@ -52,6 +54,10 @@ namespace MoneySupervisor
             MSIntro.Show();
             Console.Clear();
             MSMainMenyu();
+
+
+
+            Deleg obj = MSMainMenyu;
         }
 
         static void MSMainMenyu()
@@ -83,10 +89,10 @@ namespace MoneySupervisor
                 
                 if (Console.KeyAvailable)
                 {
-                    cki = Console.ReadKey();
+                    cki = Console.ReadKey(true);
                 }
                 Console.SetCursorPosition(0, 3);
-                Console.WriteLine(cki.KeyChar);
+                //Console.WriteLine(cki.KeyChar);
 
                 Console.SetCursorPosition(0, 1);
                 Console.WriteLine($"1. {dictionary["newaccount"].RetLang(staticLanguage)} ");
@@ -100,7 +106,7 @@ namespace MoneySupervisor
                         account.ConsoleAdd(accounts.Count + 1, ' ');
                         accounts.Add(account);
                         Console.WriteLine("Аккаунт добавлен.");
-                        Program.cki = Console.ReadKey();
+                        Program.cki = Console.ReadKey(true);
                         Program.cki = default(ConsoleKeyInfo);
                         Console.Clear();
                         break;

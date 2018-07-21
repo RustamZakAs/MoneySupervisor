@@ -44,10 +44,7 @@ namespace MoneySupervisor
             Console.WriteLine($"{msCurrenciesCodeList[xIndex]} {xSynbol}");
             do
             {
-                //if (Console.KeyAvailable)
-                //{
-                    Program.cki = Console.ReadKey();
-                //}
+                Program.cki = Console.ReadKey(true);
                 switch (Program.cki.Key)
                 {
                     case ConsoleKey.DownArrow:
