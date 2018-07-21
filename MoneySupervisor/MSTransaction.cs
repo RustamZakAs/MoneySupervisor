@@ -67,13 +67,24 @@ namespace MoneySupervisor
             Console.WriteLine(insertSumm);
             left = Console.CursorLeft;
             top = Console.CursorTop;
+            //string tReadLine = "";
             do
             {
-                Console.WriteLine("                      ");
-                Console.SetCursorPosition(left,top);
-                float.TryParse(Console.ReadLine(), out float tMSValue);
-                MSValue = tMSValue;
+                Console.SetCursorPosition(left, top);
+                if (Convert.ToString(MSValue).Length > 0)
+                {
+                    for (int i = 0; i < Convert.ToString(MSValue).Length; i++)
+                    {
+                        Console.WriteLine(" ");
+                    }
+                }
+                Console.SetCursorPosition(left, top);
+                //    tReadLine = Console.ReadLine();
+                //    float.TryParse(tReadLine, out float tMSValue);
+                //    MSValue = tMSValue;
+                MSValue = Program.msReadDouble();
             } while (!(MSValue > 0));
+            
             Console.SetCursorPosition(insertSumm.Length + 1, top - 1);
             Console.WriteLine($"{MSValue:f2}");
             Program.cki = default(ConsoleKeyInfo);

@@ -31,16 +31,16 @@ namespace MoneySupervisor
         public static int menyuId = 0, maxMenyuId = 5;
         public static char transactionSymbol = '+'; //+  -  =
 
-        delegate void Deleg();
-
         static void Main(string[] args)
         {
             currencies = currency.MSLoadСurrencies();
 
             MSSaveLoad.CreateDatabase();
             MSSaveLoad.InsertStandartValue();
-            if (currencies.Count != 1) 
-            MSSaveLoad.SQLiteLoadCurrenciesFromDatabase();
+            if (currencies.Count != 1)
+            {
+                MSSaveLoad.SQLiteLoadCurrenciesFromDatabase();
+            }
             MSSaveLoad.SQLiteLoadAccountsFromDatabase();
             MSSaveLoad.SQLiteLoadCategoriesFromDatabase();
 
@@ -54,10 +54,6 @@ namespace MoneySupervisor
             MSIntro.Show();
             Console.Clear();
             MSMainMenyu();
-
-
-
-            Deleg obj = MSMainMenyu;
         }
 
         static void MSMainMenyu()
@@ -89,10 +85,10 @@ namespace MoneySupervisor
                 
                 if (Console.KeyAvailable)
                 {
-                    cki = Console.ReadKey(true);
+                    cki = Console.ReadKey();
                 }
                 Console.SetCursorPosition(0, 3);
-                //Console.WriteLine(cki.KeyChar);
+                Console.WriteLine(cki.KeyChar);
 
                 Console.SetCursorPosition(0, 1);
                 Console.WriteLine($"1. {dictionary["newaccount"].RetLang(staticLanguage)} ");
@@ -106,7 +102,7 @@ namespace MoneySupervisor
                         account.ConsoleAdd(accounts.Count + 1, ' ');
                         accounts.Add(account);
                         Console.WriteLine("Аккаунт добавлен.");
-                        Program.cki = Console.ReadKey(true);
+                        Program.cki = Console.ReadKey();
                         Program.cki = default(ConsoleKeyInfo);
                         Console.Clear();
                         break;
@@ -145,7 +141,6 @@ namespace MoneySupervisor
                         switch (menyuId)
                         {
                             case 0: //+
-                                Console.Clear();
                                 transactionSymbol = '+';
                                 if (accounts.Count == 0)
                                 {
@@ -178,7 +173,6 @@ namespace MoneySupervisor
                                 goto case 99;
                                 //break;
                             case 1: //-
-                                Console.Clear();
                                 transactionSymbol = '-';
                                 if (accounts.Count == 0)
                                 {
@@ -211,7 +205,6 @@ namespace MoneySupervisor
                                 goto case 99;
                                 //break;
                             case 2: //=
-                                Console.Clear();
                                 transactionSymbol = '=';
                                 if (accounts.Count == 0)
                                 {
@@ -243,7 +236,6 @@ namespace MoneySupervisor
                                 goto case 99;
                                 //break;
                             case 3: //param
-                                Console.Clear();
                                 Console.Write("Выберите язык программы: ");
                                 staticLanguage = MSLanguage.ChooseLanguage();
                                 Console.WriteLine("Язык изменён.");
@@ -294,6 +286,83 @@ namespace MoneySupervisor
             int.Parse(DateTime.Now.ToString("HH")),
             int.Parse(DateTime.Now.ToString("mm")),
             int.Parse(DateTime.Now.ToString("ss")));
+        }
+
+        public static float msReadDouble()
+        {
+            StringBuilder tStr = new StringBuilder(10);
+            int DelimentrCount = 0;
+            do
+            {
+                cki = Console.ReadKey();
+                DelimentrCount = 0;
+                switch (cki.KeyChar)
+                {
+                    case '0':
+                        tStr.Append("0");
+                        break;
+                    case '1':
+                        tStr.Append("1");
+                        break;
+                    case '2':
+                        tStr.Append("2");
+                        break;
+                    case '3':
+                        tStr.Append("3");
+                        break;
+                    case '4':
+                        tStr.Append("4");
+                        break;
+                    case '5':
+                        tStr.Append("5");
+                        break;
+                    case '6':
+                        tStr.Append("6");
+                        break;
+                    case '7':
+                        tStr.Append("7");
+                        break;
+                    case '8':
+                        tStr.Append("8");
+                        break;
+                    case '9':
+                        tStr.Append("9");
+                        break;
+                    case '.':
+                        for (int i = 0; i < tStr.Length; i++)
+                        {
+                            if (tStr[i] == '.') DelimentrCount++;
+                        }
+                        if (DelimentrCount == 0)
+                        {
+                            tStr.Append(".");
+                        } else Console.Write("\b \b");
+                        break;
+                    default:
+                        //Console.Write("\b \b");
+                        break;
+                }
+                switch (cki.Key)
+                {
+                    case ConsoleKey.Enter:
+                        cki = default(ConsoleKeyInfo);
+                        return (float)Convert.ToDouble(tStr.ToString());
+                    case ConsoleKey.Escape:
+                        cki = default(ConsoleKeyInfo);
+                        return 0;
+                    case ConsoleKey.Backspace:
+                        cki = default(ConsoleKeyInfo);
+                        if (tStr.Length > 0)
+                        {
+                            tStr.Remove(tStr.Length - 1, 1);
+                            Console.Write(" ");
+                            Console.Write("\b");
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            } while (true);
         }
     }
 }
