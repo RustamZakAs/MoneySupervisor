@@ -138,30 +138,30 @@ namespace MoneySupervisor
 
         public static void InsertStandartValue()
         {
-            System.Data.SQLite.SQLiteConnection conn1 = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
-            conn1.Open();
+            System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
+            conn.Open();
 
             string sql_command = "INSERT INTO MSAccounts (MSAccountId, MSIO,     MSName, MSColor, MSImage, MSСurrencyCode, MSMulticurrency) "
                                                + "VALUES (          0,  '+', 'Наличные',        1,   ';)',          'AZN',               0);";
-            System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
+            System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
 
             sql_command = "INSERT INTO MSCategories (MSCategoryId, MSIO,     MSName, MSAccountId, MSColor, MSImage) "
                                           + "VALUES (           0,  '+', 'Зарплата',           1,       1,    ';)');";
-            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
+            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
 
             sql_command = "INSERT INTO MSTransactions (MSTransactionId, MSIO, MSValue, MSСurrencyCode, MSAccountId, MSCategoryId, MSNote,            MSDateTime, MSMulticurrency) "
                                             + "VALUES (              0,  '+',    0.01,          'AZN',           1,            1, 'Test', '20.07.2018 00:40:00',               0);";
-            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
+            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
 
             sql_command = "INSERT INTO MSСurrencies (MSСurrencyId,        MSСurrencyDate, MSСurrencyType, MSСurrencyCode, MSСurrencyNominal, MSСurrencyName, MSСurrencyValue) "
                                           + "VALUES (           0, '20.07.2018 00:40:00',             '',          'AZN',                 1,             '',               1);";
-            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn1);
+            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
 
-            conn1.Close();
+            conn.Close();
             //using (SQLiteConnection conn = new SQLiteConnection("Data Source=MSBase.db; Version=3;"))
             //{
             //    SQLiteCommand cmd = conn.CreateCommand();
