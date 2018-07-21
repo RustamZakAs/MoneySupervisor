@@ -137,5 +137,14 @@ namespace MoneySupervisor
             } while (true);
         }
 
+        public static string GetName(int MSCategoryId)
+        {
+            for (int i = 0; i < Program.categories.Count; i++)
+            {
+                if (Program.categories[i].MSCategoryId == MSCategoryId)
+                    return Program.categories[i].MSName;
+            }
+            return "";
+        }
     }
 }

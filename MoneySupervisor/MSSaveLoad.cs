@@ -142,17 +142,17 @@ namespace MoneySupervisor
             conn.Open();
 
             string sql_command = "INSERT INTO MSAccounts (MSAccountId, MSIO,     MSName, MSColor, MSImage, MSСurrencyCode, MSMulticurrency) "
-                                               + "VALUES (          0,  '+', 'Наличные',        1,   ';)',          'AZN',               0);";
+                                               + "VALUES (          0,  '+', 'Наличные',       1,    ';)',          'AZN',               0);";
             System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
 
             sql_command = "INSERT INTO MSCategories (MSCategoryId, MSIO,     MSName, MSAccountId, MSColor, MSImage) "
-                                          + "VALUES (           0,  '+', 'Зарплата',           1,       1,    ';)');";
+                                          + "VALUES (           0,  '+', 'Зарплата',           0,       1,    ';)');";
             command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
 
             sql_command = "INSERT INTO MSTransactions (MSTransactionId, MSIO, MSValue, MSСurrencyCode, MSAccountId, MSCategoryId, MSNote,            MSDateTime, MSMulticurrency) "
-                                            + "VALUES (              0,  '+',    0.01,          'AZN',           1,            1, 'Test', '20.07.2018 00:40:00',               0);";
+                                            + "VALUES (              0,  '+',    0.01,          'AZN',           0,            0, 'Test', '20.07.2018 00:40:00',               0);";
             command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
 
@@ -209,7 +209,7 @@ namespace MoneySupervisor
             conn.Close();
         }
 
-        private int DateTimeToInt(DateTime dateTime)
+        private int DateTimeToSecondInt(DateTime dateTime)
         {
             System.TimeSpan ts = dateTime.Subtract(DateTime.Parse("01.01.1970"));
             return (((((ts.Days * 24) + ts.Hours) * 60) + ts.Minutes) * 60) + ts.Seconds;
@@ -315,6 +315,41 @@ namespace MoneySupervisor
             }
         }
 
-        
+        static public void SQLiteLoadTransactionsFromDatabase()
+        {
+            System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
+            conn.Open();
+
+            //sql_command = "INSERT INTO MSTransactions (MSTransactionId, MSIO, MSValue, MSСurrencyCode, MSAccountId, MSCategoryId, MSNote,            MSDateTime, MSMulticurrency) "
+            //                                + "VALUES (              0,  '+',    0.01,          'AZN',           1,            1, 'Test', '20.07.2018 00:40:00',               0);";
+
+            SQLiteCommand cmd = new SQLiteCommand("", conn);
+            cmd.CommandText = "SELECT MSTransactionId, MSIO, MSValue, " +
+                                     "MSСurrencyCode, MSAccountId, MSCategoryId, " +
+                                     "MSNote, MSDateTime, MSMulticurrency " +
+                              "FROM MSTransactions";
+            try
+            {
+                SQLiteDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    Program.transaction.MSTransactionId = int.Parse(dr["MSTransactionId"].ToString());
+                    Program.transaction.MSIO            = ((string)dr["MSIO"])[0];
+                    Program.transaction.MSValue         = float.Parse(dr["MSValue"].ToString());
+                    Program.transaction.MSСurrencyCode  = (string)dr["MSСurrencyCode"];
+                    Program.transaction.MSAccountId     = int.Parse(dr["MSAccountId"].ToString());
+                    Program.transaction.MSCategoryId    = int.Parse(dr["MSCategoryId"].ToString());
+                    Program.transaction.MSNote          = (string)dr["MSNote"];
+                    Program.transaction.MSDateTime      = DateTime.Parse((string)dr["MSDateTime"]);
+                    Program.transaction.MSMulticurrency = (string)dr["MSDateTime"] == "1" ? true : false;
+                    Program.transactions.Add(new MSTransaction(Program.transaction));
+                }
+                dr.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

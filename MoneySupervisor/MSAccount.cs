@@ -140,5 +140,15 @@ namespace MoneySupervisor
                 Console.WriteLine($"{msAccountList[accountId].MSImage} {msAccountList[accountId].MSName} {xSynbol}");
             } while (true);
         }
+
+        public static string GetName(int MSAccountId)
+        {
+            for (int i = 0; i < Program.accounts.Count; i++)
+            {
+                if (Program.accounts[i].MSAccountId == MSAccountId)
+                    return Program.accounts[i].MSName;
+            }
+            return "";
+        }
     }
 }

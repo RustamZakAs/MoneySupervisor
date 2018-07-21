@@ -33,17 +33,32 @@ namespace MoneySupervisor
 
         static void Main(string[] args)
         {
-            currencies = currency.MSLoadСurrencies();
-
+            if (MSСurrency.CheckURL(MSСurrency.msСurrencyLink))
+                currencies = currency.MSLoadСurrencies();
+            else
+            {
+                if (true) //File exist
+                {
+                    if (true) //Table exist
+                    {
+                        if (true) //Value exist
+                        {
+                            MSSaveLoad.SQLiteLoadCurrenciesFromDatabase();
+                        }
+                    }
+                }
+            }
+            //if (currencies.Count != 1)
+            //{
+            //    MSSaveLoad.SQLiteLoadCurrenciesFromDatabase();
+            //}
             MSSaveLoad.CreateDatabase();
             MSSaveLoad.InsertStandartValue();
-            if (currencies.Count != 1)
-            {
-                MSSaveLoad.SQLiteLoadCurrenciesFromDatabase();
-            }
             MSSaveLoad.SQLiteLoadAccountsFromDatabase();
             MSSaveLoad.SQLiteLoadCategoriesFromDatabase();
+            MSSaveLoad.SQLiteLoadTransactionsFromDatabase();
 
+            MSStatistics.Show(ref accounts, ref categories, ref transactions);
 
             Console.Title = "Money Supervisor - Управление деньгами - Pullara nəzarət";
             Console.OutputEncoding = Encoding.Unicode;
@@ -138,6 +153,7 @@ namespace MoneySupervisor
                         break;
                     case ConsoleKey.Enter:
                         Program.cki = default(ConsoleKeyInfo);
+                        Console.Clear();
                         switch (menyuId)
                         {
                             case 0: //+
@@ -244,7 +260,8 @@ namespace MoneySupervisor
                                 Console.Clear();
                                 break;
                             case 4: //help
-                                Console.Clear();
+                                Console.SetWindowSize(maxWidth, maxheight);
+                                Console.SetBufferSize(maxWidth, maxheight);
                                 Console.WriteLine(">> Money Supervisor << предназначена для ведения записей о Ваших доходах и расходах");
                                 MSIntro.Show();
                                 break;
@@ -288,7 +305,7 @@ namespace MoneySupervisor
             int.Parse(DateTime.Now.ToString("ss")));
         }
 
-        public static float msReadDouble()
+        public static float MSReadDouble()
         {
             StringBuilder tStr = new StringBuilder(10);
             int DelimentrCount = 0;
@@ -346,7 +363,9 @@ namespace MoneySupervisor
                 {
                     case ConsoleKey.Enter:
                         cki = default(ConsoleKeyInfo);
-                        return (float)Convert.ToDouble(tStr.ToString());
+                        if (tStr.Length > 0)
+                            return (float)Convert.ToDouble(tStr.ToString());
+                        else return 0;
                     case ConsoleKey.Escape:
                         cki = default(ConsoleKeyInfo);
                         return 0;

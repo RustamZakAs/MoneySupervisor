@@ -68,7 +68,7 @@ namespace MoneySupervisor
             } while (true);
         }
 
-        public bool CheckURL(String url)
+        public static bool CheckURL(String url)
         {
             if (String.IsNullOrEmpty(url))
                 return false;
@@ -84,7 +84,7 @@ namespace MoneySupervisor
             }
             return false;
         }
-        private string msСurrencyLink = @"https://www.cbar.az/currencies/" +
+        public static string msСurrencyLink = @"https://www.cbar.az/currencies/" +
             DateTime.Now.ToString("dd") + '.' +
             DateTime.Now.ToString("MM") + '.' +
             DateTime.Now.ToString("yyyy") + ".xml";

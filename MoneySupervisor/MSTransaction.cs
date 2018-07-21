@@ -71,9 +71,10 @@ namespace MoneySupervisor
             do
             {
                 Console.SetCursorPosition(left, top);
-                if (Convert.ToString(MSValue).Length > 0)
+                if (MSValue > 0)
                 {
-                    for (int i = 0; i < Convert.ToString(MSValue).Length; i++)
+                    string str = Convert.ToString(MSValue);
+                    for (int i = 0; i < str.Length; i++)
                     {
                         Console.WriteLine(" ");
                     }
@@ -82,9 +83,8 @@ namespace MoneySupervisor
                 //    tReadLine = Console.ReadLine();
                 //    float.TryParse(tReadLine, out float tMSValue);
                 //    MSValue = tMSValue;
-                MSValue = Program.msReadDouble();
+                MSValue = Program.MSReadDouble();
             } while (!(MSValue > 0));
-            
             Console.SetCursorPosition(insertSumm.Length + 1, top - 1);
             Console.WriteLine($"{MSValue:f2}");
             Program.cki = default(ConsoleKeyInfo);
@@ -138,9 +138,36 @@ namespace MoneySupervisor
             //    }
             //} while (xreplace);
             tMSTransaction.MSIO = '+';
-            Console.WriteLine("Введите значение (сумма): ");
-            tMSTransaction.MSValue = float.Parse(Console.ReadLine());
+
+            //Console.WriteLine("Введите значение (сумма): ");
+            //tMSTransaction.MSValue = float.Parse(Console.ReadLine());
             //MSСurrency = Console.ReadLine();
+
+            string insertSumm = "Введите значение (сумма): ";
+            Console.WriteLine(insertSumm);
+            left = Console.CursorLeft;
+            top = Console.CursorTop;
+            //string tReadLine = "";
+            do
+            {
+                Console.SetCursorPosition(left, top);
+                if (Convert.ToString(tMSTransaction.MSValue).Length > 0)
+                {
+                    for (int i = 0; i < Convert.ToString(tMSTransaction.MSValue).Length; i++)
+                    {
+                        Console.WriteLine(" ");
+                    }
+                }
+                Console.SetCursorPosition(left, top);
+                //    tReadLine = Console.ReadLine();
+                //    float.TryParse(tReadLine, out float tMSValue);
+                //    MSValue = tMSValue;
+                tMSTransaction.MSValue = Program.MSReadDouble();
+            } while (!(tMSTransaction.MSValue > 0));
+            Console.SetCursorPosition(insertSumm.Length + 1, top - 1);
+            Console.WriteLine($"{tMSTransaction.MSValue:f2}");
+            Program.cki = default(ConsoleKeyInfo);
+
             left = Console.CursorLeft;
             top = Console.CursorTop;
             bool xreplace = true;
