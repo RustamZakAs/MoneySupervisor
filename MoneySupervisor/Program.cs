@@ -33,20 +33,6 @@ namespace MoneySupervisor
 
         static void Main(string[] args)
         {
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
             currencies = currency.MSLoadСurrencies();
 
             MSSaveLoad.CreateDatabase();
@@ -153,6 +139,7 @@ namespace MoneySupervisor
                         switch (menyuId)
                         {
                             case 0: //+
+                                Console.Clear();
                                 transactionSymbol = '+';
                                 if (accounts.Count == 0)
                                 {
@@ -185,6 +172,7 @@ namespace MoneySupervisor
                                 goto case 99;
                                 //break;
                             case 1: //-
+                                Console.Clear();
                                 transactionSymbol = '-';
                                 if (accounts.Count == 0)
                                 {
@@ -217,6 +205,7 @@ namespace MoneySupervisor
                                 goto case 99;
                                 //break;
                             case 2: //=
+                                Console.Clear();
                                 transactionSymbol = '=';
                                 if (accounts.Count == 0)
                                 {
@@ -248,6 +237,7 @@ namespace MoneySupervisor
                                 goto case 99;
                                 //break;
                             case 3: //param
+                                Console.Clear();
                                 Console.Write("Выберите язык программы: ");
                                 staticLanguage = MSLanguage.ChooseLanguage();
                                 Console.WriteLine("Язык изменён.");

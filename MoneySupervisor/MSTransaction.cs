@@ -62,20 +62,37 @@ namespace MoneySupervisor
             //        xreplace = false;
             //    }
             //} while (xreplace);
-            Console.WriteLine("Введите значение (сумма): ");
-            MSValue = float.Parse(Console.ReadLine());
+
+            string insertSumm = "Введите значение (сумма): ";
+            Console.WriteLine(insertSumm);
+            left = Console.CursorLeft;
+            top = Console.CursorTop;
+            do
+            {
+                Console.WriteLine("                      ");
+                Console.SetCursorPosition(left,top);
+                float.TryParse(Console.ReadLine(), out float tMSValue);
+                MSValue = tMSValue;
+            } while (!(MSValue > 0));
+            Console.SetCursorPosition(insertSumm.Length + 1, top - 1);
+            Console.WriteLine($"{MSValue:f2}");
             Program.cki = default(ConsoleKeyInfo);
+
             Console.WriteLine("Выберите тип валюты: ");
             //MSСurrency = Console.ReadLine();
             MSСurrencyCode = MSСurrency.ChooseСurrency(ref Program.currencies);
+
             Console.WriteLine("Выберите аккаунт: ");
             if (Program.accounts.Count > 0)
                 MSAccountId = MSAccount.ChooseAccount(ref Program.accounts);
+
             Console.WriteLine("Выберите категорию: ");
             if (Program.categories.Count > 0)
                 MSCategoryId = MSCategory.ChooseCategory(ref Program.categories);
+
             Console.WriteLine("Введите заметку: ");
             MSNote = Console.ReadLine();
+
             Console.WriteLine("Введите дату и время\n(DD.MM.YYYY hh.mm.ss): "); Console.Write($" {Program.msCompDateTime()}");
             int xtop = Console.CursorTop;
             Console.SetCursorPosition(0, xtop + 1);
