@@ -27,6 +27,8 @@ namespace MoneySupervisor
         //[DataMember]
         public bool     MSMulticurrency { get; set; }
 
+        public int MyProperty { get; set; }
+
         public MSTransaction()
         {
         }
@@ -63,7 +65,7 @@ namespace MoneySupervisor
             //    }
             //} while (xreplace);
 
-            string insertSumm = "Введите значение (сумма): ";
+            string insertSumm = "Введите значение (Cумма): ";
             Console.WriteLine(insertSumm);
             left = Console.CursorLeft;
             top = Console.CursorTop;
@@ -98,8 +100,8 @@ namespace MoneySupervisor
             Program.cki = default(ConsoleKeyInfo);
 
             Console.WriteLine("Выберите тип валюты: ");
-            //MSСurrency = Console.ReadLine();
-            MSCurrencyCode = MSСurrency.ChooseСurrency(ref Program.currencies);
+            //MSCurrency = Console.ReadLine();
+            MSCurrencyCode = MSCurrency.ChooseCurrency(ref Program.currencies);
 
             Console.WriteLine("Выберите аккаунт: ");
             if (Program.accounts.Count > 0)
@@ -147,11 +149,11 @@ namespace MoneySupervisor
             //} while (xreplace);
             tMSTransaction.MSIO = '+';
 
-            //Console.WriteLine("Введите значение (сумма): ");
+            //Console.WriteLine("Введите значение (Cумма): ");
             //tMSTransaction.MSValue = float.Parse(Console.ReadLine());
-            //MSСurrency = Console.ReadLine();
+            //MSCurrency = Console.ReadLine();
 
-            string insertSumm = "Введите значение (сумма): ";
+            string insertSumm = "Введите значение (Cумма): ";
             Console.WriteLine(insertSumm);
             left = Console.CursorLeft;
             top = Console.CursorTop;
@@ -187,16 +189,16 @@ namespace MoneySupervisor
             {
                 Console.SetCursorPosition(left, top);
                 Console.WriteLine("Выберите тип валюты: ");
-                string tMSСurrencyCode = MSСurrency.ChooseСurrency(ref Program.currencies);
+                string tMSCurrencyCode = MSCurrency.ChooseCurrency(ref Program.currencies);
 
-                if (tMSСurrencyCode != "ALL")
+                if (tMSCurrencyCode != "ALL")
                 {
-                    tMSTransaction.MSCurrencyCode = tMSСurrencyCode;
+                    tMSTransaction.MSCurrencyCode = tMSCurrencyCode;
                     xreplace = false;
                 }
             } while (xreplace);
             
-            Console.WriteLine("Выберите аккаунт вывода суммы: ");
+            Console.WriteLine("Выберите аккаунт вывода Cуммы: ");
             if (Program.accounts.Count > 0)
                 tMSTransaction.MSAccountId = MSAccount.ChooseAccount(ref Program.accounts);
             //Console.WriteLine("Выберите категорию: ");
@@ -210,7 +212,7 @@ namespace MoneySupervisor
             string tDateTime = Console.ReadLine();
             if (tDateTime.Length == 0 | tDateTime == " ") tMSTransaction.MSDateTime = Program.msCompDateTime();
             else tMSTransaction.MSDateTime = DateTime.Parse(tDateTime);
-            //if (tMSTransaction.MSСurrencyCode == "ALL")
+            //if (tMSTransaction.MSCurrencyCode == "ALL")
             //{
             //    tMSTransaction.MSMulticurrency = true;
             //}

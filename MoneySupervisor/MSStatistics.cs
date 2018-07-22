@@ -17,13 +17,13 @@ namespace MoneySupervisor
             {
                 arr_str = rfile.ReadToEnd().ToCharArray();
             }
-            Console.WriteLine("Исходная строка:\n >{0}< \n", new String(arr_str));
+            Console.WriteLine("ИCходная Cтрока:\n >{0}< \n", new String(arr_str));
             var count = from p in arr_str
                         group p by p
                         into charGroup
                         orderby charGroup.Key
                         select charGroup;
-            Console.WriteLine("Всего символов:\n {0} \n", arr_str.Length);
+            Console.WriteLine("ВCего Cимволов:\n {0} \n", arr_str.Length);
             foreach (var el in count)
             {
                 double per = Convert.ToDouble((el.Count() * 100)) / arr_str.Length;

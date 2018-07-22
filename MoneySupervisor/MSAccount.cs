@@ -22,7 +22,7 @@ namespace MoneySupervisor
         //[DataMember]                      
         public string       MSImage         { get; set; }
         //[DataMember]                      
-        public string       MSСurrencyCode  { get; set; }
+        public string       MSCurrencyCode  { get; set; }
         //[DataMember]
         public bool         MSMulticurrency { get; set; }
 
@@ -36,7 +36,7 @@ namespace MoneySupervisor
                          string       msName, 
                          ConsoleColor msColor, 
                          string       msImage,
-                         string       msСurrency,
+                         string       msCurrency,
                          bool         msMulticurrency)
         {
             MSAccountId     = msAccountId;
@@ -44,7 +44,7 @@ namespace MoneySupervisor
             MSName          = msName;
             MSColor         = msColor;
             MSImage         = msImage;
-            MSСurrencyCode  = msСurrency;
+            MSCurrencyCode  = msCurrency;
             MSMulticurrency = msMulticurrency;
         }
 
@@ -55,7 +55,7 @@ namespace MoneySupervisor
             MSName          = account.MSName;
             MSColor         = account.MSColor;
             MSImage         = account.MSImage;
-            MSСurrencyCode  = account.MSСurrencyCode;
+            MSCurrencyCode  = account.MSCurrencyCode;
             MSMulticurrency = account.MSMulticurrency;
         }
 
@@ -87,12 +87,12 @@ namespace MoneySupervisor
             MSName = Console.ReadLine();
             Console.WriteLine("Выбермте цвет аккаунта: ");
             MSColor = MSIntro.ChooseColor();
-            Console.WriteLine("Введите символ аккаунта: ");
+            Console.WriteLine("Введите Cимвол аккаунта: ");
             MSImage = Console.ReadLine();
             Console.WriteLine("Введите тип валюты аккаунта: ");
-            //MSСurrencyCode = Console.ReadLine();
-            MSСurrencyCode = MSСurrency.ChooseСurrency(ref Program.currencies);
-            if (MSСurrencyCode == "ALL")
+            //MSCurrencyCode = Console.ReadLine();
+            MSCurrencyCode = MSCurrency.ChooseCurrency(ref Program.currencies);
+            if (MSCurrencyCode == "ALL")
             {
                 MSMulticurrency = true;
             }
@@ -163,14 +163,14 @@ namespace MoneySupervisor
                                                          "MSName, " +
                                                          "MSColor, " +
                                                          "MSImage, " +
-                                                         "MSСurrencyCode, " +
+                                                         "MSCurrencyCode, " +
                                                          "MSMulticurrency) "
                                               + $"VALUES ({a.MSAccountId}, " +
                                                        $"'{a.MSIO}'," +
                                                        $"'{a.MSName}'," +
                                                        $" {(int)a.MSColor}, " +
                                                        $"'{a.MSImage}'," +
-                                                       $"'{a.MSСurrencyCode}'," +
+                                                       $"'{a.MSCurrencyCode}'," +
                                                        $" {tbool});";
             System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, Program.conn);
             command.ExecuteNonQuery();

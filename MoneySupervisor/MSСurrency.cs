@@ -8,29 +8,29 @@ using System.Collections.Generic;
 namespace MoneySupervisor
 {
     //[DataContract]
-    class MSСurrency
+    class MSCurrency
     {
         //[DataMember]
-        public int MSСurrencyId { get; set; }
+        public int MSCurrencyId { get; set; }
         //[DataMember]
-        public DateTime MSСurrencyDate { get; set; }
+        public DateTime MSCurrencyDate { get; set; }
         //[DataMember]
-        public string MSСurrencyType { get; set; }
+        public string MSCurrencyType { get; set; }
         //[DataMember]
         public string MSCurrencyCode { get; set; }
         //[DataMember]
-        public float MSСurrencyNominal { get; set; }
+        public float MSCurrencyNominal { get; set; }
         //[DataMember]
-        public string MSСurrencyName { get; set; }
+        public string MSCurrencyName { get; set; }
         //[DataMember]
-        public float MSСurrencyValue { get; set; }
+        public float MSCurrencyValue { get; set; }
 
-        public static string ChooseСurrency(ref List<MSСurrency> msСurrencyList)
+        public static string ChooseCurrency(ref List<MSCurrency> msCurrencyList)
         {
             List<string> msCurrenciesCodeList = new List<string>();
-            for (int i = 0; i < msСurrencyList.Count; i++)
+            for (int i = 0; i < msCurrencyList.Count; i++)
             {
-                string temp = msСurrencyList[i].MSCurrencyCode.ToUpper();
+                string temp = msCurrencyList[i].MSCurrencyCode.ToUpper();
                 if (!msCurrenciesCodeList.Exists(x => x.ToUpper() == temp))
                 {
                     msCurrenciesCodeList.Add(temp);
@@ -40,7 +40,7 @@ namespace MoneySupervisor
             int top = Console.CursorTop;
             int xIndex = 0;
             string xSynbol = "↓ "; // ↓   ↑   ↓↑
-            if (msСurrencyList.Count == 1) xSynbol = "  ";
+            if (msCurrencyList.Count == 1) xSynbol = "  ";
             Console.WriteLine($"{msCurrenciesCodeList[xIndex]} {xSynbol}");
             do
             {
@@ -84,55 +84,55 @@ namespace MoneySupervisor
             }
             return false;
         }
-        public static string msСurrencyLink = @"https://www.cbar.az/currencies/" +
+        public static string msCurrencyLink = @"https://www.cbar.az/currencies/" +
             DateTime.Now.ToString("dd") + '.' +
             DateTime.Now.ToString("MM") + '.' +
             DateTime.Now.ToString("yyyy") + ".xml";
 
-        public string MSСurrencyLink()
+        public string MSCurrencyLink()
         {
-            return msСurrencyLink;
+            return msCurrencyLink;
         }
 
-        public MSСurrency()
+        public MSCurrency()
         {
             
         }
-        public MSСurrency(MSСurrency msСurrency)
+        public MSCurrency(MSCurrency msCurrency)
         {
-            MSСurrencyType = msСurrency.MSСurrencyType;
-            MSCurrencyCode = msСurrency.MSCurrencyCode;
-            MSСurrencyNominal = msСurrency.MSСurrencyNominal;
-            MSСurrencyName = msСurrency.MSСurrencyName;
-            MSСurrencyValue = msСurrency.MSСurrencyValue;
+            MSCurrencyType = msCurrency.MSCurrencyType;
+            MSCurrencyCode = msCurrency.MSCurrencyCode;
+            MSCurrencyNominal = msCurrency.MSCurrencyNominal;
+            MSCurrencyName = msCurrency.MSCurrencyName;
+            MSCurrencyValue = msCurrency.MSCurrencyValue;
         }
-        public List<MSСurrency> MSLoadСurrencies()
+        public List<MSCurrency> MSLoadCurrencies()
         {
-            var MSСurrencyTypeList = new List<MSСurrency>();
-            var msСurrencyType     = new MSСurrency();
+            var MSCurrencyTypeList = new List<MSCurrency>();
+            var msCurrencyType     = new MSCurrency();
 
-            msСurrencyType.MSСurrencyId      = 0;
-            msСurrencyType.MSСurrencyDate    = Program.msCompDateTime();
-            msСurrencyType.MSСurrencyType    = "Xarici valyuta";
-            msСurrencyType.MSCurrencyCode    = "AZN";
-            msСurrencyType.MSСurrencyNominal = 1;
-            msСurrencyType.MSСurrencyName    = "Azərbaycan manatı";
-            msСurrencyType.MSСurrencyValue   = 1;
+            msCurrencyType.MSCurrencyId      = 0;
+            msCurrencyType.MSCurrencyDate    = Program.msCompDateTime();
+            msCurrencyType.MSCurrencyType    = "Xarici valyuta";
+            msCurrencyType.MSCurrencyCode    = "AZN";
+            msCurrencyType.MSCurrencyNominal = 1;
+            msCurrencyType.MSCurrencyName    = "Azərbaycan manatı";
+            msCurrencyType.MSCurrencyValue   = 1;
 
-            MSСurrencyTypeList.Add(new MSСurrency(msСurrencyType));
+            MSCurrencyTypeList.Add(new MSCurrency(msCurrencyType));
 
             var xmlDoc = new XmlDocument();
             try
             {
-                Console.WriteLine("Попытка загрузки валют с сервера.");
-                xmlDoc.Load(msСurrencyLink); //Не возможно связться с сервером для загрузки данных о валютах!
+                Console.WriteLine("Попытка загрузки валют C Cервера.");
+                xmlDoc.Load(msCurrencyLink); //Не возможно CвязтьCя C Cервером для загрузки данных о валютах!
                 XmlElement xRoot = xmlDoc.DocumentElement;
                 foreach (XmlNode xnode in xRoot)
                 {
                     XmlNode attrType = xnode.Attributes.GetNamedItem("Type");
                     if (attrType != null)
                     {
-                        msСurrencyType.MSСurrencyType = attrType.Value;
+                        msCurrencyType.MSCurrencyType = attrType.Value;
                         //Console.WriteLine(attrType.Value);
                     }
                     foreach (XmlNode childnode in xnode.ChildNodes)
@@ -140,7 +140,7 @@ namespace MoneySupervisor
                         XmlNode attrCode = childnode.Attributes.GetNamedItem("Code");
                         if (attrCode != null)
                         {
-                            msСurrencyType.MSCurrencyCode = attrCode.Value;
+                            msCurrencyType.MSCurrencyCode = attrCode.Value;
                             //Console.WriteLine(attrCode.Value);
                         }
                         foreach (XmlNode childChildNode in childnode)
@@ -149,7 +149,7 @@ namespace MoneySupervisor
                             {
                                 if (attrType.Value == "Bank metalları")
                                 {
-                                    msСurrencyType.MSСurrencyNominal = float.Parse("1,00");
+                                    msCurrencyType.MSCurrencyNominal = float.Parse("1,00");
                                     //Console.WriteLine(1);
                                 }
                                 else
@@ -157,37 +157,37 @@ namespace MoneySupervisor
                                     string tString = childChildNode.InnerText;
                                     int tInt = tString.IndexOf('.');
                                     if (tInt > 0)
-                                        msСurrencyType.MSСurrencyNominal = float.Parse(childChildNode.InnerText.Replace('.', ','));
+                                        msCurrencyType.MSCurrencyNominal = float.Parse(childChildNode.InnerText.Replace('.', ','));
                                     else
-                                        msСurrencyType.MSСurrencyNominal = float.Parse(childChildNode.InnerText);
+                                        msCurrencyType.MSCurrencyNominal = float.Parse(childChildNode.InnerText);
                                     //Console.WriteLine(childChildNode.InnerText);
                                 }
                             }
                             if (childChildNode.Name == "Name")
                             {
-                                msСurrencyType.MSСurrencyName = childChildNode.InnerText;
+                                msCurrencyType.MSCurrencyName = childChildNode.InnerText;
                                 //Console.WriteLine(childChildNode.InnerText);
                             }
                             if (childChildNode.Name == "Value")
                             {
-                                msСurrencyType.MSСurrencyValue = float.Parse(childChildNode.InnerText.Replace('.', ','));
+                                msCurrencyType.MSCurrencyValue = float.Parse(childChildNode.InnerText.Replace('.', ','));
                                 //Console.WriteLine(childChildNode.InnerText);
                             }
                         }
-                        MSСurrencyTypeList.Add(new MSСurrency(msСurrencyType));
+                        MSCurrencyTypeList.Add(new MSCurrency(msCurrencyType));
                     }
                 }
-                Console.WriteLine("Загрузка валют с сервера завершена.");
+                Console.WriteLine("Загрузка валют C Cервера завершена.");
             }
             catch (System.Net.WebException)
             {
-                Console.WriteLine("Не возможно связаться с сервером для загрузки данных о валютах!");
+                Console.WriteLine("Не возможно CвязатьCя C Cервером для загрузки данных о валютах!");
             }
             catch (Exception)
             {
                 Console.WriteLine("Произошла не предвиденная ошибка!");
             }
-            return MSСurrencyTypeList;
+            return MSCurrencyTypeList;
         }
     }
 }
