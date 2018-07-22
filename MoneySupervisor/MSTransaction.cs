@@ -100,7 +100,6 @@ namespace MoneySupervisor
             Program.cki = default(ConsoleKeyInfo);
 
             Console.WriteLine("Выберите тип валюты: ");
-            //MSCurrency = Console.ReadLine();
             MSCurrencyCode = MSCurrency.ChooseCurrency(ref Program.currencies);
 
             Console.WriteLine("Выберите аккаунт: ");
@@ -132,33 +131,18 @@ namespace MoneySupervisor
 
         public static void ConsoleTransfer(ref List<MSTransaction> transactions, int msTransactionId)
         {
+            int tAccount2 = 0;
             MSTransaction tMSTransaction = new MSTransaction();
             int left = Console.CursorLeft;
             int top = Console.CursorTop;
             tMSTransaction.MSTransactionId = msTransactionId;
-            //bool xreplace = true;
-            //do
-            //{
-            //    Console.SetCursorPosition(left, top);
-            //    Console.WriteLine("Введите тип транзакции (+,-): ");
-            //    string temp = Console.ReadLine();
-            //    if (temp[0] == '+' | temp[0] == '-')
-            //    {
-            //        MSIO = temp[0];
-            //        xreplace = false;
-            //    }
-            //} while (xreplace);
+
             tMSTransaction.MSIO = '+';
-
-            //Console.WriteLine("Введите значение (Cумма): ");
-            //tMSTransaction.MSValue = float.Parse(Console.ReadLine());
-            //MSCurrency = Console.ReadLine();
-
+            
             string insertSumm = "Введите значение (сумма): ";
             Console.WriteLine(insertSumm);
             left = Console.CursorLeft;
             top = Console.CursorTop;
-            //string tReadLine = "";
             do
             {
                 Console.SetCursorPosition(left, top);
@@ -170,9 +154,6 @@ namespace MoneySupervisor
                     }
                 }
                 Console.SetCursorPosition(left, top);
-                //    tReadLine = Console.ReadLine();
-                //    float.TryParse(tReadLine, out float tMSValue);
-                //    MSValue = tMSValue;
                 tMSTransaction.MSValue = Program.MSReadDouble();
             } while (!(tMSTransaction.MSValue > 0));
             if (tMSTransaction.MSIO == '+')
@@ -182,6 +163,10 @@ namespace MoneySupervisor
             Console.SetCursorPosition(insertSumm.Length + 1, top - 1);
             Console.WriteLine($"{tMSTransaction.MSValue:f2}");
             Program.cki = default(ConsoleKeyInfo);
+
+            Console.WriteLine("Выберите аккаунт вывода суммы: "); //1
+            if (Program.accounts.Count > 0)
+                tMSTransaction.MSAccountId = MSAccount.ChooseAccount(ref Program.accounts);
 
             left = Console.CursorLeft;
             top = Console.CursorTop;
@@ -198,62 +183,67 @@ namespace MoneySupervisor
                     xreplace = false;
                 }
             } while (xreplace);
-            
-            Console.WriteLine("Выберите аккаунт вывода суммы: ");
+
+            Console.WriteLine("Выберите аккаунт ввода суммы: "); //2
             if (Program.accounts.Count > 0)
-                tMSTransaction.MSAccountId = MSAccount.ChooseAccount(ref Program.accounts);
-            //Console.WriteLine("Выберите категорию: ");
-            //if (Program.categories.Count > 0)
-            //    tMSTransaction.MSCategoryId = MSCategory.ChooseCategory(ref Program.categories);
+                tAccount2 = MSAccount.ChooseAccount(ref Program.accounts);
 
             Console.WriteLine("Введите заметку: ");
             tMSTransaction.MSNote = Console.ReadLine();
             if (tMSTransaction.MSNote.Length == 0) tMSTransaction.MSNote = " ";
 
-            Console.WriteLine("Введите дату и время\n(DD.MM.YYYY hh.mm.ss): "); Console.Write($" {Program.msCompDateTime()}");
+            Console.WriteLine("Введите дату и время\n(DD.MM.YYYY hh.mm.ss): ");
+            Console.Write($" {Program.msCompDateTime()}");
             int xtop = Console.CursorTop;
             Console.SetCursorPosition(0, xtop + 1);
             string tDateTime = Console.ReadLine();
             if (tDateTime.Length == 0 | tDateTime == " ") tMSTransaction.MSDateTime = Program.msCompDateTime();
             else tMSTransaction.MSDateTime = DateTime.Parse(tDateTime);
-            //if (tMSTransaction.MSCurrencyCode == "ALL")
-            //{
-            //    tMSTransaction.MSMulticurrency = true;
-            //}
-            //else tMSTransaction.MSMulticurrency = false;
+
             transactions.Add(new MSTransaction(tMSTransaction));
+            MSTransaction.SQLiteInsertTransactionInDatabase(tMSTransaction);
+
+            tMSTransaction.MSIO = '-';
+
+            tMSTransaction.MSAccountId = tAccount2;
+
+            transactions.Add(new MSTransaction(tMSTransaction));
+            MSTransaction.SQLiteInsertTransactionInDatabase(tMSTransaction);
+
             Program.cki = default(ConsoleKeyInfo);
             Console.Clear();
         }
 
         static public void SQLiteInsertTransactionInDatabase(MSTransaction tr)
         {
-            System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
-            conn.Open();
-            int tbool = tr.MSMulticurrency == true ? 1 : 0;
-            string tstr = (tr.MSValue.ToString()).Replace(',', '.');
-            string sql_command = "INSERT INTO MSTransactions (MSTransactionId, " +
-                                                             "MSIO, " +
-                                                             "MSValue, " +
-                                                             "MSCurrencyCode, " +
-                                                             "MSAccountId, " +
-                                                             "MSCategoryId, " +
-                                                             "MSNote,            " +
-                                                             "MSDateTime, " +
-                                                             "MSMulticurrency) "
-                + $"VALUES ({tr.MSTransactionId}," +
-                          $"'{tr.MSIO}'," +
-                          $" {tstr}," +
-                          $"'{tr.MSCurrencyCode}'," +
-                          $" {tr.MSAccountId}," +
-                          $" {tr.MSCategoryId}," +
-                          $"'{tr.MSNote}'," +
-                          $"'{(tr.MSDateTime).ToString()}'," +
-                          $" {tbool});";
-            System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
-            command.ExecuteNonQuery();
-
-            conn.Close();
+            using (System.Data.SQLite.SQLiteConnection conn = 
+                new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;"))
+            {
+                conn.Open();
+                int tbool = tr.MSMulticurrency == true ? 1 : 0;
+                string tstr = (tr.MSValue.ToString()).Replace(',', '.');
+                string sql_command = "INSERT INTO MSTransactions (MSTransactionId, " +
+                                                                 "MSIO, " +
+                                                                 "MSValue, " +
+                                                                 "MSCurrencyCode, " +
+                                                                 "MSAccountId, " +
+                                                                 "MSCategoryId, " +
+                                                                 "MSNote,            " +
+                                                                 "MSDateTime, " +
+                                                                 "MSMulticurrency) "
+                    + $"VALUES ({tr.MSTransactionId}," +
+                              $"'{tr.MSIO}'," +
+                              $" {tstr}," +
+                              $"'{tr.MSCurrencyCode}'," +
+                              $" {tr.MSAccountId}," +
+                              $" {tr.MSCategoryId}," +
+                              $"'{tr.MSNote}'," +
+                              $"'{(tr.MSDateTime).ToString()}'," +
+                              $" {tbool});";
+                System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
+                command.ExecuteNonQuery();
+                conn.Close();
+            }
         }
 
         static public void SQLiteOutputTransactionsInCSV(List<MSTransaction> trList)

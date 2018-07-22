@@ -18,7 +18,7 @@ namespace MoneySupervisor
         //datetime(value, 'unixepoch') read
         public static void CreateDatabase()
         {
-            Console.WriteLine("Работа C файлом бызы данных.");
+            Console.WriteLine("Работа с файлом бызы данных.");
             Console.WriteLine(File.Exists(Program.curFile) ? "Файл существует." : "Файла не существует.");
             try
             {

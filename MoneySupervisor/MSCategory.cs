@@ -53,9 +53,9 @@ namespace MoneySupervisor
             MSImage = MScategory.MSImage;
         }
 
-        public void ConsoleAdd(int categoryId, char msIO)
+        public void ConsoleAdd(int categoryId, char msIO, int left = 0)
         {
-            int left = Console.CursorLeft;
+            left = Console.CursorLeft;
             int top = Console.CursorTop;
             MSCategoryId = categoryId;
 
