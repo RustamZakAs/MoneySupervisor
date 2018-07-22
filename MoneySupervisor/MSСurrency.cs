@@ -17,7 +17,7 @@ namespace MoneySupervisor
         //[DataMember]
         public string MSСurrencyType { get; set; }
         //[DataMember]
-        public string MSСurrencyCode { get; set; }
+        public string MSCurrencyCode { get; set; }
         //[DataMember]
         public float MSСurrencyNominal { get; set; }
         //[DataMember]
@@ -30,7 +30,7 @@ namespace MoneySupervisor
             List<string> msCurrenciesCodeList = new List<string>();
             for (int i = 0; i < msСurrencyList.Count; i++)
             {
-                string temp = msСurrencyList[i].MSСurrencyCode.ToUpper();
+                string temp = msСurrencyList[i].MSCurrencyCode.ToUpper();
                 if (!msCurrenciesCodeList.Exists(x => x.ToUpper() == temp))
                 {
                     msCurrenciesCodeList.Add(temp);
@@ -101,7 +101,7 @@ namespace MoneySupervisor
         public MSСurrency(MSСurrency msСurrency)
         {
             MSСurrencyType = msСurrency.MSСurrencyType;
-            MSСurrencyCode = msСurrency.MSСurrencyCode;
+            MSCurrencyCode = msСurrency.MSCurrencyCode;
             MSСurrencyNominal = msСurrency.MSСurrencyNominal;
             MSСurrencyName = msСurrency.MSСurrencyName;
             MSСurrencyValue = msСurrency.MSСurrencyValue;
@@ -114,7 +114,7 @@ namespace MoneySupervisor
             msСurrencyType.MSСurrencyId      = 0;
             msСurrencyType.MSСurrencyDate    = Program.msCompDateTime();
             msСurrencyType.MSСurrencyType    = "Xarici valyuta";
-            msСurrencyType.MSСurrencyCode    = "AZN";
+            msСurrencyType.MSCurrencyCode    = "AZN";
             msСurrencyType.MSСurrencyNominal = 1;
             msСurrencyType.MSСurrencyName    = "Azərbaycan manatı";
             msСurrencyType.MSСurrencyValue   = 1;
@@ -140,7 +140,7 @@ namespace MoneySupervisor
                         XmlNode attrCode = childnode.Attributes.GetNamedItem("Code");
                         if (attrCode != null)
                         {
-                            msСurrencyType.MSСurrencyCode = attrCode.Value;
+                            msСurrencyType.MSCurrencyCode = attrCode.Value;
                             //Console.WriteLine(attrCode.Value);
                         }
                         foreach (XmlNode childChildNode in childnode)

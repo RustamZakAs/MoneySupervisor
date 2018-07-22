@@ -243,7 +243,9 @@ namespace MoneySupervisor
                                     Console.SetCursorPosition(0, 4);
                                     Console.Write($"4. Сброс базы данных: ");
                                     Console.SetCursorPosition(0, 5);
-                                    Console.Write($"5. Назад: ");
+                                    Console.Write($"5. Выгрузка в CSV файл: ");
+                                    Console.SetCursorPosition(0, 6);
+                                    Console.Write($"6. Назад: ");
 
                                     cki = Console.ReadKey();
                                     //Console.WriteLine($"2. {dictionary["newcategory"].RetLang(staticLanguage)} ");
@@ -278,6 +280,9 @@ namespace MoneySupervisor
                                             transactions = new List<MSTransaction>();
                                             break;
                                         case '5':
+                                            MSTransaction.SQLiteOutputTransactionsInCSV(transactions);
+                                            break;
+                                        case '6':
                                             xReplace = false;
                                             break;
                                         default:

@@ -15,7 +15,7 @@ namespace MoneySupervisor
         //[DataMember]
         public float    MSValue         { get; set; }
         //[DataMember]                      
-        public string   MSСurrencyCode  { get; set; }
+        public string   MSCurrencyCode { get; set; }
         //[DataMember]
         public int      MSAccountId     { get; set; }
         //[DataMember]
@@ -36,7 +36,7 @@ namespace MoneySupervisor
             MSTransactionId = msTransaction.MSTransactionId;
             MSIO            = msTransaction.MSIO;
             MSValue         = msTransaction.MSValue;
-            MSСurrencyCode  = msTransaction.MSСurrencyCode;
+            MSCurrencyCode  = msTransaction.MSCurrencyCode;
             MSAccountId     = msTransaction.MSAccountId;
             MSCategoryId    = msTransaction.MSCategoryId;
             MSNote          = msTransaction.MSNote;
@@ -99,7 +99,7 @@ namespace MoneySupervisor
 
             Console.WriteLine("Выберите тип валюты: ");
             //MSСurrency = Console.ReadLine();
-            MSСurrencyCode = MSСurrency.ChooseСurrency(ref Program.currencies);
+            MSCurrencyCode = MSСurrency.ChooseСurrency(ref Program.currencies);
 
             Console.WriteLine("Выберите аккаунт: ");
             if (Program.accounts.Count > 0)
@@ -118,7 +118,7 @@ namespace MoneySupervisor
             string tDateTime = Console.ReadLine();
             if (tDateTime.Length == 0 | tDateTime == " ") MSDateTime = Program.msCompDateTime();
             else MSDateTime = DateTime.Parse(tDateTime);
-            if (MSСurrencyCode == "ALL")
+            if (MSCurrencyCode == "ALL")
             {
                 MSMulticurrency = true;
             }
@@ -191,7 +191,7 @@ namespace MoneySupervisor
 
                 if (tMSСurrencyCode != "ALL")
                 {
-                    tMSTransaction.MSСurrencyCode = tMSСurrencyCode;
+                    tMSTransaction.MSCurrencyCode = tMSСurrencyCode;
                     xreplace = false;
                 }
             } while (xreplace);
@@ -229,7 +229,7 @@ namespace MoneySupervisor
             string sql_command = "INSERT INTO MSTransactions (MSTransactionId, " +
                                                              "MSIO, " +
                                                              "MSValue, " +
-                                                             "MSСurrencyCode, " +
+                                                             "MSCurrencyCode, " +
                                                              "MSAccountId, " +
                                                              "MSCategoryId, " +
                                                              "MSNote,            " +
@@ -238,7 +238,7 @@ namespace MoneySupervisor
                 + $"VALUES ({tr.MSTransactionId}," +
                           $"'{tr.MSIO}'," +
                           $" {tstr}," +
-                          $"'{tr.MSСurrencyCode}'," +
+                          $"'{tr.MSCurrencyCode}'," +
                           $" {tr.MSAccountId}," +
                           $" {tr.MSCategoryId}," +
                           $"'{tr.MSNote}'," +
@@ -248,6 +248,24 @@ namespace MoneySupervisor
             command.ExecuteNonQuery();
 
             conn.Close();
+        }
+
+        static public void SQLiteOutputTransactionsInCSV(List<MSTransaction> trList)
+        {
+            //MSTransaction to CSV file
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            sb.AppendLine("MSTransactionId, MSIO, MSValue, MSCurrencyCode, MSAccountId, MSCategoryId, MSNote, MSDateTime, MSMulticurrency");
+            foreach (var tr in trList)
+            {
+                sb.AppendLine($"{tr.MSTransactionId},{tr.MSIO},{tr.MSValue},{tr.MSCurrencyCode},{tr.MSAccountId},{tr.MSCategoryId},{tr.MSNote},{tr.MSDateTime},{tr.MSMulticurrency}");
+            }
+
+            Console.WriteLine(sb.ToString());
+
+            System.IO.File.WriteAllText(
+                System.IO.Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory, "Transaction.csv"),
+                sb.ToString());
         }
     }
 }
