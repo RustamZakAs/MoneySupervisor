@@ -104,14 +104,13 @@ namespace MoneySupervisor
                 Console.Write("                  ");
                 Console.SetCursorPosition(i++ < maxWidth - str.Length ? i : 0, 0);
                 Console.Write(str);
-                Thread.Sleep(300);
+                Thread.Sleep(333);
                 
                 if (Console.KeyAvailable)
                 {
                     cki = Console.ReadKey();
                 }
                 Console.SetCursorPosition(0, 3);
-                //Console.WriteLine(cki.KeyChar);
 
                 Console.SetCursorPosition(0, 1);
                 Console.WriteLine($"1. {dictionary["newaccount"].RetLang(staticLanguage)} ");
@@ -234,19 +233,15 @@ namespace MoneySupervisor
                                 bool xReplace = true;
                                 do
                                 {
-                                    Console.SetCursorPosition(0, 1);
+                                    Console.Clear();
                                     Console.WriteLine($"1. {dictionary["newaccount"].RetLang(staticLanguage)} ");
-                                    Console.SetCursorPosition(0, 2);
                                     Console.WriteLine($"2. {dictionary["newcategory"].RetLang(staticLanguage)} ");
-                                    Console.SetCursorPosition(0, 3);
-                                    Console.Write($"3. Выберите язык программы: ");
-                                    Console.SetCursorPosition(0, 4);
-                                    Console.Write($"4. Сброс базы данных: ");
-                                    Console.SetCursorPosition(0, 5);
-                                    Console.Write($"5. Выгрузка в CSV файл: ");
-                                    Console.SetCursorPosition(0, 6);
-                                    Console.Write($"6. Назад: ");
-
+                                    Console.WriteLine($"3. Выберите язык программы: ");
+                                    Console.WriteLine($"4. Сброс базы данных: ");
+                                    Console.WriteLine($"5. Выгрузка в CSV файл: ");
+                                    Console.WriteLine($"6. Просмотреть все транзакции: ");
+                                    Console.WriteLine($"7. Назад: ");
+                                    
                                     cki = Console.ReadKey();
                                     //Console.WriteLine($"2. {dictionary["newcategory"].RetLang(staticLanguage)} ");
                                     switch (cki.KeyChar)
@@ -268,6 +263,7 @@ namespace MoneySupervisor
                                             Program.cki = Console.ReadKey();
                                             break;
                                         case '4':
+                                            Console.WriteLine($"4. Сброс базы данных: ");
                                             MSSaveLoad.CreateDatabase();
                                             MSSaveLoad.InsertStandartValue();
                                             currency = new MSCurrency();
@@ -280,9 +276,17 @@ namespace MoneySupervisor
                                             transactions = new List<MSTransaction>();
                                             break;
                                         case '5':
+                                            Console.WriteLine($"5. Выгрузка в CSV файл: ");
                                             MSTransaction.SQLiteOutputTransactionsInCSV(transactions);
                                             break;
                                         case '6':
+                                            Console.WriteLine($"6. Просмотреть все транзакции: ");
+                                            Console.Clear();
+                                            MSTransaction.ShowAllTransaction(transactions);
+                                            Console.ReadKey();
+                                            Console.Clear();
+                                            break;
+                                        case '7':
                                             xReplace = false;
                                             break;
                                         default:

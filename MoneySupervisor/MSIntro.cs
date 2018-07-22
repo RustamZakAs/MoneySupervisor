@@ -88,7 +88,7 @@ namespace MoneySupervisor
                             " ______ ",
                             "|______|",
                             "        ",
-                            " РаCход "};
+                            " Расход "};
             for (int j = 0; j < str.Length; j++)
             {
                 Console.SetCursorPosition(left, top++);

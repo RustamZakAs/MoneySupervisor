@@ -113,6 +113,7 @@ namespace MoneySupervisor
 
             Console.WriteLine("Введите заметку: ");
             MSNote = Console.ReadLine();
+            if (MSNote.Length == 0) MSNote = " ";
 
             Console.WriteLine("Введите дату и время\n(DD.MM.YYYY hh.mm.ss): "); Console.Write($" {Program.msCompDateTime()}");
             int xtop = Console.CursorTop;
@@ -204,8 +205,11 @@ namespace MoneySupervisor
             //Console.WriteLine("Выберите категорию: ");
             //if (Program.categories.Count > 0)
             //    tMSTransaction.MSCategoryId = MSCategory.ChooseCategory(ref Program.categories);
+
             Console.WriteLine("Введите заметку: ");
             tMSTransaction.MSNote = Console.ReadLine();
+            if (tMSTransaction.MSNote.Length == 0) tMSTransaction.MSNote = " ";
+
             Console.WriteLine("Введите дату и время\n(DD.MM.YYYY hh.mm.ss): "); Console.Write($" {Program.msCompDateTime()}");
             int xtop = Console.CursorTop;
             Console.SetCursorPosition(0, xtop + 1);
@@ -259,15 +263,41 @@ namespace MoneySupervisor
             sb.AppendLine("MSTransactionId, MSIO, MSValue, MSCurrencyCode, MSAccountId, MSCategoryId, MSNote, MSDateTime, MSMulticurrency");
             foreach (var tr in trList)
             {
-                sb.AppendLine($"{tr.MSTransactionId},{tr.MSIO},{tr.MSValue},{tr.MSCurrencyCode},{tr.MSAccountId},{tr.MSCategoryId},{tr.MSNote},{tr.MSDateTime},{tr.MSMulticurrency}");
+                sb.AppendLine($"{tr.MSTransactionId}," +
+                    $"{tr.MSIO}," +
+                    $"{tr.MSValue}," +
+                    $"{tr.MSCurrencyCode}," +
+                    $"{MSAccount.GetName(tr.MSAccountId)}," +
+                    $"{MSCategory.GetName(tr.MSCategoryId)}," +
+                    $"{tr.MSNote}," +
+                    $"{tr.MSDateTime}," +
+                    $"{tr.MSMulticurrency}");
             }
 
-            Console.WriteLine(sb.ToString());
+            //Console.WriteLine(sb.ToString());
 
             System.IO.File.WriteAllText(
                 System.IO.Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory, "Transaction.csv"),
                 sb.ToString());
+        }
+
+        static public void ShowAllTransaction(List<MSTransaction> trList)
+        {
+            int maxWidth = 80;
+            Console.SetWindowSize(maxWidth, 25);
+            foreach (var tr in trList)
+            {
+                Console.WriteLine($"{tr.MSTransactionId}," +
+                    $"{tr.MSIO}," +
+                    $"{tr.MSValue}," +
+                    $"{tr.MSCurrencyCode}," +
+                    $"{MSAccount.GetName(tr.MSAccountId)}," +
+                    $"{MSCategory.GetName(tr.MSCategoryId)}," +
+                    $"{tr.MSNote}," +
+                    $"{tr.MSDateTime}," +
+                    $"{tr.MSMulticurrency}\n");
+            }
         }
     }
 }
