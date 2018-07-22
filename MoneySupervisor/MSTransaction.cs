@@ -220,11 +220,12 @@ namespace MoneySupervisor
             Console.Clear();
         }
 
-        static public void SQLiteSaveTransactionInDatabase(MSTransaction tr)
+        static public void SQLiteInsertTransactionInDatabase(MSTransaction tr)
         {
             System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
             conn.Open();
             int tbool = tr.MSMulticurrency == true ? 1 : 0;
+            string tstr = (tr.MSValue.ToString()).Replace(',', '.');
             string sql_command = "INSERT INTO MSTransactions (MSTransactionId, " +
                                                              "MSIO, " +
                                                              "MSValue, " +
@@ -236,7 +237,7 @@ namespace MoneySupervisor
                                                              "MSMulticurrency) "
                 + $"VALUES ({tr.MSTransactionId}," +
                           $"'{tr.MSIO}'," +
-                          $" {tr.MSValue}," +
+                          $" {tstr}," +
                           $"'{tr.MSСurrencyCode}'," +
                           $" {tr.MSAccountId}," +
                           $" {tr.MSCategoryId}," +

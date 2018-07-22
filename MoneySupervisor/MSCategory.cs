@@ -120,8 +120,17 @@ namespace MoneySupervisor
                 do
                 {
                     tCatCount++;
-                    if (!TmsCategoryList.Exists(x => x.MSCategoryId == tCatCount))
+                    if (!TmsCategoryList.Exists(x => x.MSCategoryId == tCatCount)) //Error?
+                    {
+                        Console.WriteLine();
+                        int maxWidth = 40, maxheight = 65;
+                        Console.SetWindowSize(maxWidth, 25);
+                        Console.SetBufferSize(maxWidth, maxheight);
                         Program.category.ConsoleAdd(tCatCount, Program.transactionSymbol);
+                        Program.categories.Add(new MSCategory(Program.category));
+                        MSCategory.SQLiteInsertCategoryInDatabase(Program.category);
+                        break;
+                    }
                 } while (true);
             }
 
@@ -134,7 +143,16 @@ namespace MoneySupervisor
                 {
                     tCatCount++;
                     if (!TmsCategoryList.Exists(x => x.MSCategoryId == tCatCount))
+                    {
+                        Console.WriteLine();
+                        int maxWidth = 40, maxheight = 65;
+                        Console.SetWindowSize(maxWidth, 25);
+                        Console.SetBufferSize(maxWidth, maxheight);
                         Program.category.ConsoleAdd(tCatCount, Program.transactionSymbol);
+                        Program.categories.Add(new MSCategory(Program.category));
+                        MSCategory.SQLiteInsertCategoryInDatabase(Program.category);
+                        break;
+                    }
                 } while (true);
             }
 
@@ -183,7 +201,7 @@ namespace MoneySupervisor
             return "";
         }
 
-        static public void SQLiteSaveCategoryInDatabase(MSCategory c)
+        static public void SQLiteInsertCategoryInDatabase(MSCategory c)
         {
             Program.conn.Open();
             string sql_command = "INSERT INTO MSCategories (MSCategoryId, " +

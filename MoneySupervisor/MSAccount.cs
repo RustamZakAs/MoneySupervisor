@@ -154,10 +154,10 @@ namespace MoneySupervisor
             return "";
         }
 
-        static public void SQLiteSaveAccountInDatabase(MSAccount a)
+        static public void SQLiteInsertAccountInDatabase(MSAccount a)
         {
             Program.conn.Open();
-
+            int tbool = a.MSMulticurrency == true ? 1 : 0;
             string sql_command = "INSERT INTO MSAccounts (MSAccountId, " +
                                                          "MSIO,     " +
                                                          "MSName, " +
@@ -168,10 +168,10 @@ namespace MoneySupervisor
                                               + $"VALUES ({a.MSAccountId}, " +
                                                        $"'{a.MSIO}'," +
                                                        $"'{a.MSName}'," +
-                                                       $" {a.MSColor}, " +
+                                                       $" {(int)a.MSColor}, " +
                                                        $"'{a.MSImage}'," +
                                                        $"'{a.MSСurrencyCode}'," +
-                                                       $" {a.MSMulticurrency});";
+                                                       $" {tbool});";
             System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, Program.conn);
             command.ExecuteNonQuery();
             Program.conn.Close();

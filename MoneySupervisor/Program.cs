@@ -75,12 +75,12 @@ namespace MoneySupervisor
             MSLanguage.CreateDictionary(ref dictionary);
 
             MSIntro.Show();
-            Console.Clear();
             MSMainMenyu();
         }
 
         static void MSMainMenyu()
         {
+            Console.Clear();
             maxWidth = 40; maxheight = 25;
             Console.SetWindowSize(maxWidth, maxheight);
             Console.SetBufferSize(maxWidth, maxheight);
@@ -122,21 +122,15 @@ namespace MoneySupervisor
                 {
                     case '1':
                         Console.Clear();
-                        account.ConsoleAdd(accounts.Count + 1, ' ');
-                        accounts.Add(new MSAccount(account));
-                        Console.WriteLine("Аккаунт добавлен.");
-                        Program.cki = Console.ReadKey();
-                        Program.cki = default(ConsoleKeyInfo);
-                        Console.Clear();
+                        AddAccount();
+                        cki = default(ConsoleKeyInfo);
+                        MSMainMenyu();
                         break;
                     case '2':
                         Console.Clear();
-                        category.ConsoleAdd(categories.Count + 1, ' ');
-                        categories.Add(new MSCategory(category));
-                        Console.WriteLine("Категория добавлена.");
-                        Program.cki = Console.ReadKey();
-                        Program.cki = default(ConsoleKeyInfo);
-                        Console.Clear();
+                        AddCategory();
+                        cki = default(ConsoleKeyInfo);
+                        MSMainMenyu();
                         break;
                     default:
                         break;
@@ -180,16 +174,18 @@ namespace MoneySupervisor
                                     Program.AddCategory();
                                 }
                                 tTranCount = transactions.Count;
+                                bool xReplaceTrCount = true;
                                 do
                                 {
                                     tTranCount++;
                                     if (!transactions.Exists(x => x.MSTransactionId == tTranCount))
                                     {
+                                        xReplaceTrCount = false;
                                         transaction.ConsoleAdd(tTranCount, transactionSymbol);
                                     }
-                                } while (true);
+                                } while (xReplaceTrCount);
                                 transactions.Add(new MSTransaction(transaction));
-                                MSTransaction.SQLiteSaveTransactionInDatabase(transaction);
+                                MSTransaction.SQLiteInsertTransactionInDatabase(transaction);
                                 goto case 99;
                                 //break;
                             case 1: //-
@@ -213,7 +209,7 @@ namespace MoneySupervisor
                                     transaction.ConsoleAdd(tTranCount, transactionSymbol);
                                 } while (transactions.Exists(x => x.MSTransactionId == tTranCount));
                                 transactions.Add(new MSTransaction(transaction));
-                                MSTransaction.SQLiteSaveTransactionInDatabase(transaction);
+                                MSTransaction.SQLiteInsertTransactionInDatabase(transaction);
                                 goto case 99;
                                 //break;
                             case 2: //=
@@ -301,6 +297,7 @@ namespace MoneySupervisor
                     default:
                         break;
                 }
+                
                 cki = default(ConsoleKeyInfo);
 
                 MSIntro.Plus(menyuId, 5, 5, ConsoleColor.Green, ConsoleColor.Black);
@@ -321,18 +318,36 @@ namespace MoneySupervisor
 
         private static void AddAccount()
         {
-            account.ConsoleAdd(accounts.Count + 1, transactionSymbol);
+            int tAccId = accounts.Count;
+            do
+            {
+                tAccId++;
+                if (!(accounts.Exists(x => x.MSAccountId == tAccId)))
+                {
+                    account.ConsoleAdd(tAccId, transactionSymbol);
+                    break;
+                }
+            } while (true);
             accounts.Add(new MSAccount(account));
-            MSAccount.SQLiteSaveAccountInDatabase(account);
+            MSAccount.SQLiteInsertAccountInDatabase(account);
             Console.WriteLine("Аккаунт добавлен.");
             Program.cki = Console.ReadKey();
         }
 
         private static void AddCategory()
         {
-            category.ConsoleAdd(categories.Count + 1, transactionSymbol);
+            int tCatId = categories.Count;
+            do
+            {
+                tCatId++;
+                if (!(categories.Exists(x => x.MSAccountId == tCatId)))
+                {
+                    category.ConsoleAdd(tCatId, transactionSymbol);
+                    break;
+                }
+            } while (true);
             categories.Add(new MSCategory(category));
-            MSCategory.SQLiteSaveCategoryInDatabase(category);
+            MSCategory.SQLiteInsertCategoryInDatabase(category);
             Console.WriteLine("Категория добавлена.");
             Program.cki = Console.ReadKey();
         }
