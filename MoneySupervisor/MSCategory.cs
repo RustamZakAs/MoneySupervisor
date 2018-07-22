@@ -88,7 +88,7 @@ namespace MoneySupervisor
             }
             Console.WriteLine("Выберите цвет категории: ");
             MSColor = MSIntro.ChooseColor();
-            Console.WriteLine("Введите Cимвол категории: ");
+            Console.WriteLine("Введите символ категории: ");
             MSImage = Console.ReadLine();
         }
 

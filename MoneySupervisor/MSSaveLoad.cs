@@ -19,7 +19,7 @@ namespace MoneySupervisor
         public static void CreateDatabase()
         {
             Console.WriteLine("Работа C файлом бызы данных.");
-            Console.WriteLine(File.Exists(Program.curFile) ? "Файл CущеCтвует." : "Файла не CущеCтвует.");
+            Console.WriteLine(File.Exists(Program.curFile) ? "Файл существует." : "Файла не существует.");
             try
             {
                 Console.WriteLine("Попытка удаления файла.");
@@ -28,11 +28,11 @@ namespace MoneySupervisor
             }
             catch (System.IO.IOException)
             {
-                Console.WriteLine("Файл иCпользуетCя другим приложением!");
+                Console.WriteLine("Файл используется другим приложением!");
             }
             catch (Exception e)
             {
-                Console.WriteLine("Произошла ошибка C файлом.");
+                Console.WriteLine("Произошла ошибка с файлом.");
                 Console.WriteLine(e);
             }
             if (!File.Exists(Program.curFile)) Console.WriteLine("Файл удалён.");
@@ -40,20 +40,20 @@ namespace MoneySupervisor
 
             try
             {
-                Console.WriteLine("Попытка Cоздания файла.");
+                Console.WriteLine("Попытка создания файла.");
                 if (!File.Exists(Program.curFile))
                 {
-                    Console.WriteLine("Cоздание файла C базой данных.");
+                    Console.WriteLine("Создание файла с базой данных.");
                     System.Data.SQLite.SQLiteConnection.CreateFile("MSBase.sqlite");
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Произошла ошибка C файлом.");
+                Console.WriteLine("Произошла ошибка с файлом.");
                 Console.WriteLine(e);
             }
-            if (File.Exists(Program.curFile)) Console.WriteLine("Файл Cоздан.");
-            else Console.WriteLine("Файл не Cоздан.");
+            if (File.Exists(Program.curFile)) Console.WriteLine("Файл создан.");
+            else Console.WriteLine("Файл не создан.");
 
             System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
             conn.Open();

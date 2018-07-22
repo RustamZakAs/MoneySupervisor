@@ -124,8 +124,8 @@ namespace MoneySupervisor
             var xmlDoc = new XmlDocument();
             try
             {
-                Console.WriteLine("Попытка загрузки валют C Cервера.");
-                xmlDoc.Load(msCurrencyLink); //Не возможно CвязтьCя C Cервером для загрузки данных о валютах!
+                Console.WriteLine("Попытка загрузки валют с сервера.");
+                xmlDoc.Load(msCurrencyLink); //Не возможно связться с сервером для загрузки данных о валютах!
                 XmlElement xRoot = xmlDoc.DocumentElement;
                 foreach (XmlNode xnode in xRoot)
                 {
@@ -177,11 +177,11 @@ namespace MoneySupervisor
                         MSCurrencyTypeList.Add(new MSCurrency(msCurrencyType));
                     }
                 }
-                Console.WriteLine("Загрузка валют C Cервера завершена.");
+                Console.WriteLine("Загрузка валют с сервера завершена.");
             }
             catch (System.Net.WebException)
             {
-                Console.WriteLine("Не возможно CвязатьCя C Cервером для загрузки данных о валютах!");
+                Console.WriteLine("Не возможно связаться с сервером для загрузки данных о валютах!");
             }
             catch (Exception)
             {

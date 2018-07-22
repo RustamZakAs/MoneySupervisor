@@ -65,7 +65,7 @@ namespace MoneySupervisor
             //    }
             //} while (xreplace);
 
-            string insertSumm = "Введите значение (Cумма): ";
+            string insertSumm = "Введите значение (сумма): ";
             Console.WriteLine(insertSumm);
             left = Console.CursorLeft;
             top = Console.CursorTop;
@@ -153,7 +153,7 @@ namespace MoneySupervisor
             //tMSTransaction.MSValue = float.Parse(Console.ReadLine());
             //MSCurrency = Console.ReadLine();
 
-            string insertSumm = "Введите значение (Cумма): ";
+            string insertSumm = "Введите значение (сумма): ";
             Console.WriteLine(insertSumm);
             left = Console.CursorLeft;
             top = Console.CursorTop;
@@ -198,7 +198,7 @@ namespace MoneySupervisor
                 }
             } while (xreplace);
             
-            Console.WriteLine("Выберите аккаунт вывода Cуммы: ");
+            Console.WriteLine("Выберите аккаунт вывода суммы: ");
             if (Program.accounts.Count > 0)
                 tMSTransaction.MSAccountId = MSAccount.ChooseAccount(ref Program.accounts);
             //Console.WriteLine("Выберите категорию: ");

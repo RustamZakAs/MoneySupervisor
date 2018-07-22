@@ -87,7 +87,7 @@ namespace MoneySupervisor
             MSName = Console.ReadLine();
             Console.WriteLine("Выбермте цвет аккаунта: ");
             MSColor = MSIntro.ChooseColor();
-            Console.WriteLine("Введите Cимвол аккаунта: ");
+            Console.WriteLine("Введите символ аккаунта: ");
             MSImage = Console.ReadLine();
             Console.WriteLine("Введите тип валюты аккаунта: ");
             //MSCurrencyCode = Console.ReadLine();

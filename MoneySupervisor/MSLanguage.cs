@@ -97,7 +97,7 @@ namespace MoneySupervisor
 
             MSLanguage phrase2 = new MSLanguage
             {
-                RUS = "Новый Cчёт",
+                RUS = "Новый счёт",
                 AZE = "Yeni hesab",
                 ENG = "New account",
                 KOR = "새 계정"

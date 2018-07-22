@@ -163,14 +163,14 @@ namespace MoneySupervisor
                                 transactionSymbol = '+';
                                 if (accounts.Count == 0)
                                 {
-                                    Console.WriteLine("В базе не найдены Cчёта.");
-                                    Console.WriteLine("Cоздайте новый Cчёт.");
+                                    Console.WriteLine("В базе не найдены счёта.");
+                                    Console.WriteLine("Создайте новый счёт.");
                                     Program.AddAccount();
                                 }
                                 if (categories.Count == 0)
                                 {
                                     Console.WriteLine("В базе не найдены котегории.");
-                                    Console.WriteLine("Cоздайте новую котегорию.");
+                                    Console.WriteLine("Создайте новую котегорию.");
                                     Program.AddCategory();
                                 }
                                 tTranCount = transactions.Count;
@@ -192,14 +192,14 @@ namespace MoneySupervisor
                                 transactionSymbol = '-';
                                 if (accounts.Count == 0)
                                 {
-                                    Console.WriteLine("В базе не найдены Cчёта.");
-                                    Console.WriteLine("Cоздайте новый Cчёт.");
+                                    Console.WriteLine("В базе не найдены счёта.");
+                                    Console.WriteLine("Создайте новый счёт.");
                                     Program.AddAccount();
                                 }
                                 if (categories.Count == 0)
                                 {
                                     Console.WriteLine("В базе не найдены котегории.");
-                                    Console.WriteLine("Cоздайте новую котегорию.");
+                                    Console.WriteLine("Создайте новую котегорию.");
                                     Program.AddCategory();
                                 }
                                 tTranCount = transactions.Count;
@@ -216,14 +216,14 @@ namespace MoneySupervisor
                                 transactionSymbol = '=';
                                 if (accounts.Count < 2)
                                 {
-                                    Console.WriteLine("В базе не доCтаточно Cчётов.");
-                                    Console.WriteLine("Cоздайте новый Cчёт.");
+                                    Console.WriteLine("В базе не достаточно счётов.");
+                                    Console.WriteLine("Создайте новый счёт.");
                                     Program.AddAccount();
                                 }
                                 if (categories.Count == 0)
                                 {
                                     Console.WriteLine("В базе не найдены котегории.");
-                                    Console.WriteLine("Cоздайте новую котегорию.");
+                                    Console.WriteLine("Создайте новую котегорию.");
                                     Program.AddCategory();
                                 }
                                 MSTransaction.ConsoleTransfer(ref transactions, categories.Count + 1);
@@ -241,7 +241,7 @@ namespace MoneySupervisor
                                     Console.SetCursorPosition(0, 3);
                                     Console.Write($"3. Выберите язык программы: ");
                                     Console.SetCursorPosition(0, 4);
-                                    Console.Write($"4. CброC базы данных: ");
+                                    Console.Write($"4. Сброс базы данных: ");
                                     Console.SetCursorPosition(0, 5);
                                     Console.Write($"5. Выгрузка в CSV файл: ");
                                     Console.SetCursorPosition(0, 6);
@@ -296,7 +296,7 @@ namespace MoneySupervisor
                                 maxWidth = 80; maxheight = 25;
                                 Console.SetWindowSize(maxWidth, maxheight);
                                 Console.SetBufferSize(maxWidth, maxheight);
-                                Console.WriteLine(">> Money Supervisor << предназначена для ведения запиCей о Ваших доходах и раCходах");
+                                Console.WriteLine(">> Money Supervisor << предназначена для ведения записей о Ваших доходах и расходах");
                                 MSIntro.Show();
                                 Console.Clear();
                                 maxWidth = 40; maxheight = 25;
