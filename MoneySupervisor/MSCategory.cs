@@ -133,9 +133,9 @@ namespace MoneySupervisor
                     }
                 } while (true);
             }
-
-            if (TmsCategoryList.Exists(x => x.MSAccountId == msAccountId))
-                Console.WriteLine($"{TmsCategoryList[msAccountId].MSImage} {TmsCategoryList[msAccountId].MSName} {xSynbol}");
+            if (TmsCategoryList.Exists(x => x.MSAccountId == msAccountId)) //Error?
+                Console.WriteLine($"{TmsCategoryList.Where(x => x.MSAccountId == msAccountId).Select(g => g.MSImage).First()} " +
+                    $"{TmsCategoryList.Where(x => x.MSAccountId == msAccountId).Select(g => g.MSName).First()} {xSynbol}");
             else
             {
                 int tCatCount = Program.categories.Count;

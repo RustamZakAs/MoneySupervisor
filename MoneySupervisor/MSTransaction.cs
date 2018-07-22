@@ -137,7 +137,7 @@ namespace MoneySupervisor
             int top = Console.CursorTop;
             tMSTransaction.MSTransactionId = msTransactionId;
 
-            tMSTransaction.MSIO = '+';
+            tMSTransaction.MSIO = '-';
             
             string insertSumm = "Введите значение (сумма): ";
             Console.WriteLine(insertSumm);
@@ -157,9 +157,13 @@ namespace MoneySupervisor
                 tMSTransaction.MSValue = Program.MSReadDouble();
             } while (!(tMSTransaction.MSValue > 0));
             if (tMSTransaction.MSIO == '+')
+            {
                 if (tMSTransaction.MSValue < 0) tMSTransaction.MSValue *= -1;
+            }
             else if (tMSTransaction.MSIO == '-')
-                    if (tMSTransaction.MSValue > 0) tMSTransaction.MSValue *= -1;
+            {
+                if (tMSTransaction.MSValue > 0) tMSTransaction.MSValue *= -1;
+            }
             Console.SetCursorPosition(insertSumm.Length + 1, top - 1);
             Console.WriteLine($"{tMSTransaction.MSValue:f2}");
             Program.cki = default(ConsoleKeyInfo);
@@ -203,9 +207,18 @@ namespace MoneySupervisor
             transactions.Add(new MSTransaction(tMSTransaction));
             MSTransaction.SQLiteInsertTransactionInDatabase(tMSTransaction);
 
-            tMSTransaction.MSIO = '-';
+            tMSTransaction.MSIO = '+';
 
             tMSTransaction.MSAccountId = tAccount2;
+
+            if (tMSTransaction.MSIO == '+')
+            {
+                if (tMSTransaction.MSValue < 0) tMSTransaction.MSValue *= -1;
+            }
+            else if (tMSTransaction.MSIO == '-')
+            {
+                if (tMSTransaction.MSValue > 0) tMSTransaction.MSValue *= -1;
+            }
 
             transactions.Add(new MSTransaction(tMSTransaction));
             MSTransaction.SQLiteInsertTransactionInDatabase(tMSTransaction);
