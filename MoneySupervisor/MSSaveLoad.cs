@@ -14,18 +14,17 @@ namespace MoneySupervisor
     public class MSSaveLoad
     {
         //SQLite min date 1970-01-01 00:00:00 UTC
-        // strftime('%s', value)        write
-        // datetime(value, 'unixepoch') read
+        //strftime('%s', value)        write
+        //datetime(value, 'unixepoch') read
         public static void CreateDatabase()
         {
-            string curFile = @"MSBase.sqlite";
             Console.WriteLine("Работа с файлом бызы данных.");
-            Console.WriteLine(File.Exists(curFile) ? "Файл существует." : "Файла не существует.");
+            Console.WriteLine(File.Exists(Program.curFile) ? "Файл существует." : "Файла не существует.");
             try
             {
                 Console.WriteLine("Попытка удаления файла.");
-                if (File.Exists(curFile))
-                    File.Delete(curFile);
+                if (File.Exists(Program.curFile))
+                    File.Delete(Program.curFile);
             }
             catch (System.IO.IOException)
             {
@@ -36,13 +35,13 @@ namespace MoneySupervisor
                 Console.WriteLine("Произошла ошибка с файлом.");
                 Console.WriteLine(e);
             }
-            if (!File.Exists(curFile)) Console.WriteLine("Файл удалён.");
+            if (!File.Exists(Program.curFile)) Console.WriteLine("Файл удалён.");
             else Console.WriteLine("Файл не удалён.");
 
             try
             {
                 Console.WriteLine("Попытка создания файла.");
-                if (!File.Exists(curFile))
+                if (!File.Exists(Program.curFile))
                 {
                     Console.WriteLine("Создание файла с базой данных.");
                     System.Data.SQLite.SQLiteConnection.CreateFile("MSBase.sqlite");
@@ -53,7 +52,7 @@ namespace MoneySupervisor
                 Console.WriteLine("Произошла ошибка с файлом.");
                 Console.WriteLine(e);
             }
-            if (File.Exists(curFile)) Console.WriteLine("Файл создан.");
+            if (File.Exists(Program.curFile)) Console.WriteLine("Файл создан.");
             else Console.WriteLine("Файл не создан.");
 
             System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
@@ -351,5 +350,7 @@ namespace MoneySupervisor
                 Console.WriteLine(ex.Message);
             }
         }
+
+        
     }
 }

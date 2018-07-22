@@ -219,5 +219,34 @@ namespace MoneySupervisor
             Program.cki = default(ConsoleKeyInfo);
             Console.Clear();
         }
+
+        static public void SQLiteSaveTransactionInDatabase(MSTransaction tr)
+        {
+            System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection("Data Source=MSBase.sqlite;Version=3;");
+            conn.Open();
+            int tbool = tr.MSMulticurrency == true ? 1 : 0;
+            string sql_command = "INSERT INTO MSTransactions (MSTransactionId, " +
+                                                             "MSIO, " +
+                                                             "MSValue, " +
+                                                             "MSСurrencyCode, " +
+                                                             "MSAccountId, " +
+                                                             "MSCategoryId, " +
+                                                             "MSNote,            " +
+                                                             "MSDateTime, " +
+                                                             "MSMulticurrency) "
+                + $"VALUES ({tr.MSTransactionId}," +
+                          $"'{tr.MSIO}'," +
+                          $" {tr.MSValue}," +
+                          $"'{tr.MSСurrencyCode}'," +
+                          $" {tr.MSAccountId}," +
+                          $" {tr.MSCategoryId}," +
+                          $"'{tr.MSNote}'," +
+                          $"'{(tr.MSDateTime).ToString()}'," +
+                          $" {tbool});";
+            System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
+            command.ExecuteNonQuery();
+
+            conn.Close();
+        }
     }
 }

@@ -94,7 +94,11 @@ namespace MoneySupervisor
 
         public static int ChooseCategory(ref List<MSCategory> msCategoryList, int msAccountId)
         {
+            int left = Console.CursorLeft;
+            int top = Console.CursorTop;
+
             List<MSCategory> TmsCategoryList = new List<MSCategory>();
+
             for (int i = 0; i < msCategoryList.Count; i++)
             {
                 if (msCategoryList[i].MSAccountId == msAccountId)
@@ -102,16 +106,14 @@ namespace MoneySupervisor
                     TmsCategoryList.Add(new MSCategory(msCategoryList[i]));
                 }
             }
-            int left = Console.CursorLeft;
-            int top = Console.CursorTop;
+
             int maxLen = 0;
-            if (TmsCategoryList.Count > 0)
-                maxLen = TmsCategoryList.Max(s => s.MSName).Length;
-            int accountId = 0;
             string xSynbol = "↓ "; // ↓   ↑   ↓↑
-            if (TmsCategoryList.Count == 1) xSynbol = "  ";
-            if (TmsCategoryList.Exists(x => x.MSAccountId == accountId))
-                Console.WriteLine($"{TmsCategoryList[accountId].MSImage} {TmsCategoryList[accountId].MSName} {xSynbol}");
+            if (TmsCategoryList.Count > 0)
+            {
+                maxLen = TmsCategoryList.Max(s => s.MSName).Length;
+                if (TmsCategoryList.Count == 1) xSynbol = "  ";
+            }
             else
             {
                 int tCatCount = Program.categories.Count;
@@ -122,6 +124,21 @@ namespace MoneySupervisor
                         Program.category.ConsoleAdd(tCatCount, Program.transactionSymbol);
                 } while (true);
             }
+
+            if (TmsCategoryList.Exists(x => x.MSAccountId == msAccountId))
+                Console.WriteLine($"{TmsCategoryList[msAccountId].MSImage} {TmsCategoryList[msAccountId].MSName} {xSynbol}");
+            else
+            {
+                int tCatCount = Program.categories.Count;
+                do
+                {
+                    tCatCount++;
+                    if (!TmsCategoryList.Exists(x => x.MSCategoryId == tCatCount))
+                        Program.category.ConsoleAdd(tCatCount, Program.transactionSymbol);
+                } while (true);
+            }
+
+            int changeAccountId = 0;
             do
             {
                 //if (Console.KeyAvailable)
@@ -131,14 +148,14 @@ namespace MoneySupervisor
                 switch (Program.cki.Key)
                 {
                     case ConsoleKey.DownArrow:
-                        if (++accountId >= TmsCategoryList.Count) accountId = TmsCategoryList.Count - 1;
+                        if (++changeAccountId >= TmsCategoryList.Count) changeAccountId = TmsCategoryList.Count - 1;
                         for (int i = 0; i < maxLen + 3; i++)
                         {
                             Console.Write(" ");
                         }
                         break;
                     case ConsoleKey.UpArrow:
-                        if (--accountId < 0) accountId = 0;
+                        if (--changeAccountId < 0) changeAccountId = 0;
                         for (int i = 0; i < maxLen + 3; i++)
                         {
                             Console.Write(" ");
@@ -147,12 +164,12 @@ namespace MoneySupervisor
                     case ConsoleKey.Enter:
                         Program.cki = default(ConsoleKeyInfo);
                         Console.SetCursorPosition(0, top + 1);
-                        return TmsCategoryList[accountId].MSCategoryId;
+                        return TmsCategoryList[changeAccountId].MSCategoryId;
                     default:
                         break;
                 }
                 Console.SetCursorPosition(left, top);
-                Console.WriteLine($"{TmsCategoryList[accountId].MSImage} {TmsCategoryList[accountId].MSName} {xSynbol}");
+                Console.WriteLine($"{TmsCategoryList[changeAccountId].MSImage} {TmsCategoryList[changeAccountId].MSName} {xSynbol}");
             } while (true);
         }
 
@@ -164,6 +181,26 @@ namespace MoneySupervisor
                     return Program.categories[i].MSName;
             }
             return "";
+        }
+
+        static public void SQLiteSaveCategoryInDatabase(MSCategory c)
+        {
+            Program.conn.Open();
+            string sql_command = "INSERT INTO MSCategories (MSCategoryId, " +
+                                                    "MSIO,     " +
+                                                    "MSName, " +
+                                                    "MSAccountId, " +
+                                                    "MSColor, " +
+                                                    "MSImage) "
+                                          + $"VALUES ({c.MSCategoryId}," +
+                                            $"'{c.MSIO}'," +
+                                            $"'{c.MSName}'," +
+                                            $" {c.MSCategoryId}," +
+                                            $" {(int)c.MSColor}," +
+                                            $"'{c.MSImage})');";
+            System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, Program.conn);
+            command.ExecuteNonQuery();
+            Program.conn.Close();
         }
     }
 }

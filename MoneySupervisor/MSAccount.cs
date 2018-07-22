@@ -153,5 +153,28 @@ namespace MoneySupervisor
             }
             return "";
         }
+
+        static public void SQLiteSaveAccountInDatabase(MSAccount a)
+        {
+            Program.conn.Open();
+
+            string sql_command = "INSERT INTO MSAccounts (MSAccountId, " +
+                                                         "MSIO,     " +
+                                                         "MSName, " +
+                                                         "MSColor, " +
+                                                         "MSImage, " +
+                                                         "MSСurrencyCode, " +
+                                                         "MSMulticurrency) "
+                                              + $"VALUES ({a.MSAccountId}, " +
+                                                       $"'{a.MSIO}'," +
+                                                       $"'{a.MSName}'," +
+                                                       $" {a.MSColor}, " +
+                                                       $"'{a.MSImage}'," +
+                                                       $"'{a.MSСurrencyCode}'," +
+                                                       $" {a.MSMulticurrency});";
+            System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, Program.conn);
+            command.ExecuteNonQuery();
+            Program.conn.Close();
+        }
     }
 }

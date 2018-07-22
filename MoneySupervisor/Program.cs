@@ -31,6 +31,8 @@ namespace MoneySupervisor
         public static int menyuId = 0, maxMenyuId = 5;
         public static int maxWidth = 40, maxheight = 25;
         public static char transactionSymbol = '+'; //+  -  =
+        public static string curFile = @"MSBase.sqlite";
+        public static System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection($"Data Source={curFile};Version=3;");
 
         static void Main(string[] args)
         {
@@ -57,8 +59,11 @@ namespace MoneySupervisor
             //{
             //    MSSaveLoad.SQLiteLoadCurrenciesFromDatabase();
             //}
-            MSSaveLoad.CreateDatabase();
-            MSSaveLoad.InsertStandartValue();
+            if (!File.Exists(Program.curFile))
+            {
+                MSSaveLoad.CreateDatabase();
+                MSSaveLoad.InsertStandartValue();
+            }
             MSSaveLoad.SQLiteLoadAccountsFromDatabase();
             MSSaveLoad.SQLiteLoadCategoriesFromDatabase();
             MSSaveLoad.SQLiteLoadTransactionsFromDatabase();
@@ -157,6 +162,7 @@ namespace MoneySupervisor
                     case ConsoleKey.Enter:
                         Program.cki = default(ConsoleKeyInfo);
                         Console.Clear();
+                        int tTranCount = 0;
                         switch (menyuId)
                         {
                             case 0: //+
@@ -173,8 +179,17 @@ namespace MoneySupervisor
                                     Console.WriteLine("Создайте новую котегорию.");
                                     Program.AddCategory();
                                 }
-                                transaction.ConsoleAdd(transactions.Count + 1, transactionSymbol);
+                                tTranCount = transactions.Count;
+                                do
+                                {
+                                    tTranCount++;
+                                    if (!transactions.Exists(x => x.MSTransactionId == tTranCount))
+                                    {
+                                        transaction.ConsoleAdd(tTranCount, transactionSymbol);
+                                    }
+                                } while (true);
                                 transactions.Add(new MSTransaction(transaction));
+                                MSTransaction.SQLiteSaveTransactionInDatabase(transaction);
                                 goto case 99;
                                 //break;
                             case 1: //-
@@ -191,8 +206,14 @@ namespace MoneySupervisor
                                     Console.WriteLine("Создайте новую котегорию.");
                                     Program.AddCategory();
                                 }
-                                transaction.ConsoleAdd(transactions.Count + 1, transactionSymbol);
+                                tTranCount = transactions.Count;
+                                do
+                                {
+                                    tTranCount++;
+                                    transaction.ConsoleAdd(tTranCount, transactionSymbol);
+                                } while (transactions.Exists(x => x.MSTransactionId == tTranCount));
                                 transactions.Add(new MSTransaction(transaction));
+                                MSTransaction.SQLiteSaveTransactionInDatabase(transaction);
                                 goto case 99;
                                 //break;
                             case 2: //=
@@ -302,6 +323,7 @@ namespace MoneySupervisor
         {
             account.ConsoleAdd(accounts.Count + 1, transactionSymbol);
             accounts.Add(new MSAccount(account));
+            MSAccount.SQLiteSaveAccountInDatabase(account);
             Console.WriteLine("Аккаунт добавлен.");
             Program.cki = Console.ReadKey();
         }
@@ -310,6 +332,7 @@ namespace MoneySupervisor
         {
             category.ConsoleAdd(categories.Count + 1, transactionSymbol);
             categories.Add(new MSCategory(category));
+            MSCategory.SQLiteSaveCategoryInDatabase(category);
             Console.WriteLine("Категория добавлена.");
             Program.cki = Console.ReadKey();
         }
