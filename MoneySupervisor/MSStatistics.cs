@@ -52,7 +52,7 @@ namespace MoneySupervisor
             foreach (var item in transactions_grouped)
             {
                 //sumAccount.Add(MSAccount.GetName(item.Id), item.Sum);
-                Console.Write($"{MSAccount.GetName(item.Id)} {item.Sum:f2}");
+                Console.Write($"{MSAccount.GetName(item.Id)} {item.Sum:f2}\n");
             }
             //foreach (var item_ac in accounts)
             //{

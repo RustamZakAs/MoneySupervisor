@@ -241,7 +241,9 @@ namespace MoneySupervisor
                                     Console.SetCursorPosition(0, 3);
                                     Console.Write($"3. Выберите язык программы: ");
                                     Console.SetCursorPosition(0, 4);
-                                    Console.Write($"4. Назад: ");
+                                    Console.Write($"4. Сброс базы данных: ");
+                                    Console.SetCursorPosition(0, 5);
+                                    Console.Write($"5. Назад: ");
 
                                     cki = Console.ReadKey();
                                     //Console.WriteLine($"2. {dictionary["newcategory"].RetLang(staticLanguage)} ");
@@ -264,6 +266,18 @@ namespace MoneySupervisor
                                             Program.cki = Console.ReadKey();
                                             break;
                                         case '4':
+                                            MSSaveLoad.CreateDatabase();
+                                            MSSaveLoad.InsertStandartValue();
+                                            currency = new MSСurrency();
+                                            currencies = new List<MSСurrency>();
+                                            account = new MSAccount();
+                                            accounts = new List<MSAccount>();
+                                            category = new MSCategory();
+                                            categories = new List<MSCategory>();
+                                            transaction = new MSTransaction();
+                                            transactions = new List<MSTransaction>();
+                                            break;
+                                        case '5':
                                             xReplace = false;
                                             break;
                                         default:

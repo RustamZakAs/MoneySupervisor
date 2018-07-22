@@ -145,13 +145,38 @@ namespace MoneySupervisor
             System.Data.SQLite.SQLiteCommand command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
 
+            sql_command = "INSERT INTO MSAccounts (MSAccountId, MSIO, MSName, MSColor, MSImage, MSСurrencyCode, MSMulticurrency) "
+                                        + "VALUES (          1,  '+', 'Банк',       2,    ';)',          'AZN',               0);";
+            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
+            command.ExecuteNonQuery();
+
             sql_command = "INSERT INTO MSCategories (MSCategoryId, MSIO,     MSName, MSAccountId, MSColor, MSImage) "
                                           + "VALUES (           0,  '+', 'Зарплата',           0,       1,    ';)');";
             command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
 
-            sql_command = "INSERT INTO MSTransactions (MSTransactionId, MSIO, MSValue, MSСurrencyCode, MSAccountId, MSCategoryId, MSNote,            MSDateTime, MSMulticurrency) "
-                                            + "VALUES (              0,  '+',    0.01,          'AZN',           0,            0, 'Test', '20.07.2018 00:40:00',               0);";
+            sql_command = "INSERT INTO MSCategories (MSCategoryId, MSIO, MSName, MSAccountId, MSColor, MSImage) "
+                                          + "VALUES (           1,  '-',  'Еда',           0,       1,    '=)');";
+            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
+            command.ExecuteNonQuery();
+
+            sql_command = "INSERT INTO MSCategories (MSCategoryId, MSIO,    MSName, MSAccountId, MSColor, MSImage) "
+                                          + "VALUES (           2,  '-', 'Напитки',           0,       5,    '<3');";
+            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
+            command.ExecuteNonQuery();
+
+            sql_command = "INSERT INTO MSCategories (MSCategoryId, MSIO,    MSName, MSAccountId, MSColor, MSImage) "
+                                          + "VALUES (           3,  '+', 'Зарплата',          1,       3,    '<3');";
+            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
+            command.ExecuteNonQuery();
+
+            sql_command = "INSERT INTO MSTransactions (MSTransactionId, MSIO, MSValue, MSСurrencyCode, MSAccountId, MSCategoryId,  MSNote,            MSDateTime, MSMulticurrency) "
+                                            + "VALUES (              0,  '+',    0.01,          'AZN',           0,            0, 'Test1', '20.07.2018 00:40:00',               0);";
+            command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
+            command.ExecuteNonQuery();
+
+            sql_command = "INSERT INTO MSTransactions (MSTransactionId, MSIO, MSValue, MSСurrencyCode, MSAccountId, MSCategoryId,  MSNote,            MSDateTime, MSMulticurrency) "
+                                            + "VALUES (              1,  '+',    0.01,          'AZN',           1,            0, 'Test2', '22.07.2018 00:00:00',               0);";
             command = new System.Data.SQLite.SQLiteCommand(sql_command, conn);
             command.ExecuteNonQuery();
 
